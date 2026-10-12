@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EPS Digital Evidence Technician — Exam & Interview Simulator</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .badge-pulse { animation: pulse-slow 2.5s infinite; }
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-blue-600 selection:text-white custom-scroll">
+
+  <!-- TOP HUD -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/20 text-white">
+          EPS
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-extrabold text-slate-100 tracking-tight text-base sm:text-lg">DIGITAL EVIDENCE COMMAND</h1>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase tracking-wider">Exam Prep #56123</span>
+          </div>
+          <p class="text-xs text-slate-400">Candidate: Kyle Jensen &bull; Target Test: Oct 15 @ 11:00 AM (Nexus Unit #134)</p>
+        </div>
+      </div>
+
+      <!-- Live Gamification Stats -->
+      <div class="flex items-center space-x-4 bg-slate-950/70 px-4 py-2 rounded-xl border border-slate-800 text-xs sm:text-sm">
+        <div class="flex items-center space-x-1.5">
+          <span class="text-amber-400 font-bold">⚡ XP:</span>
+          <span id="stat-xp" class="font-extrabold text-white text-base">0</span>
+        </div>
+        <div class="h-4 w-px bg-slate-800"></div>
+        <div class="flex items-center space-x-1.5">
+          <span class="text-emerald-400 font-bold">🔥 Streak:</span>
+          <span id="stat-streak" class="font-extrabold text-white text-base">0</span>
+        </div>
+        <div class="h-4 w-px bg-slate-800"></div>
+        <div class="flex items-center space-x-1.5">
+          <span class="text-blue-400 font-bold">🎯 Accuracy:</span>
+          <span id="stat-acc" class="font-extrabold text-white text-base">100%</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="max-w-6xl mx-auto px-4 mt-6">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
+      <button onclick="setTab('exam')" id="tab-exam" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md">
+        📝 Full Written Exam (25Q)
+      </button>
+      <button onclick="setTab('redaction')" id="tab-redaction" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        🛡️ Redaction Sandbox
+      </button>
+      <button onclick="setTab('spotter')" id="tab-spotter" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        🔍 CAD Discrepancy Spotter
+      </button>
+      <button onclick="setTab('interview')" id="tab-interview" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        🎙️ Oral Interview Flashcards
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+
+    <!-- ========================================== -->
+    <!-- 1. FULL WRITTEN EXAM MODE -->
+    <!-- ========================================== -->
+    <div id="view-exam" class="tab-content block">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        
+        <!-- Header & Progress bar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span id="exam-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Category</span>
+              <span id="exam-qnum" class="text-xs text-slate-400 font-semibold">Question 1 of 25</span>
+            </div>
+            <h2 id="exam-question-title" class="text-lg sm:text-xl font-bold text-white mt-1">Question title goes here...</h2>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="text-right">
+              <div class="text-[11px] text-slate-400 uppercase font-semibold">Timer</div>
+              <div id="exam-timer" class="font-mono text-base font-bold text-amber-400">00:00</div>
+            </div>
+            <button onclick="resetExam()" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
+              Restart Test
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Track Bar -->
+        <div class="w-full bg-slate-950 rounded-full h-2 my-5 overflow-hidden border border-slate-800">
+          <div id="exam-progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-300" style="width: 4%"></div>
+        </div>
+
+        <!-- Question Scenario Box -->
+        <div id="exam-scenario-box" class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 text-sm text-slate-300 mb-6 leading-relaxed">
+          Scenario text...
+        </div>
+
+        <!-- Options Container -->
+        <div id="exam-options" class="grid grid-cols-1 gap-3">
+          <!-- Dynamically generated options -->
+        </div>
+
+        <!-- Feedback & Explanation (Hidden until answered) -->
+        <div id="exam-explanation" class="hidden mt-6 p-4 rounded-xl border">
+          <div class="flex items-center space-x-2 mb-2 font-bold text-sm" id="exam-expl-title">
+            <!-- Correct/Incorrect badge -->
+          </div>
+          <p id="exam-expl-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+          <div class="mt-4 flex justify-end">
+            <button id="exam-next-btn" onclick="nextQuestion()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-bold shadow-lg transition">
+              Next Question &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Final Scorecard Screen (Hidden until finished) -->
+        <div id="exam-final-card" class="hidden text-center py-8">
+          <div class="w-20 h-20 mx-auto rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/40 flex items-center justify-center text-4xl mb-4">
+            🏆
+          </div>
+          <h3 class="text-2xl font-extrabold text-white">Assessment Complete!</h3>
+          <p class="text-slate-400 text-sm mt-1">Here is your official evaluation for Word/Data Processing Clerk III (DEMU):</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-md mx-auto my-6 text-left">
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <div class="text-xs text-slate-400 font-semibold uppercase">Score</div>
+              <div id="final-score" class="text-2xl font-black text-emerald-400 mt-1">24 / 25</div>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <div class="text-xs text-slate-400 font-semibold uppercase">Percentage</div>
+              <div id="final-pct" class="text-2xl font-black text-blue-400 mt-1">96%</div>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <div class="text-xs text-slate-400 font-semibold uppercase">Verdict</div>
+              <div id="final-verdict" class="text-sm font-black text-emerald-300 mt-2">HIGH PASS (READY)</div>
+            </div>
+          </div>
+
+          <div class="space-x-3">
+            <button onclick="resetExam()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition">
+              Retake Examination
+            </button>
+            <button onclick="setTab('redaction')" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl border border-slate-700 transition">
+              Practice Redaction Sandbox &rarr;
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. INTERACTIVE REDACTION SANDBOX -->
+    <!-- ========================================== -->
+    <div id="view-redaction" class="tab-content hidden">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">Interactive Simulator</span>
+            <h2 class="text-xl font-bold text-white mt-1">Body-Worn Video Evidence Redaction Lab</h2>
+            <p class="text-xs text-slate-400">Click elements in the scene below to toggle REDACT / EXEMPT. Apply mandatory legal standards before Crown submission!</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="checkRedactionScenario()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold rounded-lg shadow transition">
+              Submit to Crown Prosecutor &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Redaction Stage Selector -->
+        <div class="flex space-x-2 mt-4 overflow-x-auto pb-2">
+          <button onclick="loadRedactionStage(0)" id="red-stage-0" class="red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white">Scenario 1: Traffic Stop & Minor</button>
+          <button onclick="loadRedactionStage(1)" id="red-stage-1" class="red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Scenario 2: Domestic in Apartment</button>
+          <button onclick="loadRedactionStage(2)" id="red-stage-2" class="red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Scenario 3: Undercover Drug Buy</button>
+        </div>
+
+        <!-- The Mock Video Monitor -->
+        <div class="mt-4 bg-slate-950 border-2 border-slate-800 rounded-xl overflow-hidden relative p-4 min-h-[380px] flex flex-col justify-between shadow-inner">
+          
+          <!-- Body Cam HUD Overlay -->
+          <div class="flex justify-between items-center text-[11px] font-mono text-emerald-400 border-b border-slate-800/80 pb-2">
+            <div>EPS AXON BODY 4 &bull; UNIT 14-B &bull; 1080P 30FPS</div>
+            <div id="red-cam-time">2026-10-15 14:22:19 MDT &bull; BUFFERED AUDIO: ON</div>
+            <div class="flex items-center space-x-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+              <span class="text-red-400 font-bold">REC</span>
+            </div>
+          </div>
+
+          <!-- Scenario Context -->
+          <div class="my-3 bg-slate-900/90 p-3 rounded-lg border border-slate-800 text-xs text-slate-300" id="red-scenario-desc">
+            Loading scene description...
+          </div>
+
+          <!-- Interactive Targets Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-2" id="redaction-targets">
+            <!-- Generated Target Cards -->
+          </div>
+
+          <!-- Redaction Audit Trail Footer -->
+          <div class="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between text-xs text-slate-400">
+            <div>
+              <span class="font-bold text-slate-300">Audit Trail:</span>
+              <span id="red-audit-count">0 items marked for redaction</span>
+            </div>
+            <div class="text-[11px] text-slate-500">
+              Compliance Standard: <span class="text-blue-400 font-semibold">YCJA S.110 &bull; FOIP S.17 &bull; Best Evidence Rule</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Redaction Results Box -->
+        <div id="red-result-box" class="hidden mt-4 p-4 rounded-xl border text-sm leading-relaxed">
+          <!-- Injected result -->
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3. CAD vs OCCURRENCE DISCREPANCY SPOTTER -->
+    <!-- ========================================== -->
+    <div id="view-spotter" class="tab-content hidden">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">Clerk III Speed & Accuracy</span>
+            <h2 class="text-xl font-bold text-white mt-1">CAD &amp; Digital Evidence Discrepancy Spotter</h2>
+            <p class="text-xs text-slate-400">Cross-reference the Officer's CAD Dispatch Record against the Evidence.com Ingest Metadata. Spot the 3 critical errors!</p>
+          </div>
+          <div>
+            <button onclick="checkDiscrepancies()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold rounded-lg shadow transition">
+              Verify Discrepancies &rarr;
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+          <!-- Left: Official CAD Record -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800 text-xs">
+              <span class="font-bold text-blue-400 uppercase tracking-wider">OFFICIAL CAD DISPATCH LOG</span>
+              <span class="text-slate-500 font-mono">EPS-CAD-LIVE</span>
+            </div>
+            <div class="space-y-2 text-xs font-mono text-slate-300 leading-relaxed" id="cad-doc">
+              <!-- Dynamically populated CAD data -->
+            </div>
+          </div>
+
+          <!-- Right: Evidence.com Ingest Metadata (Interactive) -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800 text-xs">
+              <span class="font-bold text-emerald-400 uppercase tracking-wider">EVIDENCE.COM METADATA TABLE</span>
+              <span class="text-slate-500 font-mono">CLICK SUSPECT FIELDS (3 TOTAL)</span>
+            </div>
+            <div class="space-y-2 text-xs font-mono" id="ingest-doc">
+              <!-- Dynamically populated Ingest fields -->
+            </div>
+          </div>
+        </div>
+
+        <div id="spotter-result" class="hidden mt-5 p-4 rounded-xl border text-sm"></div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 4. ORAL INTERVIEW & STAR DEFENSE -->
+    <!-- ========================================== -->
+    <div id="view-interview" class="tab-content hidden">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">Oral Board Prep</span>
+            <h2 class="text-xl font-bold text-white mt-1">EPS Oral Interview Master Flashcards</h2>
+            <p class="text-xs text-slate-400">Master the high-probability panel questions using Kyle's genuine background (STAR framework).</p>
+          </div>
+          <div class="flex items-center space-x-2 text-xs">
+            <span class="text-slate-400">Card</span>
+            <span id="interview-idx" class="font-bold text-white">1</span>
+            <span class="text-slate-500">/ 6</span>
+          </div>
+        </div>
+
+        <!-- Flashcard View -->
+        <div class="mt-6 max-w-3xl mx-auto">
+          <div id="interview-card" class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative min-h-[360px] flex flex-col justify-between">
+            
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span id="card-category" class="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">Resilience</span>
+                <span class="text-xs text-slate-500 font-mono">HIGH IMPACT</span>
+              </div>
+              <h3 id="card-question" class="text-lg sm:text-xl font-bold text-white leading-snug">
+                Question text goes here...
+              </h3>
+              
+              <!-- Revealable Answer Breakdown -->
+              <div id="card-answer-box" class="hidden mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300 space-y-3 leading-relaxed">
+                <!-- Answer details injected here -->
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <button onclick="toggleCardAnswer()" id="card-toggle-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-bold rounded-lg border border-slate-700 transition">
+                👁️ Reveal Model STAR Answer
+              </button>
+              <div class="flex space-x-2">
+                <button onclick="prevCard()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg border border-slate-700 transition">
+                  &larr; Prev
+                </button>
+                <button onclick="nextCard()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg shadow transition">
+                  Next Card &rarr;
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT GAME ENGINE -->
+  <script>
+    // Audio Synthesizer (Web Audio API - zero external files needed!)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 440, type = 'sine', duration = 0.1) {
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+    function playCorrect() { playBeep(587, 'sine', 0.1); setTimeout(() => playBeep(880, 'sine', 0.2), 100); }
+    function playWrong() { playBeep(180, 'square', 0.25); }
+
+    // State
+    let xp = parseInt(localStorage.getItem('eps_xp') || '0');
+    let streak = parseInt(localStorage.getItem('eps_streak') || '0');
+    let answeredTotal = parseInt(localStorage.getItem('eps_total') || '0');
+    let answeredCorrect = parseInt(localStorage.getItem('eps_correct') || '0');
+
+    function updateStats() {
+      document.getElementById('stat-xp').innerText = xp;
+      document.getElementById('stat-streak').innerText = streak;
+      const acc = answeredTotal > 0 ? Math.round((answeredCorrect / answeredTotal) * 100) : 100;
+      document.getElementById('stat-acc').innerText = acc + '%';
+      localStorage.setItem('eps_xp', xp);
+      localStorage.setItem('eps_streak', streak);
+      localStorage.setItem('eps_total', answeredTotal);
+      localStorage.setItem('eps_correct', answeredCorrect);
+    }
+    updateStats();
+
+    function addXP(amount) {
+      xp += amount;
+      streak++;
+      answeredTotal++;
+      answeredCorrect++;
+      updateStats();
+    }
+    function resetStreak() {
+      streak = 0;
+      answeredTotal++;
+      updateStats();
+    }
+
+    // Tabs
+    function setTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-tab').forEach(el => {
+        el.className = 'nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800';
+      });
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tab-${tabId}`).className = 'nav-tab py-2.5 px-3 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md';
+    }
+
+    // ========================================================
+    // 1. QUESTION DATABASE (25 Comprehensive High-Yield Questions)
+    // ========================================================
+    const examQuestions = [
+      {
+        cat: "Redaction & Youth Criminal Justice",
+        title: "Mandatory Redaction under Youth Criminal Justice Act (YCJA)",
+        scenario: "You are reviewing body-worn video from a retail theft arrest. A 16-year-old youth is detained in handcuffs. In the background, two adult civilian store managers and a 14-year-old friend of the accused are standing near the door. What are your legal obligations regarding redaction before disclosing to Crown Counsel?",
+        options: [
+          "Redact only the 16-year-old accused's face because they are charged with an offence.",
+          "Redact both the 16-year-old accused and the 14-year-old witness/friend; youth identities are strictly protected under Section 110 of the YCJA.",
+          "No redaction is necessary because evidence disclosed to the Crown is exempt from privacy rules.",
+          "Redact all individuals except the 16-year-old, who lost anonymity upon committing an arrestable offence."
+        ],
+        answer: 1,
+        expl: "Section 110 of the Youth Criminal Justice Act (YCJA) strictly prohibits publishing or disclosing any information that identifies a youth as a person dealt with under the Act—including youth accused, youth victims, and youth witnesses. Both minors must have their faces and identifying attributes redacted."
+      },
+      {
+        cat: "Chain of Custody & Best Evidence",
+        title: "Best Evidence Rule & Cryptographic Hashing",
+        scenario: "An investigator requests that you export a 15-minute body-cam clip. Before performing any audio mutes or video blurs, what is the mandatory first step required under the Canada Evidence Act?",
+        options: [
+          "Apply color-correction to ensure faces are visible in court.",
+          "Confirm the master raw video is stored as a read-only original and generate/verify its cryptographic hash (MD5/SHA-256).",
+          "Burn the video directly to a physical DVD for the Crown prosecutor.",
+          "Rename the raw file to include the investigator's personal badge number."
+        ],
+        answer: 1,
+        expl: "Under the Best Evidence Rule and digital forensics standards, original electronic records must be preserved bit-for-bit in an unaltered master repository. Generating and verifying a cryptographic hash (SHA-256 or MD5) proves in court that the evidence has not been modified or tampered with."
+      },
+      {
+        cat: "Court Disclosure & Stinchcombe",
+        title: "Constitutional Duty of Disclosure (R. v. Stinchcombe)",
+        scenario: "A defense counsel requests full disclosure of all digital recordings related to an assault occurrence. A junior technician notices a 30-second body-worn video clip that appears to undermine the complainant's credibility. What must occur with this clip?",
+        options: [
+          "Withhold the clip from the disclosure package because it weakens the police case.",
+          "Delete the clip from the Digital Evidence Management System as non-material.",
+          "Disclose the clip to Crown Counsel; under R. v. Stinchcombe, the Crown has a constitutional duty to disclose all relevant information, whether inculpatory or exculpatory.",
+          "Wait until the trial date to see if defense explicitly asks for that specific minute."
+        ],
+        answer: 2,
+        expl: "Under the landmark Supreme Court ruling R. v. Stinchcombe (1991), the prosecution has a constitutional obligation to disclose all relevant information to the defense—both evidence that proves guilt (inculpatory) and evidence that supports innocence or damages witness credibility (exculpatory). Withholding evidence can cause charges to be stayed."
+      },
+      {
+        cat: "Forensic Boundaries & FVAD Escalation",
+        title: "Enhancement vs Redaction Boundaries",
+        scenario: "During a murder investigation review, an EPS Detective asks you to 'zoom in on the suspect's license plate in the corner of the frame and sharpen the letters' so they can read the characters. How should you respond?",
+        options: [
+          "Use Adobe Premiere Pro's sharpen and zoom filter to make the plate legible, then save over the file.",
+          "Explain that Digital Evidence Technicians only perform administrative redaction and formatting; escalate forensic video enhancement to the Forensic Video Analysis Detail (FVAD).",
+          "Advise the Detective that police are legally barred from ever zooming in on video evidence.",
+          "Take a screenshot and trace the letters manually in Photoshop."
+        ],
+        answer: 1,
+        expl: "Digital Evidence Technicians handle redactions, conversions, and disclosure packages. Forensic video analysis (clarifying, unblurring, sharpening, or photogrammetry) requires certified forensic analysts (LEVA trained) within the Forensic Video Analysis Detail (FVAD) to ensure court admissibility."
+      },
+      {
+        cat: "Third-Party Privacy & FOIP",
+        title: "FOIP & Bystander Privacy in Public Spaces",
+        scenario: "Officers responded to a disturbance in a public transit terminal. In the background of the 10-minute recording, several members of the public are sitting on benches, and an ATM machine screen displays a bystander's banking balance. What is the standard for redaction?",
+        options: [
+          "Leave everything unblurred because transit stations are public property with no expectation of privacy.",
+          "Redact only the transit terminal logo.",
+          "Redact personal identifiers of uninvolved bystanders and sensitive third-party financial data (the ATM screen) to protect privacy under FOIP/ATIA.",
+          "Redact the entire video because public bystanders are visible."
+        ],
+        answer: 2,
+        expl: "Under the Freedom of Information and Protection of Privacy Act (FOIP) and EPS evidence vetting standards, uninvolved bystanders and their sensitive personal/financial data (such as bank screens, phone texts, or driver's licenses) must be redacted when they have no evidentiary value to the charges."
+      },
+      {
+        cat: "Redaction Logging & Audit Trails",
+        title: "Audit Trail Disclosure Requirements",
+        scenario: "You have completed complex redactions on an audio/video recording, blurring two faces and muting 12 seconds of sensitive medical consultation. Why must your redaction log be meticulously preserved?",
+        options: [
+          "It is strictly for internal IT billing hours and never seen outside EPS.",
+          "Because the redaction audit log is itself subject to court disclosure to prove what was altered, why it was altered, and under what legal authority.",
+          "In case the software crashes and you need to restart from scratch.",
+          "To prove which camera lens was attached to the officer's uniform."
+        ],
+        answer: 1,
+        expl: "Every redaction marker, cut, or audio mute must be accompanied by an audit trail stating the timestamp, rationale (e.g. YCJA, S.17 FOIP), and technician ID. This audit log is disclosable to the Crown and defense to guarantee evidence integrity."
+      },
+      {
+        cat: "Queue Discipline & Triage",
+        title: "High-Volume Court Deadline Triage",
+        scenario: "At 08:30 AM, you have five disclosure requests in your queue. At 09:00 AM, a Crown Prosecutor contacts the unit requesting an emergency redaction of a 5-minute video for an in-custody bail hearing scheduled at 11:00 AM today. How do you triage?",
+        options: [
+          "Refuse the Crown's request because first-in, first-out rule must strictly apply to all files.",
+          "Triage the urgent in-custody bail hearing as top priority, notify the supervisor of the queue change, fulfill the request, and document the expedited delivery.",
+          "Hand the unredacted video directly to the Crown to save time.",
+          "Transfer all five routine files to another technician without asking."
+        ],
+        answer: 1,
+        expl: "Court-ordered deadlines and urgent in-custody bail hearings take operational precedence in judicial disclosure queues. Technicians must triage effectively, communicate timelines, and ensure redactions are completed before releasing files."
+      },
+      {
+        cat: "Officer Safety & Privilege",
+        title: "Informant & Tactical Method Redaction",
+        scenario: "In a recording of a high-risk search warrant execution, an undercover operative speaks with the arresting officers, and a confidential informant's cell phone number is read aloud over the police radio. What redactions are required?",
+        options: [
+          "Redact only the cell phone number; police officers can never be blurred.",
+          "Redact the undercover officer's face/voice and mute the confidential informant's phone number; protecting informant identity and officer safety is an absolute legal duty.",
+          "No redaction; police communications cannot be edited.",
+          "Delete the audio track completely."
+        ],
+        answer: 1,
+        expl: "Informer privilege is an absolute legal protection under Canadian law. Disclosing a confidential informant's identity or exposing an undercover officer's identity compromises lives and is strictly prohibited."
+      },
+      {
+        cat: "Technical File Formats & Codecs",
+        title: "Proprietary Video Formats vs Court Standard Export",
+        scenario: "A business provides CCTV surveillance evidence in a proprietary '.exe' or raw '.dav' container format that Crown and Court workstations cannot open. What is your role as a Digital Evidence Technician?",
+        options: [
+          "Tell the Crown Prosecutor to buy new software.",
+          "Convert/transcode the media into court-standard formats (e.g. MP4/H.264) using approved tools (e.g. Omnivore, AVS) while preserving frame rates and aspect ratios, and retaining the raw source file.",
+          "Re-record the screen with your smartphone camera.",
+          "Reject the evidence and instruct the investigator to re-seize it."
+        ],
+        answer: 1,
+        expl: "Technicians frequently vet and convert proprietary third-party surveillance CCTV into court-playable standard containers (e.g. MP4 using tools like Omnivore) while preserving the native frame rate, resolution, and aspect ratio without compression distortion."
+      },
+      {
+        cat: "Clerk III Data Processing",
+        title: "Occurrence Number & File Indexing Standards",
+        scenario: "You receive an officer's body-cam ingest. The dispatch CAD log lists Occurrence Number: '2026-104921', but the camera filename on the ingest dock is labeled 'EPS_2026_104912_UNIT14.mp4'. What action must you take?",
+        options: [
+          "Ignore the number; minor digit inversions do not matter in police databases.",
+          "Flag the transposition error (104921 vs 104912), cross-reference CAD dispatch records, and correct the indexing metadata before releasing to the disclosure repository.",
+          "Delete both files and start over.",
+          "Create a second fictitious occurrence number."
+        ],
+        answer: 1,
+        expl: "Transposed numbers (104921 vs 104912) are catastrophic in police recordkeeping because evidence will be lost in the database and missed during disclosure. Technicians perform rigorous quality checks to identify and correct indexing errors."
+      },
+      {
+        cat: "Psychological Resilience & Graphic Content",
+        title: "Secondary Traumatic Stress & Wellness",
+        scenario: "As part of your daily duties, you are required to review 6 hours of body-worn footage containing severe vehicle collision trauma and violent physical confrontations. What is the expected professional strategy for maintaining job performance and personal health?",
+        options: [
+          "Never take breaks and suppress emotional reactions until the shift ends.",
+          "Recognize signs of secondary traumatic stress, implement healthy boundaries, utilize micro-breaks, and proactively engage EPS Employee Wellness / EFAP resources when needed.",
+          "Discuss graphic details with friends and family over dinner.",
+          "Skip the violent sections of the video without reviewing them."
+        ],
+        answer: 1,
+        expl: "EPS expects technicians to demonstrate emotional maturity and resilience. Professionalism involves knowing one's boundaries, using ergonomic micro-breaks, and proactively using peer support and Employee and Family Assistance Programs (EFAP)."
+      },
+      {
+        cat: "Data Integrity & Naming Conventions",
+        title: "Standardized Naming Conventions in DEMS",
+        scenario: "When archiving multiple video files from an incident involving three officers (Car 1, Car 2, Car 3), why must consistent naming conventions (e.g., [YYYYMMDD]_[OCC#]_[BADGE]_[CAMTYPE]) be strictly enforced?",
+        options: [
+          "To make the desktop wallpaper look neat.",
+          "To enable rapid retrieval, automated query filtering, and eliminate duplicate or orphaned evidence across thousands of concurrent court files.",
+          "Because Taleo requires file names to be under 10 characters.",
+          "It is only required for traffic tickets."
+        ],
+        answer: 1,
+        expl: "Standardized naming conventions (Date, Occurrence #, Badge #, Camera Type) prevent orphaned files, allow cross-referencing between CAD and court files, and ensure disclosure packages can be assembled accurately."
+      },
+      {
+        cat: "Charter of Rights & Legal Standards",
+        title: "Section 11(b) Charter - Right to Trial Within Reasonable Time",
+        scenario: "Why is timeliness in fulfilling digital evidence court disclosure so critical under the Supreme Court of Canada's R. v. Jordan decision?",
+        options: [
+          "If police disclosure delays cause the case to exceed statutory ceilings (18 or 30 months), the charges may be dismissed under Section 11(b) for unreasonable delay.",
+          "Police officers will receive overtime penalties.",
+          "The Crown Attorney must pay a fine to the defense lawyer.",
+          "Evidence older than 6 months is automatically erased."
+        ],
+        answer: 0,
+        expl: "Under R. v. Jordan (2016), Canadian courts enforce strict ceilings on trial delays (18 months for provincial courts, 30 months for superior courts). Unreasonable delays caused by institutional backlogs or slow evidence disclosure can lead to stays of proceedings (charges thrown out)."
+      },
+      {
+        cat: "Security Clearance & Confidentiality",
+        title: "Enhanced Security Clearance Standards",
+        scenario: "You are working in the Digital Evidence Management Unit with an Enhanced Security Clearance. A high-profile criminal case involving a local celebrity is assigned to your queue. A police colleague from another division asks you: 'Hey, can you pull up that celebrity video so I can see what happened?' How do you respond?",
+        options: [
+          "Play the video for them as long as they promise not to record it on their phone.",
+          "Refuse immediately; digital evidence is strictly accessed on a 'need-to-know' operational basis. Unauthorized viewing violates policy and breaches security clearance.",
+          "Email a copy of the video to their private email account.",
+          "Charge them a fee to view the file."
+        ],
+        answer: 1,
+        expl: "Access to police records is strictly governed by 'need-to-know' and operational duty. Viewing or sharing digital evidence out of curiosity—even with another sworn member—is a severe breach of security, policy, and privacy legislation that can result in termination and criminal charges."
+      },
+      {
+        cat: "Redaction Techniques",
+        title: "Audio Redaction & Muting Protocols",
+        scenario: "An officer's body-worn camera captures an injured victim reciting their Social Insurance Number and home banking password to paramedics. What is the correct redaction methodology?",
+        options: [
+          "Cut out the 20 seconds of video entirely so the timeline jumps forward.",
+          "Apply an audio mute specifically over the sensitive identifiers while keeping the video timeline continuous and inserting an audit marker explaining the redaction.",
+          "Beep loudly over the entire conversation and delete the paramedic's notes.",
+          "Leave the audio untouched because paramedics are emergency personnel."
+        ],
+        answer: 1,
+        expl: "Cutting out video frames breaks timeline continuity and can trigger defense allegations of evidence tampering. The proper standard is an audio mute over the specific digits while keeping the video stream continuous and inserting an audit marker explaining the mute."
+      },
+      {
+        cat: "Evidence Acts & Admissibility",
+        title: "Electronic Records Integrity (Canada Evidence Act S. 31.2)",
+        scenario: "To satisfy the Canada Evidence Act regarding electronic documents, a system administrator or technician must be able to prove:",
+        options: [
+          "That the software was purchased from a Canadian company.",
+          "The integrity of the electronic record-keeping system in which the document was stored at all material times.",
+          "That the video was recorded in 4K resolution.",
+          "That all officers agreed with the verdict."
+        ],
+        answer: 1,
+        expl: "Section 31.2 of the Canada Evidence Act establishes that the best evidence rule is satisfied for electronic records if the integrity of the record-keeping system or storage system can be established."
+      },
+      {
+        cat: "Supervisory & Workflow Discipline",
+        title: "Process Improvement in Clerk III Role",
+        scenario: "As an experienced Clerk III, you notice that officers frequently fail to attach occurrence numbers to in-car camera uploads, causing a daily 45-minute search backlog for technicians. What proactive step aligns with the job duties?",
+        options: [
+          "Refuse to process any files without occurrence numbers and delete them.",
+          "Identify the pattern, document the impact, and submit a formal process improvement recommendation or intake checklist to the Unit Supervisor.",
+          "Complain to the union representative without telling your supervisor.",
+          "Manually guess the occurrence numbers each morning."
+        ],
+        answer: 1,
+        expl: "The posting explicitly lists 'Providing recommendations for process improvement' as a key responsibility. A Clerk III takes initiative to analyze workflow bottlenecks, document patterns, and suggest practical solutions to supervisors."
+      },
+      {
+        cat: "Redaction Scenarios",
+        title: "Medical Trauma & Nudity Vetting",
+        scenario: "Officers provide CPR to a stabbing victim whose torso and private areas are exposed due to paramedic intervention. The defense requests the video to examine the officer's initial interaction. What redaction is appropriate?",
+        options: [
+          "Do not redact; the jury must see every injury in high definition.",
+          "Pixelate or blur exposed genitalia and severe non-probative medical trauma to protect dignity under FOIP, while leaving the officer's verbal interaction intact.",
+          "Delete the video because nudity cannot be stored on police computers.",
+          "Speed up the video by 400% so it plays too fast to see."
+        ],
+        answer: 1,
+        expl: "Pixelating non-probative medical trauma and nudity preserves human dignity and complies with privacy standards while keeping the evidentiary conversation and officer actions intact."
+      },
+      {
+        cat: "Court Disclosure & Packages",
+        title: "Crown Disclosure Packages - Verification Step",
+        scenario: "Prior to transmitting a 4-file digital evidence package to the Crown Prosecution Service via secure portal, what final quality control check must you perform?",
+        options: [
+          "Check that each file plays back smoothly, redaction markers are correctly rendered, metadata tags match the occurrence file, and the audit certificate is attached.",
+          "Verify that the files have been compressed to under 5 MB regardless of quality.",
+          "Check if the Crown Prosecutor is online on Facebook.",
+          "Print the video frames onto paper."
+        ],
+        answer: 0,
+        expl: "Before formal submission to Crown Counsel, technicians verify playback integrity, ensure redaction blurs did not slip or fail to render, check that occurrence tags match, and attach the official disclosure audit certificate."
+      },
+      {
+        cat: "Technical Software",
+        title: "Evidence.com / Axon Cloud Permission Roles",
+        scenario: "In an enterprise Digital Evidence Management System (such as Evidence.com), why are strict permission roles and access tiers implemented?",
+        options: [
+          "To ensure technicians have higher rank than police detectives.",
+          "To enforce role-based access control (RBAC), prevent unauthorized sharing or tampering, and maintain a verifiable digital chain of custody.",
+          "To prevent officers from logging in from home.",
+          "To limit Internet bandwidth usage."
+        ],
+        answer: 1,
+        expl: "Role-Based Access Control (RBAC) in DEMS platforms ensures only authorized users with verified operational need can view, redact, or export specific evidence tiers, preventing leaks and preserving evidentiary integrity."
+      },
+      {
+        cat: "Data Processing & Excel",
+        title: "Clerk III - Managing Spreadsheets & Tracking Logs",
+        scenario: "You are tracking 200 monthly court disclosure requests in Microsoft Excel. Which function allows you to quickly highlight rows where the disclosure deadline is less than 48 hours away?",
+        options: [
+          "AutoSum",
+          "Conditional Formatting with a date formula (e.g., =DueDate - TODAY() <= 2)",
+          "Spell Check",
+          "Word Count"
+        ],
+        answer: 1,
+        expl: "Conditional formatting in Microsoft Excel allows users to set dynamic rules that automatically highlight time-sensitive rows (e.g., deadlines within 48 hours), ensuring urgent court files are never missed in the queue."
+      },
+      {
+        cat: "Legal Acts - Canada Evidence Act",
+        title: "Spousal Privilege & Incidental Audio",
+        scenario: "During an impaired driving investigation, the driver calls their spouse on speakerphone in the back of the cruiser. Spousal communications may carry legal privilege. What action is required?",
+        options: [
+          "Transcribe the phone call and post it on the incident board.",
+          "Flag the spousal communication with a marker and bring it to the Crown Prosecutor's attention for a legal privilege ruling before broad disclosure.",
+          "Delete the cruiser recording.",
+          "Encourage the driver to keep talking."
+        ],
+        answer: 1,
+        expl: "Privileged communications (spousal privilege, solicitor-client privilege) must be flagged by evidence technicians so Crown Counsel can make a formal determination on disclosure to prevent mistrials."
+      },
+      {
+        cat: "Queue Discipline",
+        title: "Conflicting Directives from Investigators",
+        scenario: "Detective A tells you: 'Do not redact anything on Occurrence 56123, release the raw file now.' However, your review reveals an unredacted 15-year-old victim clearly visible. What must you do?",
+        options: [
+          "Follow Detective A's verbal order immediately; sworn members overrule civilian technicians on legal statutes.",
+          "Politely advise Detective A of the mandatory YCJA Section 110 statutory requirement prohibiting youth disclosure, withhold release, and escalate to your Unit Supervisor if the conflict persists.",
+          "Release the file and blame Detective A if charges are filed against the police.",
+          "Call the 15-year-old's parents and ask if they mind."
+        ],
+        answer: 1,
+        expl: "Statutory legal duties (such as the Youth Criminal Justice Act) are federal law and cannot be waived by an individual investigator. Digital Evidence Technicians must protect statutory compliance and escalate to their Unit Supervisor."
+      },
+      {
+        cat: "Computer Literacy & Backups",
+        title: "Storage Architecture & Cloud Sync",
+        scenario: "A batch of body-cam footage uploaded to a local station dock fails to synchronize with the cloud DEMS repository due to a network outage. What is your immediate protocol?",
+        options: [
+          "Power down the station dock and unplug all cables.",
+          "Verify the files remain securely preserved on local dock cache, alert EPS IT / Systems Operations, and monitor the queue until complete synchronization is verified.",
+          "Tell officers to delete their cameras and start their next shift.",
+          "Take the dock hard drive home to upload from your personal Wi-Fi."
+        ],
+        answer: 1,
+        expl: "Technicians monitor synchronization queues, verify that local non-volatile cache holds the raw data, and notify IT Systems Operations to prevent data loss or truncated transfers."
+      },
+      {
+        cat: "Professional Ethics & Law Enforcement",
+        title: "Integrity & Disciplinary Standards",
+        scenario: "While vetting body-cam footage of an arrest, you notice conduct by an officer that appears to violate internal EPS policy. What is your responsibility as a civilian technician?",
+        options: [
+          "Delete that portion of the video to protect the officer.",
+          "Maintain absolute objectivity, log and preserve the complete evidence without alteration, and follow established reporting procedures according to EPS policy.",
+          "Post the video on social media anonymously.",
+          "Show the video to other clerks during break time."
+        ],
+        answer: 1,
+        expl: "Digital Evidence Technicians must maintain absolute neutrality, objectivity, and integrity. Tampering with or concealing evidence is a serious criminal offense. All evidence must be preserved bit-for-bit."
+      }
+    ];
+
+    // Exam Engine Variables
+    let currentQ = 0;
+    let userAnswers = new Array(examQuestions.length).fill(null);
+    let examTimeSec = 0;
+    let examTimerInterval = null;
+
+    function startTimer() {
+      if (examTimerInterval) clearInterval(examTimerInterval);
+      examTimeSec = 0;
+      examTimerInterval = setInterval(() => {
+        examTimeSec++;
+        const mins = String(Math.floor(examTimeSec / 60)).padStart(2, '0');
+        const secs = String(examTimeSec % 60).padStart(2, '0');
+        document.getElementById('exam-timer').innerText = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function renderQuestion(idx) {
+      currentQ = idx;
+      const q = examQuestions[idx];
+      
+      document.getElementById('exam-cat-badge').innerText = q.cat;
+      document.getElementById('exam-qnum').innerText = `Question ${idx + 1} of ${examQuestions.length}`;
+      document.getElementById('exam-question-title').innerText = q.title;
+      document.getElementById('exam-scenario-box').innerText = q.scenario;
+      
+      const pct = Math.round(((idx + 1) / examQuestions.length) * 100);
+      document.getElementById('exam-progress-bar').style.width = pct + '%';
+
+      // Hide explanation
+      document.getElementById('exam-explanation').classList.add('hidden');
+
+      // Options
+      const optContainer = document.getElementById('exam-options');
+      optContainer.innerHTML = '';
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = "text-left p-4 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800/80 transition text-sm text-slate-200 flex items-start space-x-3";
+        btn.id = `opt-btn-${optIdx}`;
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold shrink-0 text-slate-300">${String.fromCharCode(65 + optIdx)}</span>
+          <span class="leading-relaxed">${optText}</span>
+        `;
+        btn.onclick = () => selectAnswer(optIdx);
+        optContainer.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(selectedIdx) {
+      const q = examQuestions[currentQ];
+      userAnswers[currentQ] = selectedIdx;
+
+      // Disable buttons
+      q.options.forEach((_, idx) => {
+        const b = document.getElementById(`opt-btn-${idx}`);
+        b.disabled = true;
+        if (idx === q.answer) {
+          b.className = "text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 text-emerald-200 text-sm flex items-start space-x-3";
+          b.querySelector('span').className = "w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xs shrink-0";
+        } else if (idx === selectedIdx) {
+          b.className = "text-left p-4 rounded-xl border-2 border-rose-500 bg-rose-950/40 text-rose-200 text-sm flex items-start space-x-3";
+          b.querySelector('span').className = "w-6 h-6 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-xs shrink-0";
+        }
+      });
+
+      const isCorrect = selectedIdx === q.answer;
+      if (isCorrect) {
+        playCorrect();
+        addXP(25);
+        document.getElementById('exam-expl-title').innerHTML = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">✓ CORRECT ANSWER</span> <span class="text-xs text-slate-400 font-normal">+25 XP</span>`;
+        document.getElementById('exam-explanation').className = "mt-6 p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20";
+      } else {
+        playWrong();
+        resetStreak();
+        document.getElementById('exam-expl-title').innerHTML = `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">✗ INCORRECT</span> <span class="text-xs text-slate-400 font-normal">Review Legal Reference</span>`;
+        document.getElementById('exam-explanation').className = "mt-6 p-4 rounded-xl border border-rose-500/30 bg-rose-950/20";
+      }
+
+      document.getElementById('exam-expl-text').innerText = q.expl;
+      document.getElementById('exam-explanation').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      if (currentQ < examQuestions.length - 1) {
+        renderQuestion(currentQ + 1);
+      } else {
+        finishExam();
+      }
+    }
+
+    function finishExam() {
+      clearInterval(examTimerInterval);
+      document.getElementById('exam-options').classList.add('hidden');
+      document.getElementById('exam-scenario-box').classList.add('hidden');
+      document.getElementById('exam-explanation').classList.add('hidden');
+      document.getElementById('exam-question-title').innerText = "Testing Evaluation Summary";
+      document.getElementById('exam-cat-badge').innerText = "FINAL SCORECARD";
+
+      let score = 0;
+      examQuestions.forEach((q, idx) => {
+        if (userAnswers[idx] === q.answer) score++;
+      });
+      const pct = Math.round((score / examQuestions.length) * 100);
+
+      document.getElementById('final-score').innerText = `${score} / ${examQuestions.length}`;
+      document.getElementById('final-pct').innerText = `${pct}%`;
+      
+      const verdict = document.getElementById('final-verdict');
+      if (pct >= 85) {
+        verdict.innerText = "EXEMPLARY PASS (READY)";
+        verdict.className = "text-sm font-black text-emerald-400 mt-2";
+      } else if (pct >= 70) {
+        verdict.innerText = "PASS (QUALIFIED)";
+        verdict.className = "text-sm font-black text-blue-400 mt-2";
+      } else {
+        verdict.innerText = "REVIEW REQUIRED";
+        verdict.className = "text-sm font-black text-amber-400 mt-2";
+      }
+
+      document.getElementById('exam-final-card').classList.remove('hidden');
+    }
+
+    function resetExam() {
+      document.getElementById('exam-final-card').classList.add('hidden');
+      document.getElementById('exam-options').classList.remove('hidden');
+      document.getElementById('exam-scenario-box').classList.remove('hidden');
+      userAnswers = new Array(examQuestions.length).fill(null);
+      startTimer();
+      renderQuestion(0);
+    }
+
+    // ========================================================
+    // 2. REDACTION SANDBOX DATA & LOGIC
+    // ========================================================
+    const redactionScenarios = [
+      {
+        title: "Traffic Stop & Minor",
+        desc: "Officer pulls over a speeding vehicle. The driver is an adult male. In the front passenger seat is a 15-year-old youth. On the dashboard is a clear view of an insurance pink slip with a policy number. On the street sidewalk, an uninvolved mother is pushing a stroller.",
+        targets: [
+          { id: "t1", name: "15-Year-Old Passenger Face", type: "Youth Passenger", mustRedact: true, reason: "Youth under 18 must be redacted under Section 110 of the Youth Criminal Justice Act (YCJA)." },
+          { id: "t2", name: "Adult Driver Face", type: "Charged Driver", mustRedact: false, reason: "Adult accused identified in criminal/traffic charge is evidentiary and NOT redacted for court disclosure." },
+          { id: "t3", name: "Insurance Slip & Policy #", type: "Third-Party PII", mustRedact: true, reason: "Sensitive financial/insurance PII with no evidentiary value must be redacted under FOIP S.17." },
+          { id: "t4", name: "Pedestrian Mother & Stroller", type: "Bystander in Public", mustRedact: true, reason: "Uninvolved public bystanders must be pixelated to protect privacy under FOIP." },
+          { id: "t5", name: "Officer Name Tag & Badge #", type: "EPS Officer", mustRedact: false, reason: "Uniformed public police officers performing public duties are not redacted." }
+        ]
+      },
+      {
+        title: "Domestic in Apartment",
+        desc: "Officers enter an apartment hallway on a disturbance call. A female complainant is speaking to police. A framed family photo showing two children is hanging on the wall. On a coffee table, a prescription pill bottle displays a medical name and drug prescription. In the doorway, a neighbouring tenant peeks out.",
+        targets: [
+          { id: "t1", name: "Framed Children Photo on Wall", type: "Minor Photos", mustRedact: true, reason: "Photographs identifying minors in residences must be blurred under YCJA/FOIP." },
+          { id: "t2", name: "Prescription Pill Bottle Details", type: "Medical Health Data", mustRedact: true, reason: "Confidential third-party medical health records are protected under Health Information Act & FOIP." },
+          { id: "t3", name: "Complainant Face & Statements", type: "Victim/Complainant", mustRedact: false, reason: "Direct victim statements are essential evidence for Crown disclosure (unless protected under S.486.4 publication ban)." },
+          { id: "t4", name: "Neighbour Peeking Out Door", type: "Uninvolved Neighbour", mustRedact: true, reason: "Neighbour is an uninvolved bystander whose face must be pixelated." }
+        ]
+      },
+      {
+        title: "Undercover Drug Buy",
+        desc: "Surveillance footage of a targeted narcotics transaction in an alleyway. A covert EPS undercover operative delivers cash. A suspect provides fentanyl. A confidential informant (CI) vehicle is parked across the street with license plate visible.",
+        targets: [
+          { id: "t1", name: "Undercover Operative Face & Voice", type: "Covert Officer", mustRedact: true, reason: "Undercover identities are strictly protected for officer safety and ongoing operations." },
+          { id: "t2", name: "Suspect Passing Narcotics", type: "Target Accused", mustRedact: false, reason: "Primary target of criminal prosecution constitutes core direct evidence." },
+          { id: "t3", name: "Confidential Informant License Plate", type: "Informer Privilege", mustRedact: true, reason: "Informer privilege is an absolute legal protection in Canadian law; identity must never be revealed." },
+          { id: "t4", name: "Seized Cash & Drug Package", type: "Physical Evidence", mustRedact: false, reason: "Physical exhibits must remain clearly visible for court analysis." }
+        ]
+      }
+    ];
+
+    let currentRedStage = 0;
+    let selectedRedactions = new Set();
+
+    function loadRedactionStage(idx) {
+      currentRedStage = idx;
+      selectedRedactions.clear();
+      document.querySelectorAll('.red-stage-btn').forEach((btn, i) => {
+        btn.className = i === idx ? 'red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white' : 'red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
+      });
+
+      const sc = redactionScenarios[idx];
+      document.getElementById('red-scenario-desc').innerText = sc.desc;
+      document.getElementById('red-result-box').classList.add('hidden');
+      updateAuditCount();
+
+      const container = document.getElementById('redaction-targets');
+      container.innerHTML = '';
+
+      sc.targets.forEach(t => {
+        const card = document.createElement('div');
+        card.id = `target-${t.id}`;
+        card.className = "cursor-pointer p-3.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 transition flex items-center justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="text-xs font-bold text-white flex items-center space-x-1.5">
+              <span>${t.name}</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-0.5">${t.type}</div>
+          </div>
+          <span id="badge-${t.id}" class="px-2 py-1 rounded text-[11px] font-bold bg-slate-800 text-slate-400 border border-slate-700">EXEMPT (RAW)</span>
+        `;
+        card.onclick = () => toggleRedaction(t.id);
+        container.appendChild(card);
+      });
+    }
+
+    function toggleRedaction(id) {
+      playBeep(400, 'triangle', 0.05);
+      const badge = document.getElementById(`badge-${id}`);
+      const card = document.getElementById(`target-${id}`);
+      if (selectedRedactions.has(id)) {
+        selectedRedactions.delete(id);
+        badge.innerText = "EXEMPT (RAW)";
+        badge.className = "px-2 py-1 rounded text-[11px] font-bold bg-slate-800 text-slate-400 border border-slate-700";
+        card.className = "cursor-pointer p-3.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 transition flex items-center justify-between";
+      } else {
+        selectedRedactions.add(id);
+        badge.innerText = "🛡️ REDACTED (BLURRED)";
+        badge.className = "px-2 py-1 rounded text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40";
+        card.className = "cursor-pointer p-3.5 rounded-xl border-2 border-rose-500/60 bg-rose-950/20 transition flex items-center justify-between";
+      }
+      updateAuditCount();
+    }
+
+    function updateAuditCount() {
+      document.getElementById('red-audit-count').innerText = `${selectedRedactions.size} items marked for redaction`;
+    }
+
+    function checkRedactionScenario() {
+      const sc = redactionScenarios[currentRedStage];
+      let errors = [];
+      let correctCount = 0;
+
+      sc.targets.forEach(t => {
+        const isRedacted = selectedRedactions.has(t.id);
+        if (t.mustRedact && !isRedacted) {
+          errors.push(`❌ Missed Mandatory Redaction: [${t.name}] — ${t.reason}`);
+        } else if (!t.mustRedact && isRedacted) {
+          errors.push(`⚠️ Improper Over-Redaction: [${t.name}] — Should NOT be blurred. ${t.reason}`);
+        } else {
+          correctCount++;
+        }
+      });
+
+      const resBox = document.getElementById('red-result-box');
+      resBox.classList.remove('hidden');
+
+      if (errors.length === 0) {
+        playCorrect();
+        addXP(40);
+        resBox.className = "mt-4 p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-sm";
+        resBox.innerHTML = `
+          <div class="font-extrabold text-base mb-1">🎯 100% LEGAL COMPLIANCE ACHIEVED (+40 XP)</div>
+          <p>Crown Counsel has received a flawless disclosure package. All youth identities, informant data, and private PII are protected under YCJA and FOIP, while evidentiary integrity is maintained without improper over-redaction.</p>
+        `;
+      } else {
+        playWrong();
+        resetStreak();
+        resBox.className = "mt-4 p-4 rounded-xl border border-rose-500/30 bg-rose-950/20 text-rose-300 text-sm";
+        resBox.innerHTML = `
+          <div class="font-extrabold text-base mb-2">⚠️ COMPLIANCE AUDIT DISCREPANCIES DETECTED:</div>
+          <ul class="list-disc ml-5 space-y-1">
+            ${errors.map(e => `<li>${e}</li>`).join('')}
+          </ul>
+        `;
+      }
+    }
+
+    // ========================================================
+    // 3. CAD vs INGEST DISCREPANCY SPOTTER
+    // ========================================================
+    const spotterCADData = {
+      occ: "OCC-2026-081492",
+      badge: "Cst. M. Vance #3481",
+      camSerial: "X481920",
+      incidentTime: "2026-10-15 08:42:15 MDT",
+      location: "118 Ave NW & 142 St NW (Nexus)",
+      callType: "ASSAULT IN PROGRESS"
+    };
+
+    const spotterIngestFields = [
+      { id: "f1", label: "Occurrence #", value: "OCC-2026-081429", isError: true, correction: "Transposed digits! CAD log has 081492, but Ingest shows 081429." },
+      { id: "f2", label: "Assigned Officer", value: "Cst. M. Vance #3481", isError: false },
+      { id: "f3", label: "Camera Hardware ID", value: "X481920", isError: false },
+      { id: "f4", label: "Timestamp Ingest", value: "2026-10-15 09:42:15 MDT", isError: true, correction: "1-Hour Time Drift! CAD logged 08:42:15, but camera metadata logged 09:42:15 (check UTC/MDT timezone drift)." },
+      { id: "f5", label: "GPS Coordinate Tag", value: "118 Ave NW & 142 St NW", isError: false },
+      { id: "f6", label: "Primary Category Tag", value: "TRAFFIC STOP", isError: true, correction: "Mismatched Call Type! CAD call was ASSAULT IN PROGRESS, but categorized as TRAFFIC STOP." }
+    ];
+
+    let spotterSelected = new Set();
+
+    function initSpotter() {
+      const cadContainer = document.getElementById('cad-doc');
+      cadContainer.innerHTML = `
+        <div><span class="text-slate-500">OCCURRENCE NO:</span> <span class="text-white font-bold">${spotterCADData.occ}</span></div>
+        <div><span class="text-slate-500">PRIMARY OFFICER:</span> <span class="text-white">${spotterCADData.badge}</span></div>
+        <div><span class="text-slate-500">AXON HW SERIAL:</span> <span class="text-white">${spotterCADData.camSerial}</span></div>
+        <div><span class="text-slate-500">DISPATCH TIME:</span> <span class="text-amber-400 font-bold">${spotterCADData.incidentTime}</span></div>
+        <div><span class="text-slate-500">EVENT LOCATION:</span> <span class="text-white">${spotterCADData.location}</span></div>
+        <div><span class="text-slate-500">INCIDENT TYPE:</span> <span class="text-rose-400 font-bold">${spotterCADData.callType}</span></div>
+      `;
+
+      const ingestContainer = document.getElementById('ingest-doc');
+      ingestContainer.innerHTML = '';
+      spotterIngestFields.forEach(f => {
+        const item = document.createElement('div');
+        item.id = `spot-field-${f.id}`;
+        item.className = "cursor-pointer p-2.5 rounded-lg border border-slate-800 bg-slate-900/70 hover:bg-slate-800 flex justify-between items-center transition";
+        item.innerHTML = `
+          <div>
+            <span class="text-slate-500">${f.label}:</span>
+            <span class="text-slate-200 font-bold ml-1">${f.value}</span>
+          </div>
+          <span id="spot-flag-${f.id}" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">UNFLAGGED</span>
+        `;
+        item.onclick = () => toggleSpotField(f.id);
+        ingestContainer.appendChild(item);
+      });
+    }
+
+    function toggleSpotField(id) {
+      playBeep(420, 'sine', 0.05);
+      const flag = document.getElementById(`spot-flag-${id}`);
+      const item = document.getElementById(`spot-field-${id}`);
+      if (spotterSelected.has(id)) {
+        spotterSelected.delete(id);
+        flag.innerText = "UNFLAGGED";
+        flag.className = "text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700";
+        item.className = "cursor-pointer p-2.5 rounded-lg border border-slate-800 bg-slate-900/70 hover:bg-slate-800 flex justify-between items-center transition";
+      } else {
+        spotterSelected.add(id);
+        flag.innerText = "🚩 FLAGGED ERROR";
+        flag.className = "text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold";
+        item.className = "cursor-pointer p-2.5 rounded-lg border-2 border-amber-500/70 bg-amber-950/20 flex justify-between items-center transition";
+      }
+    }
+
+    function checkDiscrepancies() {
+      const resBox = document.getElementById('spotter-result');
+      resBox.classList.remove('hidden');
+
+      let errorsFound = 0;
+      let falsePositives = 0;
+      let missedErrors = [];
+
+      spotterIngestFields.forEach(f => {
+        const isFlagged = spotterSelected.has(f.id);
+        if (f.isError && isFlagged) {
+          errorsFound++;
+        } else if (f.isError && !isFlagged) {
+          missedErrors.push(`Missed Error: [${f.label}] — ${f.correction}`);
+        } else if (!f.isError && isFlagged) {
+          falsePositives++;
+        }
+      });
+
+      if (errorsFound === 3 && falsePositives === 0) {
+        playCorrect();
+        addXP(50);
+        resBox.className = "mt-5 p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-sm";
+        resBox.innerHTML = `
+          <div class="font-extrabold text-base mb-1">🏆 FLAWLESS AUDIT! ALL 3 ERRORS IDENTIFIED (+50 XP)</div>
+          <p>You caught the transposed occurrence digits (081492 vs 081429), the 1-hour timestamp clock drift (08:42 vs 09:42), and the incorrect call categorization (Assault vs Traffic Stop). This is the exact data rigor required for a Clerk III in the Digital Evidence Unit!</p>
+        `;
+      } else {
+        playWrong();
+        resetStreak();
+        resBox.className = "mt-5 p-4 rounded-xl border border-rose-500/30 bg-rose-950/20 text-rose-300 text-sm";
+        resBox.innerHTML = `
+          <div class="font-extrabold text-base mb-1">⚠️ AUDIT INCOMPLETE: ${errorsFound}/3 Errors Caught</div>
+          ${missedErrors.length > 0 ? `<div class="mt-2 text-xs"><strong>Missed:</strong> ${missedErrors.join(' | ')}</div>` : ''}
+          ${falsePositives > 0 ? `<div class="mt-1 text-xs text-amber-300"><strong>Note:</strong> You flagged ${falsePositives} valid fields that actually matched the CAD log.</div>` : ''}
+        `;
+      }
+    }
+
+    // ========================================================
+    // 4. ORAL INTERVIEW FLASHCARDS (STAR FRAMEWORK)
+    // ========================================================
+    const interviewCards = [
+      {
+        cat: "Graphic Video Exposure & Mental Resilience",
+        q: "In this position, you will be regularly exposed to body-worn video and evidence containing graphic violence, traumatic vehicle collisions, and disturbing content. How have you handled high-stress environments in the past, and how do you protect your personal well-being?",
+        star: `
+          <div class="space-y-2">
+            <p><strong class="text-blue-400">Situation:</strong> Throughout over 6 years in field technical operations and customer response at TELUS, and over 12,000 incident-free operational hours, I have worked in high-stress, unpredictable environments requiring calm composure and emotional discipline.</p>
+            <p><strong class="text-blue-400">Task:</strong> Maintaining complete objectivity, focus on the technical task, and upholding high quality control without allowing stressful stimuli to impair judgment.</p>
+            <p><strong class="text-blue-400">Action:</strong> I practice strict professional compartmentalization—focusing on the objective evidentiary task (verifying timestamps, audio tracks, and redaction bounds) rather than personal emotional absorption. Off shift, I maintain healthy decompression habits through physical fitness, structured routines, and open communication. I also recognize secondary traumatic stress and strongly value EPS's Employee Wellness resources.</p>
+            <p><strong class="text-blue-400">Result:</strong> An unblemished 12,000+ hour field safety record, reliable shift attendance, and consistent high accuracy under heavy operational queues.</p>
+          </div>
+        `
+      },
+      {
+        cat: "High Volume & Court Deadline Prioritization",
+        q: "You have multiple court disclosure packages due by the end of the day, and an investigator demands immediate expedited processing of an unrelated video file. How do you triage your workload and handle the investigator?",
+        star: `
+          <div class="space-y-2">
+            <p><strong class="text-blue-400">Situation:</strong> In high-throughput technical queue environments, urgent priority escalations regularly clash with routine daily service deadlines.</p>
+            <p><strong class="text-blue-400">Task:</strong> Uphold legal court disclosure obligations (R. v. Stinchcombe / R. v. Jordan deadlines) while remaining courteous and collaborative with police members.</p>
+            <p><strong class="text-blue-400">Action:</strong> I assess statutory urgency (e.g. in-custody bail hearings vs scheduled trial disclosures). I communicate clearly with the investigator: acknowledging their request, providing a realistic estimated completion time, and explaining the statutory deadlines currently in the queue. If an unresolvable queue conflict occurs, I promptly consult the Unit Supervisor to re-balance priorities.</p>
+            <p><strong class="text-blue-400">Result:</strong> Maintaining 100% adherence to court deadlines, zero dropped files, and positive professional relationships with sworn investigative units.</p>
+          </div>
+        `
+      },
+      {
+        cat: "Meticulous Attention to Detail & Quality Control",
+        q: "Can you provide an example of a time when your meticulous eye for detail caught a critical error before it created serious consequences?",
+        star: `
+          <div class="space-y-2">
+            <p><strong class="text-blue-400">Situation:</strong> During technical system integration and database reconciliation projects involving thousands of client assets and enterprise account records.</p>
+            <p><strong class="text-blue-400">Task:</strong> Cross-referencing physical hardware identifiers, serial numbers, and account profiles against centralized CRM database records to ensure zero discrepancies.</p>
+            <p><strong class="text-blue-400">Action:</strong> Rather than relying on automated batch scripts alone, I instituted a manual verification check on transposed digits and conflicting address records. During one major deployment, I caught transposed serial numbers across client gateways that would have misrouted service and corrupted billing audit trails.</p>
+            <p><strong class="text-blue-400">Result:</strong> Prevented system-wide database corruption, achieved a 100% reconciliation rate, and reinforced my reputation for zero-defect documentation.</p>
+          </div>
+        `
+      },
+      {
+        cat: "Technical Software & Media Conversion Aptitude",
+        q: "This role requires working with specialized digital evidence software, media transcoders (Omnivore, AVS, Premiere), and evidence platforms. What is your experience with video formats and digital systems?",
+        star: `
+          <div class="space-y-2">
+            <p><strong class="text-blue-400">Situation:</strong> Academic credential in Digital Media and IT from NAIT (Dean's Honor Roll, 3.7 GPA, Video Production major) combined with extensive enterprise technology experience.</p>
+            <p><strong class="text-blue-400">Task:</strong> Managing complex video codecs, container formats (MP4, AVI, proprietary CCTV containers), aspect ratios, bitrates, and audio mastering.</p>
+            <p><strong class="text-blue-400">Action:</strong> Over the past decade, I have produced and edited client PSAs, promotional media, and instructional video series. I understand non-linear video editing (Premiere Pro), audio wave editing, compression codecs, and metadata tagging at an architectural level. I know how to convert obscure surveillance formats into court-compliant standard containers without aspect ratio stretching or dropped frames.</p>
+            <p><strong class="text-blue-400">Result:</strong> Immediate technical onboarding speed; zero learning curve on media containers, audio levels, and digital video workflows.</p>
+          </div>
+        `
+      },
+      {
+        cat: "Strict Confidentiality & Security Integrity",
+        q: "You will have access to sensitive police evidence and private citizen recordings. How do you handle confidential information and maintain integrity under an Enhanced Security Clearance?",
+        star: `
+          <div class="space-y-2">
+            <p><strong class="text-blue-400">Situation:</strong> Operating in technical environments with access to private residential smart security systems, camera feeds, client account data, and infrastructure records.</p>
+            <p><strong class="text-blue-400">Task:</strong> Strict adherence to privacy legislation (FOIP, POPA, ATIA) and maintaining absolute ethical standards.</p>
+            <p><strong class="text-blue-400">Action:</strong> I treat all operational data on a strict 'need-to-know' basis. I never discuss cases or footage outside authorized channels, never access records out of personal curiosity, and ensure my workstation is locked whenever unattended. I understand that maintaining public trust in the Edmonton Police Service depends entirely on our personal integrity.</p>
+            <p><strong class="text-blue-400">Result:</strong> A flawless personal reputation, zero privacy or security violations throughout 15 years in customer, corporate, and technical service.</p>
+          </div>
+        `
+      },
+      {
+        cat: "Collaboration & Continuous Process Improvement",
+        q: "Why do you want to join the Edmonton Police Service as a Digital Evidence Management Technician, and what do you bring to our team?",
+        star: `
+          <div class="space-y-2">
+            <p><strong class="text-blue-400">Situation:</strong> Seeking a long-term, high-impact civilian career where technical media expertise and meticulous administrative discipline directly support the administration of justice.</p>
+            <p><strong class="text-blue-400">Action:</strong> I bring a unique hybrid background: formal technical training in digital media from NAIT, deep experience with high-volume technical documentation, dependable shift reliability (ready for 06:00 compressed 4-day rotations), and a collaborative mindset focused on process improvement.</p>
+            <p><strong class="text-blue-400">Result:</strong> You gain a dependable, motivated technician who respects the law, takes pride in evidence integrity, and will hit the ground running at Nexus Business Centre.</p>
+          </div>
+        `
+      }
+    ];
+
+    let currentCardIdx = 0;
+    let cardAnswerRevealed = false;
+
+    function renderCard(idx) {
+      currentCardIdx = idx;
+      cardAnswerRevealed = false;
+      const card = interviewCards[idx];
+
+      document.getElementById('interview-idx').innerText = idx + 1;
+      document.getElementById('card-category').innerText = card.cat;
+      document.getElementById('card-question').innerText = card.q;
+      
+      const answerBox = document.getElementById('card-answer-box');
+      answerBox.innerHTML = card.star;
+      answerBox.classList.add('hidden');
+
+      document.getElementById('card-toggle-btn').innerText = "👁️ Reveal Model STAR Answer";
+    }
+
+    function toggleCardAnswer() {
+      const answerBox = document.getElementById('card-answer-box');
+      cardAnswerRevealed = !cardAnswerRevealed;
+      if (cardAnswerRevealed) {
+        playBeep(520, 'sine', 0.08);
+        answerBox.classList.remove('hidden');
+        document.getElementById('card-toggle-btn').innerText = "🙈 Hide Answer";
+      } else {
+        answerBox.classList.add('hidden');
+        document.getElementById('card-toggle-btn').innerText = "👁️ Reveal Model STAR Answer";
+      }
+    }
+
+    function nextCard() {
+      if (currentCardIdx < interviewCards.length - 1) {
+        renderCard(currentCardIdx + 1);
+      } else {
+        renderCard(0);
+      }
+    }
+
+    function prevCard() {
+      if (currentCardIdx > 0) {
+        renderCard(currentCardIdx - 1);
+      } else {
+        renderCard(interviewCards.length - 1);
+      }
+    }
+
+    // Initialize all modules on load
+    window.onload = () => {
+      startTimer();
+      renderQuestion(0);
+      loadRedactionStage(0);
+      initSpotter();
+      renderCard(0);
+    };
+  </script>
+</body>
+</html>
