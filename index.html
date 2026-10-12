@@ -58,7 +58,7 @@
   <nav class="max-w-6xl mx-auto px-4 mt-6">
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
       <button onclick="setTab('exam')" id="tab-exam" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md">
-        📝 Full Written Exam (25Q)
+        📝 Full Written Exam (50Q)
       </button>
       <button onclick="setTab('redaction')" id="tab-redaction" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
         🛡️ Redaction Sandbox (10)
@@ -86,7 +86,7 @@
           <div>
             <div class="flex items-center space-x-2">
               <span id="exam-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Category</span>
-              <span id="exam-qnum" class="text-xs text-slate-400 font-semibold">Question 1 of 25</span>
+              <span id="exam-qnum" class="text-xs text-slate-400 font-semibold">Question 1 of 50</span>
             </div>
             <h2 id="exam-question-title" class="text-lg sm:text-xl font-bold text-white mt-1">Question title goes here...</h2>
           </div>
@@ -140,7 +140,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-md mx-auto my-6 text-left">
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
               <div class="text-xs text-slate-400 font-semibold uppercase">Score</div>
-              <div id="final-score" class="text-2xl font-black text-emerald-400 mt-1">24 / 25</div>
+              <div id="final-score" class="text-2xl font-black text-emerald-400 mt-1">50 / 50</div>
             </div>
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
               <div class="text-xs text-slate-400 font-semibold uppercase">Percentage</div>
@@ -407,7 +407,7 @@
     }
 
     // ========================================================
-    // 1. QUESTION DATABASE (25 Comprehensive High-Yield Questions)
+    // 1. QUESTION DATABASE (50 Comprehensive High-Yield Questions)
     // ========================================================
     const examQuestions = [
   {
@@ -734,8 +734,334 @@
     ],
     "answer": 1,
     "expl": "When downscaling high-resolution footage (4K to 1080p), the technician must verify that compression or downsampling does not destroy small, critical evidentiary details like distant license plates or facial features, and verify that the unadulterated 4K master remains preserved in DEMS if forensic enlargement by FVAD is required."
+  },
+  {
+    "cat": "Officer Conduct & Judicial Disclosure",
+    "title": "R. v. McNeil Disclosure & Officer Conduct Records",
+    "scenario": "During preparation of a disclosure package for a serious assault trial, an investigator notes that one of the attending officers has an ongoing Professional Standards investigation regarding past discreditable conduct. Under the principles of R. v. McNeil, how are related internal records and video evidence handled?",
+    "options": [
+      "The technician must automatically delete any video clips featuring the investigated officer to prevent defense counsel from raising character allegations at trial.",
+      "The technician prepares the complete video evidence package as normal, while internal disciplinary findings and McNeil records are coordinated through Crown and Legal Services.",
+      "The technician must attach the officer's complete internal disciplinary personnel file directly onto the public court disclosure portal alongside the body-worn video.",
+      "The technician must blur the badge number and name tag of the investigated officer to shield the police service from civil liability during trial."
+    ],
+    "answer": 1,
+    "expl": "Under R. v. McNeil (2009), the prosecution must disclose relevant disciplinary records of police witnesses. Digital Evidence Technicians maintain evidence integrity by processing the full video package objectively, while official McNeil disciplinary vetting is handled through Crown Counsel and EPS Legal Services."
+  },
+  {
+    "cat": "Video Processing & Artifact Remediation",
+    "title": "Interlacing Artifacts & Combing in Surveillance Footage",
+    "scenario": "When reviewing analog surveillance footage converted from a legacy multiplexer, you notice jagged, horizontal saw-tooth lines ('combing artifacts') around fast-moving objects. What technical condition causes this visual defect, and what is the proper remediation?",
+    "options": [
+      "The footage was recorded in an interlaced scan mode (e.g., 1080i); applying an appropriate de-interlacing filter merges alternating odd and even field lines into progressive frames.",
+      "The container format suffers from audio buffer underruns; the technician must increase the audio bitrate from 128 kbps to 320 kbps to eliminate horizontal pixel tearing.",
+      "The video was captured with excessive dynamic range; the technician must apply a gamma compression curve in Premiere Pro to flatten brightness spikes.",
+      "The camera sensor was damaged by laser exposure; the file must be rejected and flagged as physically corrupted evidence under Canada Evidence Act rules."
+    ],
+    "answer": 0,
+    "expl": "Interlaced video (common in analog CCTV and legacy broadcast) records alternating odd and even horizontal scan fields. On modern progressive monitors, rapid motion creates jagged 'combing' artifacts. Applying a de-interlacing filter properly interpolates the fields into progressive (p) frames without distortion."
+  },
+  {
+    "cat": "FOIP Section 20 & Law Enforcement Privilege",
+    "title": "Law Enforcement Techniques & Covert Assets (FOIP S. 20)",
+    "scenario": "In a body-worn recording of a commercial burglary search, the camera captures an officer testing a covert, proprietary alarm-bypass frequency scanner, as well as an undercover EPS surveillance vehicle's registration plate. How must this information be treated under FOIP Section 20?",
+    "options": [
+      "Disclose both items unredacted, as equipment utilized during criminal investigations is subject to mandatory public transparency under municipal open-government rules.",
+      "Redact both the specialized investigative technique and the covert vehicle registration under FOIP Section 20 to prevent prejudice to ongoing law enforcement operations.",
+      "Redact only the vehicle registration plate, as physical tools displayed in plain view inside commercial buildings lose investigative privilege.",
+      "Withhold the entire 45-minute video recording from disclosure and advise Crown Counsel to proceed to trial using only oral officer testimony."
+    ],
+    "answer": 1,
+    "expl": "FOIP Section 20 allows public bodies to refuse disclosure of information that could harm law enforcement or reveal specialized investigative techniques, covert surveillance equipment, or undercover fleet assets. Technicians must redact these operational secrets."
+  },
+  {
+    "cat": "Audio Engineering & Waveform Integrity",
+    "title": "Audio Clipping & Distortion Remediation",
+    "scenario": "An arresting officer's body-cam microphone records severe audio clipping and 'flat-topped' waveform distortion caused by shouting directly into the microphone capsule. What is the scientifically acceptable protocol for processing this audio for court playback?",
+    "options": [
+      "Use generative AI audio synthesis software to artificially recreate the clipped syllables based on predictive vocabulary modeling.",
+      "Normalize the audio gain and apply gentle band-pass filtering to optimize vocal intelligibility while preserving the raw master audio without artificial spectral fabrication.",
+      "Cut out the distorted audio segment entirely and replace it with an artificial synthetic tone indicating technical microphone failure.",
+      "Over-amplify the track by +24 dB to force the digital-to-analog converter into harmonic saturation, rendering the distorted words legible."
+    ],
+    "answer": 1,
+    "expl": "Evidence technicians never fabricate or artificially invent missing audio data. The correct forensic protocol is applying non-destructive gain normalization and standard equalization/band-pass filtering to optimize vocal intelligibility while keeping the raw audio master permanently preserved."
+  },
+  {
+    "cat": "Records Retention & Evidence Governance",
+    "title": "Evidentiary vs Non-Evidentiary Retention Schedules",
+    "scenario": "Under Edmonton Police Service records governance and DEMS retention rules, what is the foundational distinction between videos tagged as 'Evidentiary' versus recordings tagged as 'Non-Evidentiary'?",
+    "options": [
+      "Evidentiary videos are tied to active occurrences or court files and retained according to statutory limitation schedules, while non-evidentiary files follow automated shorter purge cycles.",
+      "Evidentiary files are stored exclusively on local workstation drives, while non-evidentiary videos are immediately uploaded to public municipal cloud servers.",
+      "Non-evidentiary videos are permanently deleted within 24 hours of ingest, while evidentiary files can never be reviewed by civilian technicians without a judicial warrant.",
+      "Evidentiary files must be exported in uncompressed 8K resolution, whereas non-evidentiary files are downscaled to 240p to minimize cloud storage consumption."
+    ],
+    "answer": 0,
+    "expl": "DEMS retention schedules distinguish between Evidentiary recordings (attached to formal incident numbers, subject to court retention policies and statutory limitation periods) and Non-Evidentiary recordings (routine patrols, accidental clicks, test files) which follow automated shorter disposal schedules."
+  },
+  {
+    "cat": "Physical Evidence & Chain of Custody",
+    "title": "Physical Media Court Disclosure Continuity",
+    "scenario": "When judicial rules require digital evidence to be produced in physical form (e.g., encrypted optical disc or secure external SSD) for a preliminary hearing, what documentation must accompany the physical exhibit to ensure admissibility?",
+    "options": [
+      "A personal signed letter from the technician guaranteeing that the physical disc will never experience hardware degradation or laser read errors.",
+      "A verified Chain of Custody log detailing exhibit numbers, media serial numbers, master file hashes, transfer dates, and relinquishing and receiving signatures.",
+      "A copy of the technician's collective bargaining agreement demonstrating that CSU 52 union jurisdiction covers physical optical disc burning.",
+      "A receipt showing the retail store purchase price and sales tax paid for the physical external solid-state storage device."
+    ],
+    "answer": 1,
+    "expl": "Physical evidence transfers require rigorous Chain of Custody tracking: documentation of unique exhibit IDs, media serial numbers, verified cryptographic hash signatures, explicit timestamps, and formal handover signatures between technicians, court liaisons, and prosecutors."
+  },
+  {
+    "cat": "Inadvertent Recording & Privacy Vetting",
+    "title": "Accidental Inadvertent Ingest in Sensitive Personal Spaces",
+    "scenario": "A patrol officer docks an Axon body camera containing an accidental 5-minute recording captured inside a police facility washroom following a double shift. What is the standard DEMU protocol for handling this inadvertent recording?",
+    "options": [
+      "Permanently delete the video file from the station dock immediately without informing supervisory staff or creating any tracking record.",
+      "Upload the recording to the public disclosure folder to maintain absolute departmental transparency under municipal open-data guidelines.",
+      "Sequester the recording under restricted privacy permissions, document the inadvertent capture in DEMS audit logs, and notify the Unit Supervisor for administrative review.",
+      "Export the recording to an unencrypted flash drive and hand it to the patrol officer to take home for personal review."
+    ],
+    "answer": 2,
+    "expl": "Under strict zero-deletion and evidence security rules, technicians do not arbitrarily purge files. Inadvertent recordings in sensitive private areas are immediately sequestered under restricted permission locks, documented in the audit trail, and escalated to supervisory leadership for authorized policy-compliant handling."
+  },
+  {
+    "cat": "Youth Protection & Child Witnesses",
+    "title": "Child Victims and Witnesses under YCJA Section 111",
+    "scenario": "In a body-worn recording of a convenience store robbery, a 10-year-old child witness provides a detailed physical description of the adult robber. The child's adult parent verbally tells the officer, 'You can use my child's name in court.' How does YCJA Section 111 govern disclosure?",
+    "options": [
+      "The parent's verbal permission waives statutory protections; the child's identity, face, and name must be fully disclosed without redaction.",
+      "YCJA Section 111 prohibits publishing or disclosing the identity of any child victim or witness dealt with under the Act; parental verbal consent does not override the statutory ban.",
+      "The child's face may be disclosed, but their spoken voice must be altered using pitch-shifting software to achieve partial anonymity.",
+      "The technician must require the 10-year-old child to sign a formal legal affidavit waiving their privacy rights before disclosing the video."
+    ],
+    "answer": 1,
+    "expl": "Section 111 of the Youth Criminal Justice Act strictly prohibits publishing or publicly disclosing the identity of any child victim or witness. Informal parental consent does NOT override federal statutory youth publication bans; the child's identity must remain redacted."
+  },
+  {
+    "cat": "Clerk III Spreadsheet Operations",
+    "title": "Excel Text-to-Columns & Delimited String Processing",
+    "scenario": "You import a legacy batch export list of 500 video files where filenames are formatted as: '20261015_OCC56123_BADGE3481_BWC.mp4'. As a Clerk III, which Excel tool or formula best splits these values into separate columns for Date, Occurrence, Badge, and Camera Type?",
+    "options": [
+      "Running the 'Text to Columns' wizard using an underscore delimiter, or applying modern text-split formulas (e.g., =TEXTSPLIT).",
+      "Applying the AutoSum function across the entire column to calculate the aggregate numerical value of the file strings.",
+      "Using the 'Remove Duplicates' feature to delete all rows that share identical badge numbers or date prefixes.",
+      "Executing the 'Track Changes' tool to automatically format alphanumeric strings into standardized municipal database tables."
+    ],
+    "answer": 0,
+    "expl": "In high-volume clerical data processing, the 'Text to Columns' feature (using delimiter characters like underscores or dashes) or dynamic =TEXTSPLIT formulas instantly separate concatenated strings into distinct structured columns for relational tracking."
+  },
+  {
+    "cat": "Judicial Process & Court Inquiries",
+    "title": "Subpoena Duces Tecum Handling Protocol",
+    "scenario": "A civilian technician working in the DEMU office is personally handed a Subpoena Duces Tecum by a private process server demanding production of all raw body-cam files for a civil lawsuit against EPS. What is the correct protocol?",
+    "options": [
+      "Immediately burn the requested raw files onto a flash drive and hand them to the process server before the end of the shift.",
+      "Refuse to accept the paper subpoena, stating that municipal civilian employees are legally immune from judicial subpoenas.",
+      "Accept receipt of the document, log the subpoena in the unit registry, and immediately forward it to EPS Legal Services and Court Liaison for formal processing.",
+      "Shred the subpoena document, as only sworn police officers with peace officer status are legally permitted to review court orders."
+    ],
+    "answer": 2,
+    "expl": "Civilian staff do not independently fulfill civil subpoenas or release police evidence to private litigators. The proper administrative procedure is accepting service, logging the receipt in DEMS/records tracking, and immediately forwarding the matter to EPS Legal Services and the Court Liaison Section."
+  },
+  {
+    "cat": "Video Compression & Keyframe Architecture",
+    "title": "GOP Architecture: I-Frames (Keyframes) vs P/B-Frames",
+    "scenario": "When performing frame trimming on long body-cam files in an editing utility without full re-encoding (direct stream copy), the first two seconds of the exported clip exhibit macroblocking and grey screen artifacts. What technical factor is responsible?",
+    "options": [
+      "The cut was made on a predictive P-frame or bi-directional B-frame rather than an intra-coded I-frame (Keyframe), lacking necessary reference pixel data.",
+      "The monitor display profile was set to sRGB color space instead of the broadcast Rec. 709 standard during playback.",
+      "The video file was encoded using constant bitrate instead of variable bitrate compression, causing buffer overflows.",
+      "The audio sampling rate exceeded the Nyquist frequency limit, causing phase cancellation in the initial video frames."
+    ],
+    "answer": 0,
+    "expl": "In modern video compression (MPEG/H.264), I-frames (keyframes) contain complete image data, while P and B frames only store incremental changes relative to adjacent frames. Trimming without re-encoding between keyframes produces decoding errors and grey macroblocking because necessary reference data is missing."
+  },
+  {
+    "cat": "Criminal Code Publication Bans",
+    "title": "Section 486.4 Criminal Code Publication Bans",
+    "scenario": "A body-worn camera captures an interview with a complainant reporting an intimate partner sexual assault. The presiding judge issues a formal publication ban under Section 486.4 of the Criminal Code. What is the operational redaction requirement for public disclosure?",
+    "options": [
+      "Redact only the complainant's home street address while leaving their full name, face, and place of employment visible to the public.",
+      "Redact all information that could identify the complainant (face, name, voice, address, relationship details, identifying tattoos) to prevent public disclosure.",
+      "Disclose the video unredacted, as Section 486.4 publication bans apply solely to print journalism and radio broadcasts, not video recordings.",
+      "Delete the interview recording from the DEMS archive to ensure complete compliance with the judicial sealing order."
+    ],
+    "answer": 1,
+    "expl": "Section 486.4 of the Criminal Code mandates strict protection of the identity of victims and witnesses in sexual assault proceedings. Any information that could identify the victim\u2014including facial features, unmodulated voice, home/work addresses, and specific identifiers\u2014must be completely redacted prior to public disclosure."
+  },
+  {
+    "cat": "Hardware & Station Ingest Operations",
+    "title": "Axon Dock Ingest Hardware Alert Status",
+    "scenario": "A patrol officer docks an Axon Body 4 camera into a multi-bay station dock. The bay LED flashes solid amber/yellow for 10 minutes rather than pulsing green, and DEMS indicates 'Ingest Incomplete - Device Busy'. What is the technician's initial troubleshooting step?",
+    "options": [
+      "Forcefully pull the camera out of the dock while the upload status is flashing to reset the internal memory controller.",
+      "Verify network connectivity between the dock and EPS IT servers, check the device status in the Axon Device Manager utility, and avoid disconnecting the camera while transfer is pending.",
+      "Power cycle the main electrical breaker for the entire patrol station to force a hard hardware restart.",
+      "Delete the occurrence record in the CAD database to clear the ingest queue backlog."
+    ],
+    "answer": 1,
+    "expl": "Flashing amber indicates an active transfer, verification check, or firmware update. Forcibly yanking the camera can corrupt non-volatile flash storage. The technician verifies network connectivity, monitors transfer logs in Device Manager, and maintains power continuity to prevent data corruption."
+  },
+  {
+    "cat": "Audio Processing Scope & Boundaries",
+    "title": "Basic Audio Equalization vs Forensic Audio Analysis",
+    "scenario": "An investigator asks a civilian technician to 'isolate a faint whispered sentence in the background of a noisy cruiser recording and remove all engine rumble so we can hear what the suspect whispered.' What is the appropriate protocol?",
+    "options": [
+      "Apply high-pass filtering and speech isolation tools in WavePad, export the processed clip, and submit an expert witness affidavit explaining the whispered words.",
+      "Inform the investigator that basic filter adjustments can be made for administrative review, but forensic audio clarification and formal transcription must be referred to FVAD analysts.",
+      "Advise the investigator that background audio in police cruisers is legally considered hearsay and cannot be evaluated under any circumstances.",
+      "Invert the audio phase by 180 degrees to cancel out all engine noise while multiplying background speech by a factor of 10."
+    ],
+    "answer": 1,
+    "expl": "Civilian technicians can perform basic volume adjustments or high-pass filtering for administrative convenience, but forensic audio enhancement (scientific clarification, speech intelligibility enhancement, and court-admissible forensic transcripts) must be executed by certified forensic audio/video analysts within FVAD."
+  },
+  {
+    "cat": "Seizure & Best Evidence Standards",
+    "title": "Seizing Third-Party Digital CCTV (Best Evidence Rule)",
+    "scenario": "When assisting an investigator in retrieving surveillance evidence from an independent commercial business, why is exporting the raw native stream directly from the DVR/NVR preferred over using a smartphone to film the security monitor screen?",
+    "options": [
+      "Recording the monitor screen with a phone alters optical perspective, introduces moir\u00e9 refresh banding, degrades resolution, and destroys critical forensic metadata.",
+      "Recording monitor screens with a smartphone is classified as a criminal offence under the Alberta Security Services and Investigators Act.",
+      "Native DVR files take up significantly less hard drive space on cloud servers than short smartphone camera recordings.",
+      "Smartphone camera sensors operate in infrared spectrum only, preventing accurate color reproduction of clothing in court."
+    ],
+    "answer": 0,
+    "expl": "Filming a monitor screen with a phone produces optical distortion, moir\u00e9 refresh lines, degraded dynamic range, and loses all native container timecode and metadata. Exporting the native digital bitstream ensures compliance with the Best Evidence Rule and preserves evidentiary integrity."
+  },
+  {
+    "cat": "Health Information Act (HIA) Compliance",
+    "title": "Alberta Health Information Act (HIA) & Medical Redactions",
+    "scenario": "In body-cam footage inside a hospital triage room, an attending physician recites a patient's Alberta Personal Health Number (PHN) and diagnoses a psychiatric condition. Under the Health Information Act (HIA) and FOIP, what redaction standard applies for public release?",
+    "options": [
+      "Both the Personal Health Number and the diagnostic statements must be redacted, as identifiable health records are strictly confidential health information.",
+      "Only the Personal Health Number is redacted; diagnostic statements spoken in public hospital examination rooms are considered non-confidential.",
+      "Leave the medical information unredacted, as medical privacy laws are automatically suspended whenever police officers are physically present in hospital rooms.",
+      "Mute the entire video track from the moment the police cruiser enters the hospital parking lot."
+    ],
+    "answer": 0,
+    "expl": "Under Alberta's Health Information Act (HIA) and FOIP Section 17, personal health numbers (PHNs), medical diagnoses, and clinical treatment notes are highly sensitive private health information with zero probative value to external parties, requiring mandatory redaction."
+  },
+  {
+    "cat": "Multi-Camera Timeline Alignment",
+    "title": "Synchronizing Multi-Angle Body-Worn Video Feeds",
+    "scenario": "An incident involves four separate officers equipped with Axon body-worn cameras. When assembling a multi-angle synchronized timeline for Crown evaluation, what technical reference provides the most accurate synchronization anchor across independent cameras?",
+    "options": [
+      "Synchronizing the tracks based on the visual start time of each officer's uniform tie or vest adjustment.",
+      "Aligning the feeds to a distinct, simultaneous visual or acoustic event (e.g., an emergency siren chirp, vehicle door slam, or taser discharge spike) verified against GPS timecodes.",
+      "Guessing the alignment based on the approximate walking pace of the primary arresting officer.",
+      "Stretching the frame rate of slower cameras to 45 FPS to force the video streams to finish at the exact same second."
+    ],
+    "answer": 1,
+    "expl": "Multi-camera synchronization in non-linear editing relies on identifying discrete visual or acoustic impulse events (transient spikes like a car door slam, taser trigger discharge, or siren chirp) combined with embedded camera GPS timecode data to lock timelines into precise frame-accurate sync."
+  },
+  {
+    "cat": "Internal Inquiries & Disciplinary Access",
+    "title": "Professional Standards Branch (PSB) Internal Record Requests",
+    "scenario": "A sergeant from the EPS Professional Standards Branch (PSB) contacts DEMU requesting access to body-worn video regarding a citizen complaint against an officer. How must the technician process this internal investigative request?",
+    "options": [
+      "Refuse the request, informing the sergeant that body-worn video can only be reviewed for criminal prosecutions against civilian offenders.",
+      "Verify the sergeant's authorization and active PSB internal file number, log the administrative access in the DEMS audit registry, and grant role-based access.",
+      "Email the targeted patrol officer to warn them that internal affairs is examining their body-worn camera footage.",
+      "Post a general notice on the station bulletin board detailing the internal investigation."
+    ],
+    "answer": 1,
+    "expl": "Internal oversight bodies like PSB have legitimate operational need-to-know to investigate conduct complaints. Technicians verify formal PSB authorization and file credentials, document the access in the immutable DEMS audit log, and provide role-based access without tipping off affected members."
+  },
+  {
+    "cat": "Clerk III Advanced Data Management",
+    "title": "Excel INDEX & MATCH vs VLOOKUP Dynamic Capabilities",
+    "scenario": "In managing a complex judicial disclosure spreadsheet with 1,200 rows, why is an INDEX/MATCH formula frequently superior to a traditional VLOOKUP formula when tracking court file metrics?",
+    "options": [
+      "INDEX/MATCH can look up values to the left of the reference column and is not broken when columns are inserted or deleted in the tracking sheet.",
+      "INDEX/MATCH uses artificial intelligence algorithms to automatically fill in missing occurrence numbers without human intervention.",
+      "VLOOKUP is legally prohibited from being used on police computer systems due to cybersecurity vulnerabilities.",
+      "INDEX/MATCH automatically translates English spreadsheet rows into standardized French legal terminology for federal court."
+    ],
+    "answer": 0,
+    "expl": "In relational clerical databases, INDEX/MATCH offers major advantages over VLOOKUP: it allows leftward lookups, executes significantly faster across thousands of rows, and does not break when columns are added, removed, or rearranged within the master workbook."
+  },
+  {
+    "cat": "Quality Assurance & Playback Verification",
+    "title": "Crown Counsel Defective Playback Remediation",
+    "scenario": "A Crown Prosecutor contacts DEMU reporting that an exported court video package plays smoothly for 10 minutes, but stutters, drops frames, and freezes at the 12-minute mark on their court workstation. What is the technician's immediate quality control response?",
+    "options": [
+      "Tell the Crown Prosecutor to purchase an expensive gaming computer with high-end graphics cards.",
+      "Verify the raw master file in DEMS to confirm source integrity, re-transcode the derivative package using a court-standard H.264 profile, and test full playback on a standard workstation before resending.",
+      "Instruct the Crown Prosecutor to skip past the 12-minute mark during the trial to avoid court delays.",
+      "Delete the raw video file and request the arresting officer to re-enact the arrest on camera."
+    ],
+    "answer": 1,
+    "expl": "A professional Clerk III verifies the integrity of the raw master recording, isolates whether the glitch was caused by a transcode multiplexing error, re-renders the derivative file with conservative H.264 profile settings, and conducts complete end-to-end playback testing prior to re-transmission."
+  },
+  {
+    "cat": "Container Formats & Stream Remuxing",
+    "title": "Remuxing vs Transcoding in Digital Media Workflows",
+    "scenario": "A business submits CCTV footage stored in an MKV container. The Crown playback software cannot decode MKV containers, but the underlying video and audio streams are already encoded in standard H.264 and AAC. What is the fastest and most forensically pure method to package the video for court?",
+    "options": [
+      "Remux (re-package) the video and audio streams into an MP4 container without re-encoding, preserving 100% of the original pixel data and avoiding generation loss.",
+      "Re-encode the footage through three consecutive compression passes in HandBrake to maximize bitrate reduction.",
+      "Burn the video to an analog VHS tape and play it back through an analog-to-digital converter.",
+      "Speed up the playback by 200% so the media player can process the data packets more rapidly."
+    ],
+    "answer": 0,
+    "expl": "Remuxing (lossless container stream-copying) changes the outer container (e.g. from .mkv to .mp4) without touching or re-encoding the inner H.264 video bitstream. This takes seconds, creates zero generation loss, and preserves 100% of the original pixel data."
+  },
+  {
+    "cat": "Officer Safety & Covert Fleet Assets",
+    "title": "Undercover Fleet Vehicles & Staging Locations",
+    "scenario": "A body-worn camera captures an officer arriving at a covert police staging warehouse and conversing with investigators beside several unmarked undercover vehicles. When preparing this footage for public release under a media request, what redactions are required under FOIP Section 20?",
+    "options": [
+      "Redact only the color of the vehicles while leaving the covert license plates and warehouse address visible.",
+      "Redact the covert staging facility address, unmarked undercover license plates, and any distinctive tactical equipment that could identify undercover officers.",
+      "Release the recording without any redactions, as municipal fleet assets are public property funded by municipal taxpayers.",
+      "Mute the officer's uniform microphone and broadcast a commercial radio station track over the audio."
+    ],
+    "answer": 1,
+    "expl": "FOIP Section 20 protects law enforcement operations from harm. Disclosing covert operational staging locations, undercover fleet vehicle license plates, or tactical identities poses direct danger to officer safety and ongoing undercover investigations."
+  },
+  {
+    "cat": "Commercial Surveillance & Innocent Bystander Vetting",
+    "title": "Third-Party Bystander Vetting in Commercial Surveillance",
+    "scenario": "A 20-minute CCTV recording from a grocery store captures an armed robbery at Cash Register 1. At Cash Register 6, thirty feet away, an uninvolved civilian customer is paying for groceries and their child is eating a snack. Under FOIP Section 17 and court disclosure rules, what is the redaction standard?",
+    "options": [
+      "Redact the uninvolved civilian customer and child at Register 6, as they have zero evidentiary connection to the armed robbery at Register 1.",
+      "Leave the customer and child unredacted because commercial grocery stores are open to the general public with no privacy rights.",
+      "Blur the entire video frame, including the robbery at Register 1, because civilian customers are present in the building.",
+      "Redact the store cashier at Register 1 while leaving the armed robber and the distant customer visible."
+    ],
+    "answer": 0,
+    "expl": "Under FOIP Section 17 and EPS vetting policies, third-party civilians who have no connection to the criminal offence must have their privacy protected through redaction, particularly minors, while the core probative actions at Register 1 remain unblurred."
+  },
+  {
+    "cat": "Psychological Wellness & Operational Resilience",
+    "title": "Critical Incident Stress Debriefing (CISD) & Resilience",
+    "scenario": "Following weeks of reviewing distressing and violent child exploitation and homicide evidence, a technician notices symptoms of insomnia, emotional fatigue, and intrusive thoughts. What is the established EPS operational wellness pathway?",
+    "options": [
+      "Suppress all symptoms, increase caffeine intake, and avoid mentioning stress to anyone to protect professional standing.",
+      "Proactively reach out to EPS Employee and Family Assistance Programs (EFAP), engage peer support wellness networks, and discuss workload adjustments with the supervisor.",
+      "Post a description of the disturbing case details on an online public forum to seek therapeutic advice from strangers.",
+      "Cease attending work without notice until the emotional symptoms subside on their own."
+    ],
+    "answer": 1,
+    "expl": "EPS promotes a strong culture of psychological safety and wellness. Members experiencing secondary traumatic stress are encouraged to proactively use EFAP, participate in peer support, and collaborate with supervisors to manage workload rotation and maintain long-term operational resilience."
+  },
+  {
+    "cat": "Judicial Evidentiary Standards",
+    "title": "The Best Evidence Rule in Electronic Records Admissibility",
+    "scenario": "In legal proceedings, what is the core mandate of the 'Best Evidence Rule' as applied to digital video and electronic records under Canadian evidence law?",
+    "options": [
+      "The court requires the party producing electronic evidence to provide the original document or the most reliable, authentic derivative produced by an established system.",
+      "The court requires police officers to personally film every crime using broadcast television cameras rather than body-worn cameras.",
+      "The rule states that whichever party presents the highest number of video gigabytes automatically wins the disputed motion.",
+      "The rule mandates that digital evidence can only be evaluated if the original computer hardware is physically dismantled inside the courtroom."
+    ],
+    "answer": 0,
+    "expl": "The Best Evidence Rule requires that the most authentic and reliable representation of a document be presented to court. For digital evidence, this means preserving the unaltered master bitstream and producing verifiable, non-degraded derivative records with documented chain of custody and system integrity."
   }
 ];
+
 
     // Exam Engine Variables
     let currentQ = 0;
