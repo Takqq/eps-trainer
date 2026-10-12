@@ -183,11 +183,15 @@
           </div>
         </div>
 
-        <!-- Redaction Stage Selector -->
-        <div class="flex space-x-2 mt-4 overflow-x-auto pb-2">
-          <button onclick="loadRedactionStage(0)" id="red-stage-0" class="red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white">Scenario 1: Traffic Stop & Minor</button>
-          <button onclick="loadRedactionStage(1)" id="red-stage-1" class="red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Scenario 2: Domestic in Apartment</button>
-          <button onclick="loadRedactionStage(2)" id="red-stage-2" class="red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Scenario 3: Undercover Drug Buy</button>
+        <!-- Redaction Stage Selector (10 Comprehensive High-Yield Scenarios) -->
+        <div class="mt-4">
+          <div class="text-xs text-slate-400 font-semibold mb-2 flex items-center justify-between">
+            <span>Select Practice Scenario (10 Operational Vetting Labs):</span>
+            <span class="text-[11px] text-blue-400 font-bold" id="red-scenario-indicator">Scenario 1 of 10</span>
+          </div>
+          <div id="red-stage-selector" class="flex flex-wrap gap-1.5 pb-2">
+            <!-- Dynamically populated by initRedactionStages() -->
+          </div>
         </div>
 
         <!-- The Mock Video Monitor -->
@@ -195,7 +199,7 @@
           
           <!-- Body Cam HUD Overlay -->
           <div class="flex justify-between items-center text-[11px] font-mono text-emerald-400 border-b border-slate-800/80 pb-2">
-            <div>EPS AXON BODY 4 &bull; UNIT 14-B &bull; 1080P 30FPS</div>
+            <div id="red-cam-hud">EPS AXON BODY 4 &bull; TRAFFIC SECTION &bull; CAR 14-B</div>
             <div id="red-cam-time">2026-10-15 14:22:19 MDT &bull; BUFFERED AUDIO: ON</div>
             <div class="flex items-center space-x-1">
               <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
@@ -864,54 +868,424 @@
     }
 
     // ========================================================
-    // 2. REDACTION SANDBOX DATA & LOGIC
+    // 2. REDACTION SANDBOX DATA & LOGIC (10 HIGH-YIELD SCENARIOS)
     // ========================================================
     const redactionScenarios = [
+  {
+    "title": "Scenario 1: Traffic Stop & Minor Passenger",
+    "hud": "EPS AXON BODY 4 \u2022 TRAFFIC SECTION \u2022 CAR 14-B",
+    "time": "2026-10-15 14:22:19 MDT \u2022 BUFFERED AUDIO: ON",
+    "desc": "Officer pulls over a speeding vehicle on Anthony Henday Drive. The adult driver is administered a roadside breath test. In the front passenger seat sits a 15-year-old youth. An insurance slip with policy details sits on the dashboard. On the pedestrian sidewalk, a mother pushes a stroller.",
+    "targets": [
       {
-        title: "Traffic Stop & Minor",
-        desc: "Officer pulls over a speeding vehicle. The driver is an adult male. In the front passenger seat is a 15-year-old youth. On the dashboard is a clear view of an insurance pink slip with a policy number. On the street sidewalk, an uninvolved mother is pushing a stroller.",
-        targets: [
-          { id: "t1", name: "15-Year-Old Passenger Face", type: "Youth Passenger", mustRedact: true, reason: "Youth under 18 must be redacted under Section 110 of the Youth Criminal Justice Act (YCJA)." },
-          { id: "t2", name: "Adult Driver Face", type: "Charged Driver", mustRedact: false, reason: "Adult accused identified in criminal/traffic charge is evidentiary and NOT redacted for court disclosure." },
-          { id: "t3", name: "Insurance Slip & Policy #", type: "Third-Party PII", mustRedact: true, reason: "Sensitive financial/insurance PII with no evidentiary value must be redacted under FOIP S.17." },
-          { id: "t4", name: "Pedestrian Mother & Stroller", type: "Bystander in Public", mustRedact: true, reason: "Uninvolved public bystanders must be pixelated to protect privacy under FOIP." },
-          { id: "t5", name: "Officer Name Tag & Badge #", type: "EPS Officer", mustRedact: false, reason: "Uniformed public police officers performing public duties are not redacted." }
-        ]
+        "id": "s1_t1",
+        "name": "15-Year-Old Passenger Face",
+        "type": "Youth Passenger",
+        "mustRedact": true,
+        "reason": "Youth under 18 must be redacted under Section 110 of the Youth Criminal Justice Act (YCJA)."
       },
       {
-        title: "Domestic in Apartment",
-        desc: "Officers enter an apartment hallway on a disturbance call. A female complainant is speaking to police. A framed family photo showing two children is hanging on the wall. On a coffee table, a prescription pill bottle displays a medical name and drug prescription. In the doorway, a neighbouring tenant peeks out.",
-        targets: [
-          { id: "t1", name: "Framed Children Photo on Wall", type: "Minor Photos", mustRedact: true, reason: "Photographs identifying minors in residences must be blurred under YCJA/FOIP." },
-          { id: "t2", name: "Prescription Pill Bottle Details", type: "Medical Health Data", mustRedact: true, reason: "Confidential third-party medical health records are protected under Health Information Act & FOIP." },
-          { id: "t3", name: "Complainant Face & Statements", type: "Victim/Complainant", mustRedact: false, reason: "Direct victim statements are essential evidence for Crown disclosure (unless protected under S.486.4 publication ban)." },
-          { id: "t4", name: "Neighbour Peeking Out Door", type: "Uninvolved Neighbour", mustRedact: true, reason: "Neighbour is an uninvolved bystander whose face must be pixelated." }
-        ]
+        "id": "s1_t2",
+        "name": "Adult Driver Demeanor & Breath Test",
+        "type": "Charged Driver",
+        "mustRedact": false,
+        "reason": "Adult accused identified in criminal/traffic charge constitutes essential direct evidence."
       },
       {
-        title: "Undercover Drug Buy",
-        desc: "Surveillance footage of a targeted narcotics transaction in an alleyway. A covert EPS undercover operative delivers cash. A suspect provides fentanyl. A confidential informant (CI) vehicle is parked across the street with license plate visible.",
-        targets: [
-          { id: "t1", name: "Undercover Operative Face & Voice", type: "Covert Officer", mustRedact: true, reason: "Undercover identities are strictly protected for officer safety and ongoing operations." },
-          { id: "t2", name: "Suspect Passing Narcotics", type: "Target Accused", mustRedact: false, reason: "Primary target of criminal prosecution constitutes core direct evidence." },
-          { id: "t3", name: "Confidential Informant License Plate", type: "Informer Privilege", mustRedact: true, reason: "Informer privilege is an absolute legal protection in Canadian law; identity must never be revealed." },
-          { id: "t4", name: "Seized Cash & Drug Package", type: "Physical Evidence", mustRedact: false, reason: "Physical exhibits must remain clearly visible for court analysis." }
-        ]
+        "id": "s1_t3",
+        "name": "Insurance Slip & Financial Policy #",
+        "type": "Third-Party PII",
+        "mustRedact": true,
+        "reason": "Sensitive financial/insurance PII with no probative value must be redacted under FOIP S.17."
+      },
+      {
+        "id": "s1_t4",
+        "name": "Sidewalk Pedestrian & Stroller",
+        "type": "Bystander in Public",
+        "mustRedact": true,
+        "reason": "Uninvolved public bystanders must be pixelated to protect privacy under FOIP S.17."
+      },
+      {
+        "id": "s1_t5",
+        "name": "Uniformed Officer Name Tag & Badge #",
+        "type": "EPS Officer",
+        "mustRedact": false,
+        "reason": "Uniformed public police officers performing lawful public duties are exempt from redaction."
       }
-    ];
+    ]
+  },
+  {
+    "title": "Scenario 2: Domestic Disturbance in Private Residence",
+    "hud": "EPS AXON BODY 4 \u2022 WEST DIVISION \u2022 UNIT 22-A",
+    "time": "2026-10-15 19:44:02 MDT \u2022 BUFFERED AUDIO: ON",
+    "desc": "Officers enter an apartment hallway responding to a 911 domestic assault call. A female complainant speaks with officers. A framed family photograph of two young children hangs on the living room wall. On the coffee table, a prescription pill bottle displays patient details. In the hallway, a neighbouring tenant peeks out.",
+    "targets": [
+      {
+        "id": "s2_t1",
+        "name": "Framed Children Photograph on Wall",
+        "type": "Minor Photos",
+        "mustRedact": true,
+        "reason": "Images identifying minors in private residences must be blurred under YCJA and FOIP."
+      },
+      {
+        "id": "s2_t2",
+        "name": "Prescription Pill Bottle Details",
+        "type": "Medical Health Data",
+        "mustRedact": true,
+        "reason": "Confidential third-party medical records are protected under the Health Information Act & FOIP."
+      },
+      {
+        "id": "s2_t3",
+        "name": "Complainant Statements & Physical Bruising",
+        "type": "Victim/Complainant",
+        "mustRedact": false,
+        "reason": "Direct victim statements and visible injury evidence are essential for Crown prosecution."
+      },
+      {
+        "id": "s2_t4",
+        "name": "Neighbour Peeking Through Doorway",
+        "type": "Uninvolved Neighbour",
+        "mustRedact": true,
+        "reason": "Uninvolved neighbour in residential dwelling has high expectation of privacy."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 3: Covert Buy-Bust Narcotics Operation",
+    "hud": "EPS AXON BODY 4 \u2022 SPECIALIZED INVESTIGATIONS \u2022 COVERT DETAIL",
+    "time": "2026-10-15 21:15:40 MDT \u2022 BUFFERED AUDIO: ON",
+    "desc": "Surveillance footage of a targeted street narcotics transaction in a downtown alleyway. A covert EPS undercover operative delivers cash. The suspect hands over a package of fentanyl. Across the street, a confidential informant (CI) vehicle is parked with its license plate visible in frame.",
+    "targets": [
+      {
+        "id": "s3_t1",
+        "name": "Covert Operative Face & Voice",
+        "type": "Covert Officer",
+        "mustRedact": true,
+        "reason": "Undercover officer identities are strictly shielded to protect officer safety and active investigations."
+      },
+      {
+        "id": "s3_t2",
+        "name": "Suspect Passing Fentanyl Package",
+        "type": "Target Accused",
+        "mustRedact": false,
+        "reason": "Primary physical act of drug trafficking constitutes core inculpatory evidence."
+      },
+      {
+        "id": "s3_t3",
+        "name": "Confidential Informant License Plate",
+        "type": "Informer Privilege",
+        "mustRedact": true,
+        "reason": "Informer privilege is an absolute common-law rule; identifying details must never be disclosed."
+      },
+      {
+        "id": "s3_t4",
+        "name": "Seized Cash & Drug Exhibit Packaging",
+        "type": "Physical Evidence",
+        "mustRedact": false,
+        "reason": "Physical exhibits and marked currency must remain unobstructed for court analysis."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 4: Hospital ER Triage & Custody Transfer",
+    "hud": "EPS AXON BODY 4 \u2022 DOWNTOWN DIVISION \u2022 HOSPITAL ESCORT",
+    "time": "2026-10-15 23:08:14 MDT \u2022 BUFFERED AUDIO: ON",
+    "desc": "Officers escort an injured assault suspect into the Royal Alexandra Hospital Emergency Ward. Paramedics transfer care. In the background, two acute patients lie in hospital gurneys in gowns. A nursing whiteboard displays patient names and triage codes. The suspect shouts an unprompted confession to the triage nurse.",
+    "targets": [
+      {
+        "id": "s4_t1",
+        "name": "Acute Patients in Hospital Beds",
+        "type": "Medical Patients",
+        "mustRedact": true,
+        "reason": "Third-party patients in emergency care have highest statutory privacy under Health Information Act & FOIP."
+      },
+      {
+        "id": "s4_t2",
+        "name": "Nursing Station Patient Registry Board",
+        "type": "Clinical Records",
+        "mustRedact": true,
+        "reason": "Third-party medical patient names and diagnosis codes are confidential clinical data under HIA."
+      },
+      {
+        "id": "s4_t3",
+        "name": "Suspect Spontaneous Confession Audio",
+        "type": "Uttered Admission",
+        "mustRedact": false,
+        "reason": "Unprompted uttered admissions by the accused to medical staff constitute critical prosecution evidence."
+      },
+      {
+        "id": "s4_t4",
+        "name": "Attending Paramedic Handoff Report",
+        "type": "Medical Handoff",
+        "mustRedact": false,
+        "reason": "Official paramedic verbal transfer of custody and injury documentation forms part of the evidence record."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 5: High School Hallway Altercation",
+    "hud": "EPS AXON BODY 4 \u2022 SCHOOL RESOURCE OFFICER \u2022 COMPREHENSIVE HS",
+    "time": "2026-10-16 11:32:05 MDT \u2022 BUFFERED AUDIO: ON",
+    "desc": "School Resource Officer intervenes in a physical fight inside a crowded high school corridor. A 16-year-old student is being restrained. A 17-year-old student wields an open pocket knife. Fifteen student onlookers shout and film on mobile phones. The vice-principal assists in disarming the youth.",
+    "targets": [
+      {
+        "id": "s5_t1",
+        "name": "16-Year-Old Student in Altercation",
+        "type": "Youth Involved",
+        "mustRedact": true,
+        "reason": "Youth involved in criminal incident is strictly protected under Section 110 of the YCJA."
+      },
+      {
+        "id": "s5_t2",
+        "name": "17-Year-Old Student Face",
+        "type": "Youth Offender",
+        "mustRedact": true,
+        "reason": "Youth offender facial identity is strictly protected under YCJA S.110 (face blurred, actions preserved)."
+      },
+      {
+        "id": "s5_t3",
+        "name": "Student Spectators in Hallway",
+        "type": "Minor Bystanders",
+        "mustRedact": true,
+        "reason": "All minor students watching in school premises must be redacted under YCJA & FOIP."
+      },
+      {
+        "id": "s5_t4",
+        "name": "Pocket Knife Blade & Physical Weapon Strike",
+        "type": "Offensive Weapon",
+        "mustRedact": false,
+        "reason": "Weapon mechanics and physical strikes are core probative facts that must remain 100% visible."
+      },
+      {
+        "id": "s5_t5",
+        "name": "School Vice-Principal Intervening",
+        "type": "School Administrator",
+        "mustRedact": false,
+        "reason": "Adult school staff acting in official administrative capacity during public incident is a disclosable witness."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 6: Cruiser In-Custody Legal Consultation",
+    "hud": "EPS IN-CAR DIGITAL VIDEO \u2022 DOWNTOWN PATROL \u2022 REAR CABIN",
+    "time": "2026-10-16 01:14:50 MDT \u2022 IN-CAR AUDIO CHANNEL 1",
+    "desc": "An impaired driving suspect sits in the rear partition of a marked cruiser. The arresting officer dials Legal Aid Duty Counsel on a department cell phone and hands it through the partition. The in-car microphone captures the suspect admitting to drinking alcohol and seeking legal advice on refusal charges.",
+    "targets": [
+      {
+        "id": "s6_t1",
+        "name": "Suspect Audio Call with Duty Counsel",
+        "type": "Legal Privilege",
+        "mustRedact": true,
+        "reason": "Solicitor-client privilege is a Charter S.10(b) constitutional right; legal consultation must be muted."
+      },
+      {
+        "id": "s6_t2",
+        "name": "Suspect Physical Demeanor & Balance in Cruiser",
+        "type": "Physical Demeanor",
+        "mustRedact": false,
+        "reason": "Visual physical indicators of impairment and custody behavior are vital probative evidence."
+      },
+      {
+        "id": "s6_t3",
+        "name": "Arresting Officer Outside Vehicle",
+        "type": "Arresting Officer",
+        "mustRedact": false,
+        "reason": "Conduct and procedural timing of arresting officer must remain visible for trial scrutiny."
+      },
+      {
+        "id": "s6_t4",
+        "name": "Cruiser Mobile Data Terminal (MDT) Screen",
+        "type": "Police System Data",
+        "mustRedact": true,
+        "reason": "CPIC queries, unrelated call queues, and CAD dispatch data on MDT must be redacted under FOIP."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 7: Tactical SWAT Search Warrant Execution",
+    "hud": "EPS AXON BODY 4 \u2022 TACTICAL SUPPORT GROUP \u2022 WARRANT TEAM",
+    "time": "2026-10-16 05:01:22 MDT \u2022 LOW-LIGHT MODE",
+    "desc": "Tactical team breaches a fortified residence on a high-risk firearms warrant. Officers utilize a specialized hydraulic ram and distraction device. An adult male is secured on the floor near a loaded shotgun. In an open closet, sensitive SWAT tactical breaching tools and specialized frequency jamming hardware are visible.",
+    "targets": [
+      {
+        "id": "s7_t1",
+        "name": "Specialized SWAT Breaching Gear & Countermeasures",
+        "type": "Tactical Techniques",
+        "mustRedact": true,
+        "reason": "Specialized police operational methods and covert entry tools are protected under Public Interest Immunity."
+      },
+      {
+        "id": "s7_t2",
+        "name": "Suspect Being Handcuffed on Floor",
+        "type": "Primary Accused",
+        "mustRedact": false,
+        "reason": "Arrest and physical detention of the accused is foundational evidence of lawful execution."
+      },
+      {
+        "id": "s7_t3",
+        "name": "Loaded Shotgun & Ammunition on Floor",
+        "type": "Seized Weapon",
+        "mustRedact": false,
+        "reason": "Physical firearms and evidence seized in plain view must remain completely unobstructed."
+      },
+      {
+        "id": "s7_t4",
+        "name": "Tactical Call-Signs Broadcast Over SWAT Channel",
+        "type": "Covert Frequencies",
+        "mustRedact": true,
+        "reason": "Tactical team call-signs and covert communication frequencies are protected law enforcement data."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 8: Transit Station Robbery & Platform Scramble",
+    "hud": "EPS AXON BODY 4 \u2022 TRANSIT SAFETY SECTION \u2022 CHURCHILL PLATFORM",
+    "time": "2026-10-16 16:45:30 MDT \u2022 STATION LIGHTING",
+    "desc": "Officers pursue a robbery suspect across an active LRT station platform. The suspect throws a stolen wallet toward the train tracks. Nearby on the platform, a woman using a ticket kiosk has her debit card number and bank account balance in clear view. A transit peace officer assists in tackling the suspect.",
+    "targets": [
+      {
+        "id": "s8_t1",
+        "name": "Ticket Kiosk Patron Bank Screen & Card #",
+        "type": "Third-Party Financial",
+        "mustRedact": true,
+        "reason": "Private third-party financial records and banking numbers must be redacted under FOIP S.17."
+      },
+      {
+        "id": "s8_t2",
+        "name": "Suspect Discarding Stolen Wallet on Tracks",
+        "type": "Evidentiary Act",
+        "mustRedact": false,
+        "reason": "Disposal of stolen property is core evidence demonstrating consciousness of guilt and theft."
+      },
+      {
+        "id": "s8_t3",
+        "name": "Transit Peace Officer Assisting Arrest",
+        "type": "Peace Officer",
+        "mustRedact": false,
+        "reason": "Uniformed law enforcement personnel executing lawful arrest in public are exempt from redaction."
+      },
+      {
+        "id": "s8_t4",
+        "name": "Commuters on Opposite Track Platform",
+        "type": "Uninvolved Public",
+        "mustRedact": true,
+        "reason": "Uninvolved third-party commuters must be pixelated to safeguard civilian privacy."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 9: Mental Health PACT Crisis Intervention",
+    "hud": "EPS AXON BODY 4 \u2022 POLICE & CRISIS TEAM (PACT) \u2022 RESIDENCE",
+    "time": "2026-10-16 18:20:10 MDT \u2022 RESIDENTIAL SUITE",
+    "desc": "Police and Crisis Team (PACT) mental health clinician and officer attend a residence where a vulnerable individual in acute mental distress is in a partial state of undress. On a desk, suicide notes and psychiatric hospital admission forms are laid out. A distressed family member weeps in the corner.",
+    "targets": [
+      {
+        "id": "s9_t1",
+        "name": "Vulnerable Individual Partial Nudity",
+        "type": "Exposed Anatomy",
+        "mustRedact": true,
+        "reason": "Private anatomy and nudity must be pixelated to preserve human dignity under FOIP and court decency rules."
+      },
+      {
+        "id": "s9_t2",
+        "name": "Psychiatric Hospital Records on Desk",
+        "type": "Clinical Records",
+        "mustRedact": true,
+        "reason": "Confidential clinical psychiatric treatment records are strictly protected under Health Information Act."
+      },
+      {
+        "id": "s9_t3",
+        "name": "PACT Clinician Verbal De-escalation Dialogue",
+        "type": "Clinical De-escalation",
+        "mustRedact": false,
+        "reason": "Professional police and clinical crisis response actions must remain audible for procedural accountability."
+      },
+      {
+        "id": "s9_t4",
+        "name": "Distressed Family Member Weeping in Corner",
+        "type": "Family Member",
+        "mustRedact": true,
+        "reason": "Family member experiencing private acute distress in private dwelling must be shielded under FOIP."
+      }
+    ]
+  },
+  {
+    "title": "Scenario 10: Fatal Collision Investigation (Major Collision Detail)",
+    "hud": "EPS AXON BODY 4 \u2022 MAJOR COLLISION INVESTIGATION SECTION \u2022 SCENE",
+    "time": "2026-10-16 22:50:18 MDT \u2022 EMERGENCY STROBES",
+    "desc": "Officers arrive at a catastrophic two-vehicle rollover on Yellowhead Trail. An impaired driver is stumbling near their truck smelling of alcohol. In the crushed secondary car, an uninjured 14-year-old passenger is crying in the backseat. The deceased driver has suffered fatal bodily trauma in the wreckage. Civilian drivers have gathered to watch.",
+    "targets": [
+      {
+        "id": "s10_t1",
+        "name": "Deceased Driver Fatal Bodily Trauma",
+        "type": "Severe Trauma",
+        "mustRedact": true,
+        "reason": "Severe non-probative fatal trauma and deceased individuals must be respectfully blurred under FOIP."
+      },
+      {
+        "id": "s10_t2",
+        "name": "14-Year-Old Passenger in Backseat",
+        "type": "Minor Victim/Witness",
+        "mustRedact": true,
+        "reason": "Youth victim/witness in motor vehicle incident is strictly protected under YCJA S.110."
+      },
+      {
+        "id": "s10_t3",
+        "name": "Impaired Driver Stumbling & Slurring Speech",
+        "type": "Primary Accused",
+        "mustRedact": false,
+        "reason": "Observable physical impairment and verbal responses of accused driver are vital prosecution evidence."
+      },
+      {
+        "id": "s10_t4",
+        "name": "Civilian Motorists & License Plates Stopped on Highway",
+        "type": "Public Spectators",
+        "mustRedact": true,
+        "reason": "Uninvolved third-party civilian spectators and private vehicle plates must be pixelated under FOIP."
+      }
+    ]
+  }
+];
 
     let currentRedStage = 0;
     let selectedRedactions = new Set();
+
+    function initRedactionStages() {
+      const container = document.getElementById('red-stage-selector');
+      if (!container) return;
+      container.innerHTML = '';
+      redactionScenarios.forEach((sc, i) => {
+        const btn = document.createElement('button');
+        btn.id = `red-stage-${i}`;
+        btn.className = i === 0 
+          ? 'red-stage-btn px-2.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white shadow-md transition' 
+          : 'red-stage-btn px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700/60';
+        btn.innerText = `S${i+1}: ${sc.title.replace(/^Scenario \d+:\s*/, '')}`;
+        btn.onclick = () => loadRedactionStage(i);
+        container.appendChild(btn);
+      });
+    }
 
     function loadRedactionStage(idx) {
       currentRedStage = idx;
       selectedRedactions.clear();
       document.querySelectorAll('.red-stage-btn').forEach((btn, i) => {
-        btn.className = i === idx ? 'red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white' : 'red-stage-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
+        btn.className = i === idx 
+          ? 'red-stage-btn px-2.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white shadow-md transition' 
+          : 'red-stage-btn px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700/60';
       });
 
       const sc = redactionScenarios[idx];
-      document.getElementById('red-scenario-desc').innerText = sc.desc;
+      const indicator = document.getElementById('red-scenario-indicator');
+      if (indicator) indicator.innerText = `Scenario ${idx + 1} of ${redactionScenarios.length}`;
+
+      const hud = document.getElementById('red-cam-hud');
+      if (hud) hud.innerText = sc.hud;
+
+      const time = document.getElementById('red-cam-time');
+      if (time) time.innerText = sc.time;
+
+      document.getElementById('red-scenario-desc').innerHTML = `<span class="font-bold text-blue-400 block mb-1 uppercase tracking-wider text-[11px]">${sc.title}</span>${sc.desc}`;
       document.getElementById('red-result-box').classList.add('hidden');
       updateAuditCount();
 
@@ -942,20 +1316,22 @@
       const card = document.getElementById(`target-${id}`);
       if (selectedRedactions.has(id)) {
         selectedRedactions.delete(id);
-        badge.innerText = "EXEMPT (RAW)";
         badge.className = "px-2 py-1 rounded text-[11px] font-bold bg-slate-800 text-slate-400 border border-slate-700";
-        card.className = "cursor-pointer p-3.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 transition flex items-center justify-between";
+        badge.innerText = "EXEMPT (RAW)";
+        card.classList.remove('border-rose-500/50', 'bg-rose-950/20');
+        card.classList.add('border-slate-800', 'bg-slate-900/80');
       } else {
         selectedRedactions.add(id);
-        badge.innerText = "🛡️ REDACTED (BLURRED)";
-        badge.className = "px-2 py-1 rounded text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40";
-        card.className = "cursor-pointer p-3.5 rounded-xl border-2 border-rose-500/60 bg-rose-950/20 transition flex items-center justify-between";
+        badge.className = "px-2 py-1 rounded text-[11px] font-bold bg-rose-600 text-white shadow-sm";
+        badge.innerText = "REDACT (BLUR)";
+        card.classList.remove('border-slate-800', 'bg-slate-900/80');
+        card.classList.add('border-rose-500/50', 'bg-rose-950/20');
       }
       updateAuditCount();
     }
 
     function updateAuditCount() {
-      document.getElementById('red-audit-count').innerText = `${selectedRedactions.size} items marked for redaction`;
+      document.getElementById('red-audit-count').innerText = `${selectedRedactions.size} item${selectedRedactions.size === 1 ? '' : 's'} marked for redaction`;
     }
 
     function checkRedactionScenario() {
@@ -983,7 +1359,10 @@
         resBox.className = "mt-4 p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-sm";
         resBox.innerHTML = `
           <div class="font-extrabold text-base mb-1">🎯 100% LEGAL COMPLIANCE ACHIEVED (+40 XP)</div>
-          <p>Crown Counsel has received a flawless disclosure package. All youth identities, informant data, and private PII are protected under YCJA and FOIP, while evidentiary integrity is maintained without improper over-redaction.</p>
+          <p class="mb-2">Crown Counsel disclosure audit passed with zero errors. All statutory protections (YCJA, FOIP, HIA, Informer Privilege) were upheld while core evidentiary acts were properly preserved.</p>
+          <button onclick="nextRedactionStage()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg shadow transition">
+            Proceed to Next Scenario &rarr;
+          </button>
         `;
       } else {
         playWrong();
@@ -996,6 +1375,11 @@
           </ul>
         `;
       }
+    }
+
+    function nextRedactionStage() {
+      const nextIdx = (currentRedStage + 1) % redactionScenarios.length;
+      loadRedactionStage(nextIdx);
     }
 
     // ========================================================
@@ -1235,6 +1619,7 @@
     window.onload = () => {
       startTimer();
       renderQuestion(0);
+      initRedactionStages();
       loadRedactionStage(0);
       initSpotter();
       renderCard(0);
