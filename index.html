@@ -56,7 +56,7 @@
 
   <!-- NAVIGATION TABS -->
   <nav class="max-w-6xl mx-auto px-4 mt-6">
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
       <button onclick="setTab('exam')" id="tab-exam" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md">
         📝 Full Written Exam (25Q)
       </button>
@@ -67,7 +67,11 @@
         🔍 CAD Discrepancy Spotter
       </button>
       <button onclick="setTab('interview')" id="tab-interview" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
-        🎙️ Oral Interview Flashcards
+        📋 Oral Interview STAR
+      </button>
+      <button onclick="setTab('voice')" id="tab-voice" class="nav-tab py-2.5 px-3 rounded-lg text-center transition-all text-emerald-400 hover:text-white hover:bg-emerald-900/40 border border-emerald-500/40 flex items-center justify-center space-x-1.5 font-bold">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>🎧 Hands-Free Drill</span>
       </button>
     </div>
   </nav>
@@ -334,6 +338,156 @@
               </div>
             </div>
 
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- 5. HANDS-FREE BLUETOOTH & VOICE DRILL -->
+    <!-- ========================================== -->
+    <div id="view-voice" class="tab-content hidden">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        
+        <!-- Header Banner -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Two-Way Bluetooth Audio Engine</span>
+              </span>
+              <span id="voice-mode-badge" class="text-xs text-slate-400 font-semibold">Mode: 25-Question Written Exam</span>
+            </div>
+            <h2 class="text-lg sm:text-2xl font-black text-white mt-1">Car & Dog Walk Hands-Free Audio Drill</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Two-way spoken audio: The examiner questions you via Bluetooth. Just speak your answer aloud ("A", "B", "C", "D" or "Repeat")!</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="voice-wakelock-status" class="text-[11px] px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono">
+              📱 Screen Sleep: Standard
+            </span>
+            <button id="voice-main-btn" onclick="toggleVoiceDrill()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center space-x-2">
+              <span id="voice-main-btn-icon">▶</span>
+              <span id="voice-main-btn-text">START HANDS-FREE DRILL</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode & Audio Settings Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4 p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs">
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Drill Mode:</label>
+            <select id="voice-mode-select" onchange="changeVoiceMode(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
+              <option value="exam" selected>📝 Written Exam Q&A (25 Law & Policy Questions)</option>
+              <option value="star">🎙️ EPS Oral Board Mock Interview (6 STAR Questions)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Speech Speed:</label>
+            <select id="voice-rate-select" onchange="changeVoiceRate(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
+              <option value="0.95">Relaxed (0.95x)</option>
+              <option value="1.0" selected>Standard Pace (1.0x)</option>
+              <option value="1.15">Brisk / Quick (1.15x)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Read Full Options Aloud:</label>
+            <select id="voice-read-options-select" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
+              <option value="full" selected>Yes - Read Question + Options A, B, C, D</option>
+              <option value="fast">Fast - Read Question Only (Glance for choices)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Giant Live Status HUD (High-contrast for car dashboard or walking) -->
+        <div id="voice-hud-container" class="my-4 bg-slate-950 border-2 border-slate-800 rounded-2xl p-5 sm:p-7 shadow-inner relative overflow-hidden transition-all duration-300">
+          
+          <!-- Large State Indicator Banner -->
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+            <div id="voice-status-pill" class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-black tracking-wide uppercase bg-slate-800 text-slate-300 border border-slate-700">
+              <span id="voice-status-dot" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+              <span id="voice-status-text">STANDBY — TAP START TO BEGIN AUDIO DRILL</span>
+            </div>
+            <div class="text-right">
+              <span id="voice-progress-text" class="text-xs font-mono font-bold text-slate-400">Question 1 / 25</span>
+            </div>
+          </div>
+
+          <!-- Spoken Transcript / Live Question Display -->
+          <div class="my-5">
+            <div class="text-xs uppercase font-extrabold tracking-wider text-indigo-400" id="voice-q-cat">Statutory Compliance</div>
+            <h3 id="voice-q-title" class="text-lg sm:text-2xl font-black text-white mt-1 leading-snug">
+              Tap "Start Hands-Free Drill" above or connect your Bluetooth audio to begin.
+            </h3>
+            <p id="voice-q-scenario" class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/70">
+              The AI examiner will speak questions over your vehicle or headphone Bluetooth. Once options are read, say your choice ("A", "B", "C", or "D") aloud!
+            </p>
+          </div>
+
+          <!-- Dynamic Options Display (Large readable cards for quick glance) -->
+          <div id="voice-options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-4">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Live Mic Listener Feedback -->
+          <div id="voice-mic-feedback-box" class="mt-4 p-4 rounded-xl border border-blue-500/30 bg-blue-950/20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div id="voice-mic-pulse" class="w-10 h-10 rounded-full bg-blue-600/30 flex items-center justify-center text-blue-400 text-lg border border-blue-500/40">
+                🎙️
+              </div>
+              <div>
+                <div class="text-[11px] font-bold uppercase tracking-wider text-blue-300">Live Microphone Transcript</div>
+                <div id="voice-transcript-text" class="text-sm font-bold text-white italic">"Listening for your voice..."</div>
+              </div>
+            </div>
+            <div id="voice-verdict-indicator" class="text-right hidden">
+              <!-- Verdict badge -->
+            </div>
+          </div>
+
+          <!-- Spoken Explanation Box -->
+          <div id="voice-expl-box" class="hidden mt-4 p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-xs sm:text-sm text-emerald-200 leading-relaxed">
+            <!-- Verdict and explanation text -->
+          </div>
+
+        </div>
+
+        <!-- Manual Backup Controls (In case of noisy wind/traffic) -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div class="text-[11px] text-slate-400 font-bold uppercase tracking-wider mb-2">Backup Manual Controls (Touch Buttons)</div>
+          <div class="grid grid-cols-4 gap-2 mb-2">
+            <button onclick="handleManualVoiceChoice(0)" class="py-3 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-lg border border-slate-700 text-sm">Option A</button>
+            <button onclick="handleManualVoiceChoice(1)" class="py-3 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-lg border border-slate-700 text-sm">Option B</button>
+            <button onclick="handleManualVoiceChoice(2)" class="py-3 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-lg border border-slate-700 text-sm">Option C</button>
+            <button onclick="handleManualVoiceChoice(3)" class="py-3 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-lg border border-slate-700 text-sm">Option D</button>
+          </div>
+          <div class="flex space-x-2">
+            <button onclick="voiceRepeatQuestion()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg border border-slate-700">
+              🔁 Repeat Audio
+            </button>
+            <button onclick="voiceSkipQuestion()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg border border-slate-700">
+              ⏩ Skip to Next
+            </button>
+            <button onclick="voicePause()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg border border-slate-700">
+              ⏸️ Pause / Stop
+            </button>
+          </div>
+        </div>
+
+        <!-- Spoken Voice Commands Cheatsheet -->
+        <div class="mt-4 p-4 rounded-xl bg-slate-950/50 border border-slate-800 text-xs text-slate-400">
+          <span class="font-bold text-slate-300 block mb-1">🗣️ Voice Commands Accepted by Microphone:</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+            <div><strong class="text-blue-400">"A"</strong> / "Alpha" / "One"</div>
+            <div><strong class="text-blue-400">"B"</strong> / "Bravo" / "Two"</div>
+            <div><strong class="text-blue-400">"C"</strong> / "Charlie" / "Three"</div>
+            <div><strong class="text-blue-400">"D"</strong> / "Delta" / "Four"</div>
+            <div><strong class="text-emerald-400">"Repeat"</strong> / "Say again"</div>
+            <div><strong class="text-emerald-400">"Next"</strong> / "Skip"</div>
+            <div><strong class="text-rose-400">"Pause"</strong> / "Stop"</div>
+            <div><strong class="text-purple-400">"Done"</strong> (Oral Board answer)</div>
           </div>
         </div>
 
@@ -1624,6 +1778,434 @@
       initSpotter();
       renderCard(0);
     };
+
+    // ========================================================
+    // 5. HANDS-FREE BLUETOOTH & VOICE ENGINE
+    // ========================================================
+    let voiceIsRunning = false;
+    let voiceCurrentIndex = 0;
+    let voiceMode = 'exam'; // 'exam' or 'star'
+    let voiceRate = 1.0;
+    let voiceWakeLock = null;
+    let speechRecognizer = null;
+    let synth = window.speechSynthesis;
+    let voiceNextTimer = null;
+    let voiceState = 'idle'; // 'idle', 'speaking', 'listening', 'evaluating'
+
+    function initSpeechRecognizer() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        console.warn('SpeechRecognition API not available in this browser.');
+        return null;
+      }
+      const rec = new SpeechRec();
+      rec.continuous = false;
+      rec.interimResults = false;
+      rec.lang = 'en-US';
+      rec.maxAlternatives = 3;
+      return rec;
+    }
+
+    async function requestScreenWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          voiceWakeLock = await navigator.wakeLock.request('screen');
+          document.getElementById('voice-wakelock-status').innerText = '🔒 Screen Locked Awake';
+          document.getElementById('voice-wakelock-status').className = 'text-[11px] px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400 font-mono font-bold';
+        } catch (e) {
+          console.warn('Wake Lock request error:', e);
+        }
+      }
+    }
+
+    function releaseScreenWakeLock() {
+      if (voiceWakeLock) {
+        voiceWakeLock.release().catch(() => {});
+        voiceWakeLock = null;
+        const wlEl = document.getElementById('voice-wakelock-status');
+        if (wlEl) {
+          wlEl.innerText = '📱 Screen Sleep: Standard';
+          wlEl.className = 'text-[11px] px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono';
+        }
+      }
+    }
+
+    function changeVoiceMode(mode) {
+      voiceMode = mode;
+      voiceCurrentIndex = 0;
+      document.getElementById('voice-mode-badge').innerText = mode === 'exam' 
+        ? 'Mode: 25-Question Written Exam' 
+        : 'Mode: 6-Question EPS Oral Board Interview';
+      if (voiceIsRunning) {
+        runVoiceStep();
+      } else {
+        updateVoiceHUDIdle();
+      }
+    }
+
+    function changeVoiceRate(rate) {
+      voiceRate = parseFloat(rate);
+    }
+
+    function speakAudio(text, onEnd) {
+      if (!synth) {
+        if (onEnd) onEnd();
+        return;
+      }
+      synth.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.rate = voiceRate;
+      utt.pitch = 1.0;
+      const voices = synth.getVoices();
+      const voice = voices.find(v => v.lang.startsWith('en-CA') || v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
+      if (voice) utt.voice = voice;
+      utt.onend = () => {
+        if (onEnd && voiceIsRunning) onEnd();
+      };
+      utt.onerror = () => {
+        if (onEnd && voiceIsRunning) onEnd();
+      };
+      synth.speak(utt);
+    }
+
+    function toggleVoiceDrill() {
+      if (voiceIsRunning) {
+        voicePause();
+      } else {
+        voiceStart();
+      }
+    }
+
+    function voiceStart() {
+      voiceIsRunning = true;
+      document.getElementById('voice-main-btn').className = 'px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-rose-600/30 transition flex items-center space-x-2';
+      document.getElementById('voice-main-btn-icon').innerText = '⏹';
+      document.getElementById('voice-main-btn-text').innerText = 'STOP DRILL';
+      requestScreenWakeLock();
+      runVoiceStep();
+    }
+
+    function voicePause() {
+      voiceIsRunning = false;
+      voiceState = 'idle';
+      if (synth) synth.cancel();
+      if (speechRecognizer) {
+        try { speechRecognizer.abort(); } catch (e) {}
+      }
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
+      releaseScreenWakeLock();
+
+      const btn = document.getElementById('voice-main-btn');
+      if (btn) {
+        btn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center space-x-2';
+        document.getElementById('voice-main-btn-icon').innerText = '▶';
+        document.getElementById('voice-main-btn-text').innerText = 'RESUME HANDS-FREE DRILL';
+      }
+      setVoiceHUDState('idle', 'PAUSED — TAP RESUME TO CONTINUE');
+    }
+
+    function setVoiceHUDState(state, text) {
+      voiceState = state;
+      const pill = document.getElementById('voice-status-pill');
+      const dot = document.getElementById('voice-status-dot');
+      const statusText = document.getElementById('voice-status-text');
+      const micPulse = document.getElementById('voice-mic-pulse');
+
+      if (!pill || !dot || !statusText) return;
+      statusText.innerText = text;
+
+      if (state === 'speaking') {
+        pill.className = 'inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-black tracking-wide uppercase bg-blue-950/60 text-blue-300 border border-blue-500/40';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse';
+        if (micPulse) micPulse.className = 'w-10 h-10 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-lg';
+      } else if (state === 'listening') {
+        pill.className = 'inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-black tracking-wide uppercase bg-emerald-950/60 text-emerald-300 border border-emerald-500/40';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
+        if (micPulse) micPulse.className = 'w-10 h-10 rounded-full bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-lg border border-emerald-500/50 animate-pulse';
+      } else if (state === 'evaluating') {
+        pill.className = 'inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-black tracking-wide uppercase bg-amber-950/60 text-amber-300 border border-amber-500/40';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping';
+      } else {
+        pill.className = 'inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-black tracking-wide uppercase bg-slate-800 text-slate-300 border border-slate-700';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-400';
+        if (micPulse) micPulse.className = 'w-10 h-10 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-lg';
+      }
+    }
+
+    function updateVoiceHUDIdle() {
+      const q = voiceMode === 'exam' ? examQuestions[voiceCurrentIndex] : interviewCards[voiceCurrentIndex];
+      const total = voiceMode === 'exam' ? examQuestions.length : interviewCards.length;
+      document.getElementById('voice-progress-text').innerText = `Item ${voiceCurrentIndex + 1} / ${total}`;
+      document.getElementById('voice-q-cat').innerText = q.cat;
+      document.getElementById('voice-q-title').innerText = voiceMode === 'exam' ? q.title : `Board Question ${voiceCurrentIndex + 1}`;
+      document.getElementById('voice-q-scenario').innerText = voiceMode === 'exam' ? q.scenario : q.q;
+
+      const grid = document.getElementById('voice-options-grid');
+      grid.innerHTML = '';
+      if (voiceMode === 'exam') {
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+          const div = document.createElement('div');
+          div.id = `voice-opt-card-${idx}`;
+          div.className = 'p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-xs text-slate-300 flex items-start space-x-2.5 cursor-pointer hover:bg-slate-800 transition';
+          div.innerHTML = `<span class="font-black text-blue-400 bg-blue-950/60 border border-blue-500/30 w-6 h-6 rounded flex items-center justify-center shrink-0">${letters[idx]}</span><span>${opt}</span>`;
+          div.onclick = () => handleManualVoiceChoice(idx);
+          grid.appendChild(div);
+        });
+      } else {
+        const div = document.createElement('div');
+        div.className = 'col-span-full p-4 rounded-xl border border-purple-500/30 bg-purple-950/20 text-xs text-purple-200 leading-relaxed';
+        div.innerHTML = `<strong class="text-purple-300 block mb-1">EPS Oral Board Competency Practice:</strong> Tap Start Drill to have the Selection Board Chair ask this question over Bluetooth. Answer into your microphone, or speak aloud until you say "Done".`;
+        grid.appendChild(div);
+      }
+      document.getElementById('voice-expl-box').classList.add('hidden');
+    }
+
+    function runVoiceStep() {
+      if (!voiceIsRunning) return;
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
+
+      const isExam = voiceMode === 'exam';
+      const items = isExam ? examQuestions : interviewCards;
+      if (voiceCurrentIndex >= items.length) {
+        voiceCurrentIndex = 0; // Loop or complete
+      }
+
+      const currentItem = items[voiceCurrentIndex];
+      updateVoiceHUDIdle();
+      setVoiceHUDState('speaking', '🔊 EXAMINER SPEAKING OVER AUDIO...');
+      document.getElementById('voice-transcript-text').innerText = '"Listening paused while examiner speaks..."';
+      document.getElementById('voice-verdict-indicator').classList.add('hidden');
+      document.getElementById('voice-expl-box').classList.add('hidden');
+
+      let speechScript = '';
+      if (isExam) {
+        const readOptions = document.getElementById('voice-read-options-select').value;
+        const letters = ['Alpha', 'Bravo', 'Charlie', 'Delta'];
+        speechScript = `Question ${voiceCurrentIndex + 1}. ${currentItem.title}. ${currentItem.scenario}. `;
+        if (readOptions === 'full') {
+          speechScript += `Option A: ${currentItem.options[0]}. `;
+          speechScript += `Option B: ${currentItem.options[1]}. `;
+          speechScript += `Option C: ${currentItem.options[2]}. `;
+          speechScript += `Option D: ${currentItem.options[3]}. `;
+        }
+        speechScript += `What is your answer?`;
+      } else {
+        speechScript = `Question ${voiceCurrentIndex + 1} for Candidate Kyle Jensen. Category: ${currentItem.cat}. ${currentItem.q}. Please state your response now.`;
+      }
+
+      speakAudio(speechScript, () => {
+        if (!voiceIsRunning) return;
+        listenForVoiceResponse();
+      });
+    }
+
+    function listenForVoiceResponse() {
+      if (!voiceIsRunning) return;
+      setVoiceHUDState('listening', '🎙️ LISTENING FOR YOUR ANSWER... (SAY: A, B, C, D, OR REPEAT)');
+      playBeep(587, 'sine', 0.12);
+      document.getElementById('voice-transcript-text').innerText = '"Listening for your voice..."';
+
+      if (!speechRecognizer) {
+        speechRecognizer = initSpeechRecognizer();
+      }
+
+      if (!speechRecognizer) {
+        // Fallback for browsers without Web Speech Recognition: Timed Auto-Advance
+        document.getElementById('voice-transcript-text').innerText = '"Microphone recognition unavailable on this browser. Auto-evaluating in 6s..."';
+        voiceNextTimer = setTimeout(() => {
+          if (voiceIsRunning) {
+            if (voiceMode === 'exam') {
+              evaluateSpokenAnswer('B'); // preview
+            } else {
+              speakSTARModelAnswer();
+            }
+          }
+        }, 6000);
+        return;
+      }
+
+      try {
+        speechRecognizer.onresult = (event) => {
+          if (!voiceIsRunning) return;
+          const transcript = event.results[0][0].transcript.trim();
+          document.getElementById('voice-transcript-text').innerText = `"${transcript}"`;
+          handleSpokenTranscript(transcript);
+        };
+
+        speechRecognizer.onerror = (event) => {
+          console.warn('SpeechRecognition error:', event.error);
+          if (voiceIsRunning && voiceState === 'listening') {
+            if (event.error === 'no-speech') {
+              // Prompt user once and restart
+              speakAudio("I didn't hear an answer. Say A, B, C, or D, or say Repeat.", () => {
+                if (voiceIsRunning) listenForVoiceResponse();
+              });
+            } else {
+              // Retry listening
+              setTimeout(() => { if (voiceIsRunning) listenForVoiceResponse(); }, 1500);
+            }
+          }
+        };
+
+        speechRecognizer.onend = () => {
+          if (voiceIsRunning && voiceState === 'listening') {
+            // Restart listening if still waiting for answer
+            try { speechRecognizer.start(); } catch (e) {}
+          }
+        };
+
+        speechRecognizer.start();
+      } catch (err) {
+        console.warn('Recognizer start exception:', err);
+      }
+    }
+
+    function handleSpokenTranscript(text) {
+      const lower = text.toLowerCase();
+
+      // Check command words first
+      if (/(repeat|again|say again|pardon|what)/.test(lower)) {
+        voiceRepeatQuestion();
+        return;
+      }
+      if (/(skip|next|pass)/.test(lower)) {
+        voiceSkipQuestion();
+        return;
+      }
+      if (/(pause|stop|halt|quit)/.test(lower)) {
+        voicePause();
+        return;
+      }
+
+      if (voiceMode === 'star') {
+        // Oral Board mode: User speaking response
+        if (/(done|finished|that's my answer|complete|next)/.test(lower) || text.length > 25) {
+          try { speechRecognizer.stop(); } catch(e) {}
+          speakSTARModelAnswer();
+        }
+        return;
+      }
+
+      // Written Exam Mode: Match A, B, C, D
+      let detectedChoice = null;
+      if (/(a|alpha|option a|choice a|one|1st|first)/.test(lower)) detectedChoice = 0;
+      else if (/(b|bravo|option b|choice b|two|2nd|second)/.test(lower)) detectedChoice = 1;
+      else if (/(c|charlie|option c|choice c|three|3rd|third)/.test(lower)) detectedChoice = 2;
+      else if (/(d|delta|option d|choice d|four|4th|fourth)/.test(lower)) detectedChoice = 3;
+
+      if (detectedChoice !== null) {
+        try { speechRecognizer.stop(); } catch (e) {}
+        evaluateSpokenChoice(detectedChoice);
+      } else {
+        // Prompt clarification
+        speakAudio(`I heard "${text}". Please specify Option A, B, C, or D.`, () => {
+          if (voiceIsRunning) listenForVoiceResponse();
+        });
+      }
+    }
+
+    function handleManualVoiceChoice(idx) {
+      if (voiceMode !== 'exam') return;
+      if (speechRecognizer) {
+        try { speechRecognizer.stop(); } catch (e) {}
+      }
+      evaluateSpokenChoice(idx);
+    }
+
+    function evaluateSpokenChoice(userChoice) {
+      if (!voiceIsRunning) return;
+      setVoiceHUDState('evaluating', '⚡ EVALUATING RESPONSE...');
+
+      const q = examQuestions[voiceCurrentIndex];
+      const isCorrect = userChoice === q.answer;
+      const letters = ['A', 'B', 'C', 'D'];
+      const userLetter = letters[userChoice];
+      const correctLetter = letters[q.answer];
+
+      // Highlight selected and correct cards
+      for (let i = 0; i < 4; i++) {
+        const card = document.getElementById(`voice-opt-card-${i}`);
+        if (card) {
+          if (i === q.answer) {
+            card.className = 'p-3 rounded-xl border border-emerald-500 bg-emerald-950/40 text-xs text-emerald-200 flex items-start space-x-2.5 font-bold';
+          } else if (i === userChoice && !isCorrect) {
+            card.className = 'p-3 rounded-xl border border-rose-500 bg-rose-950/40 text-xs text-rose-200 flex items-start space-x-2.5';
+          }
+        }
+      }
+
+      // Verdict indicator
+      const verdictEl = document.getElementById('voice-verdict-indicator');
+      verdictEl.classList.remove('hidden');
+      verdictEl.innerHTML = isCorrect 
+        ? `<span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🎯 CORRECT (+25 XP)</span>`
+        : `<span class="px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">❌ INCORRECT (Correct: ${correctLetter})</span>`;
+
+      // Explanation box
+      const explEl = document.getElementById('voice-expl-box');
+      explEl.classList.remove('hidden');
+      explEl.innerHTML = `<strong>Legal & Operational Standard:</strong> ${q.expl}`;
+
+      let spokenVerdict = '';
+      if (isCorrect) {
+        playCorrect();
+        addXP(25);
+        spokenVerdict = `Correct! Option ${correctLetter}. ${q.expl.split('.')[0]}. Moving to next question in three seconds.`;
+      } else {
+        playWrong();
+        resetStreak();
+        spokenVerdict = `Incorrect. You selected Option ${userLetter}. The correct answer was Option ${correctLetter}. ${q.expl.split('.')[0]}. Moving to next question in three seconds.`;
+      }
+
+      speakAudio(spokenVerdict, () => {
+        if (!voiceIsRunning) return;
+        voiceNextTimer = setTimeout(() => {
+          voiceCurrentIndex = (voiceCurrentIndex + 1) % examQuestions.length;
+          runVoiceStep();
+        }, 2500);
+      });
+    }
+
+    function speakSTARModelAnswer() {
+      if (!voiceIsRunning) return;
+      setVoiceHUDState('speaking', '🔊 EXAMINER PROVIDING MODEL STAR FEEDBACK...');
+      const card = interviewCards[voiceCurrentIndex];
+
+      const explEl = document.getElementById('voice-expl-box');
+      explEl.classList.remove('hidden');
+      explEl.innerHTML = `<strong>Benchmark Model Answer for Word/Data Processing Clerk III:</strong><div class="mt-1">${card.star}</div>`;
+
+      // Extract plain text from STAR card
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = card.star;
+      const plainStar = tempDiv.innerText.replace(/Situation:|Task:|Action:|Result:/g, '$&: ');
+
+      const responseScript = `Thank you, Candidate Jensen. Key assessment competencies for this response include: ${card.cat}. Here is your benchmark STAR answer: ${plainStar}. Say NEXT or tap next to advance.`;
+
+      speakAudio(responseScript, () => {
+        if (!voiceIsRunning) return;
+        setVoiceHUDState('listening', '🎙️ READY FOR NEXT QUESTION — SAY "NEXT"');
+        listenForVoiceResponse();
+      });
+    }
+
+    function voiceRepeatQuestion() {
+      if (speechRecognizer) {
+        try { speechRecognizer.stop(); } catch(e) {}
+      }
+      runVoiceStep();
+    }
+
+    function voiceSkipQuestion() {
+      if (speechRecognizer) {
+        try { speechRecognizer.stop(); } catch(e) {}
+      }
+      const total = voiceMode === 'exam' ? examQuestions.length : interviewCards.length;
+      voiceCurrentIndex = (voiceCurrentIndex + 1) % total;
+      runVoiceStep();
+    }
+
   </script>
 </body>
 </html>
