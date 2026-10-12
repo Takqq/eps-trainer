@@ -404,332 +404,332 @@
     // 1. QUESTION DATABASE (25 Comprehensive High-Yield Questions)
     // ========================================================
     const examQuestions = [
-      {
-        cat: "Redaction & Youth Criminal Justice",
-        title: "Mandatory Redaction under Youth Criminal Justice Act (YCJA)",
-        scenario: "You are reviewing body-worn video from a retail theft arrest. A 16-year-old youth is detained in handcuffs. In the background, two adult civilian store managers and a 14-year-old friend of the accused are standing near the door. What are your legal obligations regarding redaction before disclosing to Crown Counsel?",
-        options: [
-          "Redact only the 16-year-old accused's face because they are charged with an offence.",
-          "Redact both the 16-year-old accused and the 14-year-old witness/friend; youth identities are strictly protected under Section 110 of the YCJA.",
-          "No redaction is necessary because evidence disclosed to the Crown is exempt from privacy rules.",
-          "Redact all individuals except the 16-year-old, who lost anonymity upon committing an arrestable offence."
-        ],
-        answer: 1,
-        expl: "Section 110 of the Youth Criminal Justice Act (YCJA) strictly prohibits publishing or disclosing any information that identifies a youth as a person dealt with under the Act—including youth accused, youth victims, and youth witnesses. Both minors must have their faces and identifying attributes redacted."
-      },
-      {
-        cat: "Chain of Custody & Best Evidence",
-        title: "Best Evidence Rule & Cryptographic Hashing",
-        scenario: "An investigator requests that you export a 15-minute body-cam clip. Before performing any audio mutes or video blurs, what is the mandatory first step required under the Canada Evidence Act?",
-        options: [
-          "Apply color-correction to ensure faces are visible in court.",
-          "Confirm the master raw video is stored as a read-only original and generate/verify its cryptographic hash (MD5/SHA-256).",
-          "Burn the video directly to a physical DVD for the Crown prosecutor.",
-          "Rename the raw file to include the investigator's personal badge number."
-        ],
-        answer: 1,
-        expl: "Under the Best Evidence Rule and digital forensics standards, original electronic records must be preserved bit-for-bit in an unaltered master repository. Generating and verifying a cryptographic hash (SHA-256 or MD5) proves in court that the evidence has not been modified or tampered with."
-      },
-      {
-        cat: "Court Disclosure & Stinchcombe",
-        title: "Constitutional Duty of Disclosure (R. v. Stinchcombe)",
-        scenario: "A defense counsel requests full disclosure of all digital recordings related to an assault occurrence. A junior technician notices a 30-second body-worn video clip that appears to undermine the complainant's credibility. What must occur with this clip?",
-        options: [
-          "Withhold the clip from the disclosure package because it weakens the police case.",
-          "Delete the clip from the Digital Evidence Management System as non-material.",
-          "Disclose the clip to Crown Counsel; under R. v. Stinchcombe, the Crown has a constitutional duty to disclose all relevant information, whether inculpatory or exculpatory.",
-          "Wait until the trial date to see if defense explicitly asks for that specific minute."
-        ],
-        answer: 2,
-        expl: "Under the landmark Supreme Court ruling R. v. Stinchcombe (1991), the prosecution has a constitutional obligation to disclose all relevant information to the defense—both evidence that proves guilt (inculpatory) and evidence that supports innocence or damages witness credibility (exculpatory). Withholding evidence can cause charges to be stayed."
-      },
-      {
-        cat: "Forensic Boundaries & FVAD Escalation",
-        title: "Enhancement vs Redaction Boundaries",
-        scenario: "During a murder investigation review, an EPS Detective asks you to 'zoom in on the suspect's license plate in the corner of the frame and sharpen the letters' so they can read the characters. How should you respond?",
-        options: [
-          "Use Adobe Premiere Pro's sharpen and zoom filter to make the plate legible, then save over the file.",
-          "Explain that Digital Evidence Technicians only perform administrative redaction and formatting; escalate forensic video enhancement to the Forensic Video Analysis Detail (FVAD).",
-          "Advise the Detective that police are legally barred from ever zooming in on video evidence.",
-          "Take a screenshot and trace the letters manually in Photoshop."
-        ],
-        answer: 1,
-        expl: "Digital Evidence Technicians handle redactions, conversions, and disclosure packages. Forensic video analysis (clarifying, unblurring, sharpening, or photogrammetry) requires certified forensic analysts (LEVA trained) within the Forensic Video Analysis Detail (FVAD) to ensure court admissibility."
-      },
-      {
-        cat: "Third-Party Privacy & FOIP",
-        title: "FOIP & Bystander Privacy in Public Spaces",
-        scenario: "Officers responded to a disturbance in a public transit terminal. In the background of the 10-minute recording, several members of the public are sitting on benches, and an ATM machine screen displays a bystander's banking balance. What is the standard for redaction?",
-        options: [
-          "Leave everything unblurred because transit stations are public property with no expectation of privacy.",
-          "Redact only the transit terminal logo.",
-          "Redact personal identifiers of uninvolved bystanders and sensitive third-party financial data (the ATM screen) to protect privacy under FOIP/ATIA.",
-          "Redact the entire video because public bystanders are visible."
-        ],
-        answer: 2,
-        expl: "Under the Freedom of Information and Protection of Privacy Act (FOIP) and EPS evidence vetting standards, uninvolved bystanders and their sensitive personal/financial data (such as bank screens, phone texts, or driver's licenses) must be redacted when they have no evidentiary value to the charges."
-      },
-      {
-        cat: "Redaction Logging & Audit Trails",
-        title: "Audit Trail Disclosure Requirements",
-        scenario: "You have completed complex redactions on an audio/video recording, blurring two faces and muting 12 seconds of sensitive medical consultation. Why must your redaction log be meticulously preserved?",
-        options: [
-          "It is strictly for internal IT billing hours and never seen outside EPS.",
-          "Because the redaction audit log is itself subject to court disclosure to prove what was altered, why it was altered, and under what legal authority.",
-          "In case the software crashes and you need to restart from scratch.",
-          "To prove which camera lens was attached to the officer's uniform."
-        ],
-        answer: 1,
-        expl: "Every redaction marker, cut, or audio mute must be accompanied by an audit trail stating the timestamp, rationale (e.g. YCJA, S.17 FOIP), and technician ID. This audit log is disclosable to the Crown and defense to guarantee evidence integrity."
-      },
-      {
-        cat: "Queue Discipline & Triage",
-        title: "High-Volume Court Deadline Triage",
-        scenario: "At 08:30 AM, you have five disclosure requests in your queue. At 09:00 AM, a Crown Prosecutor contacts the unit requesting an emergency redaction of a 5-minute video for an in-custody bail hearing scheduled at 11:00 AM today. How do you triage?",
-        options: [
-          "Refuse the Crown's request because first-in, first-out rule must strictly apply to all files.",
-          "Triage the urgent in-custody bail hearing as top priority, notify the supervisor of the queue change, fulfill the request, and document the expedited delivery.",
-          "Hand the unredacted video directly to the Crown to save time.",
-          "Transfer all five routine files to another technician without asking."
-        ],
-        answer: 1,
-        expl: "Court-ordered deadlines and urgent in-custody bail hearings take operational precedence in judicial disclosure queues. Technicians must triage effectively, communicate timelines, and ensure redactions are completed before releasing files."
-      },
-      {
-        cat: "Officer Safety & Privilege",
-        title: "Informant & Tactical Method Redaction",
-        scenario: "In a recording of a high-risk search warrant execution, an undercover operative speaks with the arresting officers, and a confidential informant's cell phone number is read aloud over the police radio. What redactions are required?",
-        options: [
-          "Redact only the cell phone number; police officers can never be blurred.",
-          "Redact the undercover officer's face/voice and mute the confidential informant's phone number; protecting informant identity and officer safety is an absolute legal duty.",
-          "No redaction; police communications cannot be edited.",
-          "Delete the audio track completely."
-        ],
-        answer: 1,
-        expl: "Informer privilege is an absolute legal protection under Canadian law. Disclosing a confidential informant's identity or exposing an undercover officer's identity compromises lives and is strictly prohibited."
-      },
-      {
-        cat: "Technical File Formats & Codecs",
-        title: "Proprietary Video Formats vs Court Standard Export",
-        scenario: "A business provides CCTV surveillance evidence in a proprietary '.exe' or raw '.dav' container format that Crown and Court workstations cannot open. What is your role as a Digital Evidence Technician?",
-        options: [
-          "Tell the Crown Prosecutor to buy new software.",
-          "Convert/transcode the media into court-standard formats (e.g. MP4/H.264) using approved tools (e.g. Omnivore, AVS) while preserving frame rates and aspect ratios, and retaining the raw source file.",
-          "Re-record the screen with your smartphone camera.",
-          "Reject the evidence and instruct the investigator to re-seize it."
-        ],
-        answer: 1,
-        expl: "Technicians frequently vet and convert proprietary third-party surveillance CCTV into court-playable standard containers (e.g. MP4 using tools like Omnivore) while preserving the native frame rate, resolution, and aspect ratio without compression distortion."
-      },
-      {
-        cat: "Clerk III Data Processing",
-        title: "Occurrence Number & File Indexing Standards",
-        scenario: "You receive an officer's body-cam ingest. The dispatch CAD log lists Occurrence Number: '2026-104921', but the camera filename on the ingest dock is labeled 'EPS_2026_104912_UNIT14.mp4'. What action must you take?",
-        options: [
-          "Ignore the number; minor digit inversions do not matter in police databases.",
-          "Flag the transposition error (104921 vs 104912), cross-reference CAD dispatch records, and correct the indexing metadata before releasing to the disclosure repository.",
-          "Delete both files and start over.",
-          "Create a second fictitious occurrence number."
-        ],
-        answer: 1,
-        expl: "Transposed numbers (104921 vs 104912) are catastrophic in police recordkeeping because evidence will be lost in the database and missed during disclosure. Technicians perform rigorous quality checks to identify and correct indexing errors."
-      },
-      {
-        cat: "Psychological Resilience & Graphic Content",
-        title: "Secondary Traumatic Stress & Wellness",
-        scenario: "As part of your daily duties, you are required to review 6 hours of body-worn footage containing severe vehicle collision trauma and violent physical confrontations. What is the expected professional strategy for maintaining job performance and personal health?",
-        options: [
-          "Never take breaks and suppress emotional reactions until the shift ends.",
-          "Recognize signs of secondary traumatic stress, implement healthy boundaries, utilize micro-breaks, and proactively engage EPS Employee Wellness / EFAP resources when needed.",
-          "Discuss graphic details with friends and family over dinner.",
-          "Skip the violent sections of the video without reviewing them."
-        ],
-        answer: 1,
-        expl: "EPS expects technicians to demonstrate emotional maturity and resilience. Professionalism involves knowing one's boundaries, using ergonomic micro-breaks, and proactively using peer support and Employee and Family Assistance Programs (EFAP)."
-      },
-      {
-        cat: "Data Integrity & Naming Conventions",
-        title: "Standardized Naming Conventions in DEMS",
-        scenario: "When archiving multiple video files from an incident involving three officers (Car 1, Car 2, Car 3), why must consistent naming conventions (e.g., [YYYYMMDD]_[OCC#]_[BADGE]_[CAMTYPE]) be strictly enforced?",
-        options: [
-          "To make the desktop wallpaper look neat.",
-          "To enable rapid retrieval, automated query filtering, and eliminate duplicate or orphaned evidence across thousands of concurrent court files.",
-          "Because Taleo requires file names to be under 10 characters.",
-          "It is only required for traffic tickets."
-        ],
-        answer: 1,
-        expl: "Standardized naming conventions (Date, Occurrence #, Badge #, Camera Type) prevent orphaned files, allow cross-referencing between CAD and court files, and ensure disclosure packages can be assembled accurately."
-      },
-      {
-        cat: "Charter of Rights & Legal Standards",
-        title: "Section 11(b) Charter - Right to Trial Within Reasonable Time",
-        scenario: "Why is timeliness in fulfilling digital evidence court disclosure so critical under the Supreme Court of Canada's R. v. Jordan decision?",
-        options: [
-          "If police disclosure delays cause the case to exceed statutory ceilings (18 or 30 months), the charges may be dismissed under Section 11(b) for unreasonable delay.",
-          "Police officers will receive overtime penalties.",
-          "The Crown Attorney must pay a fine to the defense lawyer.",
-          "Evidence older than 6 months is automatically erased."
-        ],
-        answer: 0,
-        expl: "Under R. v. Jordan (2016), Canadian courts enforce strict ceilings on trial delays (18 months for provincial courts, 30 months for superior courts). Unreasonable delays caused by institutional backlogs or slow evidence disclosure can lead to stays of proceedings (charges thrown out)."
-      },
-      {
-        cat: "Security Clearance & Confidentiality",
-        title: "Enhanced Security Clearance Standards",
-        scenario: "You are working in the Digital Evidence Management Unit with an Enhanced Security Clearance. A high-profile criminal case involving a local celebrity is assigned to your queue. A police colleague from another division asks you: 'Hey, can you pull up that celebrity video so I can see what happened?' How do you respond?",
-        options: [
-          "Play the video for them as long as they promise not to record it on their phone.",
-          "Refuse immediately; digital evidence is strictly accessed on a 'need-to-know' operational basis. Unauthorized viewing violates policy and breaches security clearance.",
-          "Email a copy of the video to their private email account.",
-          "Charge them a fee to view the file."
-        ],
-        answer: 1,
-        expl: "Access to police records is strictly governed by 'need-to-know' and operational duty. Viewing or sharing digital evidence out of curiosity—even with another sworn member—is a severe breach of security, policy, and privacy legislation that can result in termination and criminal charges."
-      },
-      {
-        cat: "Redaction Techniques",
-        title: "Audio Redaction & Muting Protocols",
-        scenario: "An officer's body-worn camera captures an injured victim reciting their Social Insurance Number and home banking password to paramedics. What is the correct redaction methodology?",
-        options: [
-          "Cut out the 20 seconds of video entirely so the timeline jumps forward.",
-          "Apply an audio mute specifically over the sensitive identifiers while keeping the video timeline continuous and inserting an audit marker explaining the redaction.",
-          "Beep loudly over the entire conversation and delete the paramedic's notes.",
-          "Leave the audio untouched because paramedics are emergency personnel."
-        ],
-        answer: 1,
-        expl: "Cutting out video frames breaks timeline continuity and can trigger defense allegations of evidence tampering. The proper standard is an audio mute over the specific digits while keeping the video stream continuous and inserting an audit marker explaining the mute."
-      },
-      {
-        cat: "Evidence Acts & Admissibility",
-        title: "Electronic Records Integrity (Canada Evidence Act S. 31.2)",
-        scenario: "To satisfy the Canada Evidence Act regarding electronic documents, a system administrator or technician must be able to prove:",
-        options: [
-          "That the software was purchased from a Canadian company.",
-          "The integrity of the electronic record-keeping system in which the document was stored at all material times.",
-          "That the video was recorded in 4K resolution.",
-          "That all officers agreed with the verdict."
-        ],
-        answer: 1,
-        expl: "Section 31.2 of the Canada Evidence Act establishes that the best evidence rule is satisfied for electronic records if the integrity of the record-keeping system or storage system can be established."
-      },
-      {
-        cat: "Supervisory & Workflow Discipline",
-        title: "Process Improvement in Clerk III Role",
-        scenario: "As an experienced Clerk III, you notice that officers frequently fail to attach occurrence numbers to in-car camera uploads, causing a daily 45-minute search backlog for technicians. What proactive step aligns with the job duties?",
-        options: [
-          "Refuse to process any files without occurrence numbers and delete them.",
-          "Identify the pattern, document the impact, and submit a formal process improvement recommendation or intake checklist to the Unit Supervisor.",
-          "Complain to the union representative without telling your supervisor.",
-          "Manually guess the occurrence numbers each morning."
-        ],
-        answer: 1,
-        expl: "The posting explicitly lists 'Providing recommendations for process improvement' as a key responsibility. A Clerk III takes initiative to analyze workflow bottlenecks, document patterns, and suggest practical solutions to supervisors."
-      },
-      {
-        cat: "Redaction Scenarios",
-        title: "Medical Trauma & Nudity Vetting",
-        scenario: "Officers provide CPR to a stabbing victim whose torso and private areas are exposed due to paramedic intervention. The defense requests the video to examine the officer's initial interaction. What redaction is appropriate?",
-        options: [
-          "Do not redact; the jury must see every injury in high definition.",
-          "Pixelate or blur exposed genitalia and severe non-probative medical trauma to protect dignity under FOIP, while leaving the officer's verbal interaction intact.",
-          "Delete the video because nudity cannot be stored on police computers.",
-          "Speed up the video by 400% so it plays too fast to see."
-        ],
-        answer: 1,
-        expl: "Pixelating non-probative medical trauma and nudity preserves human dignity and complies with privacy standards while keeping the evidentiary conversation and officer actions intact."
-      },
-      {
-        cat: "Court Disclosure & Packages",
-        title: "Crown Disclosure Packages - Verification Step",
-        scenario: "Prior to transmitting a 4-file digital evidence package to the Crown Prosecution Service via secure portal, what final quality control check must you perform?",
-        options: [
-          "Check that each file plays back smoothly, redaction markers are correctly rendered, metadata tags match the occurrence file, and the audit certificate is attached.",
-          "Verify that the files have been compressed to under 5 MB regardless of quality.",
-          "Check if the Crown Prosecutor is online on Facebook.",
-          "Print the video frames onto paper."
-        ],
-        answer: 0,
-        expl: "Before formal submission to Crown Counsel, technicians verify playback integrity, ensure redaction blurs did not slip or fail to render, check that occurrence tags match, and attach the official disclosure audit certificate."
-      },
-      {
-        cat: "Technical Software",
-        title: "Evidence.com / Axon Cloud Permission Roles",
-        scenario: "In an enterprise Digital Evidence Management System (such as Evidence.com), why are strict permission roles and access tiers implemented?",
-        options: [
-          "To ensure technicians have higher rank than police detectives.",
-          "To enforce role-based access control (RBAC), prevent unauthorized sharing or tampering, and maintain a verifiable digital chain of custody.",
-          "To prevent officers from logging in from home.",
-          "To limit Internet bandwidth usage."
-        ],
-        answer: 1,
-        expl: "Role-Based Access Control (RBAC) in DEMS platforms ensures only authorized users with verified operational need can view, redact, or export specific evidence tiers, preventing leaks and preserving evidentiary integrity."
-      },
-      {
-        cat: "Data Processing & Excel",
-        title: "Clerk III - Managing Spreadsheets & Tracking Logs",
-        scenario: "You are tracking 200 monthly court disclosure requests in Microsoft Excel. Which function allows you to quickly highlight rows where the disclosure deadline is less than 48 hours away?",
-        options: [
-          "AutoSum",
-          "Conditional Formatting with a date formula (e.g., =DueDate - TODAY() <= 2)",
-          "Spell Check",
-          "Word Count"
-        ],
-        answer: 1,
-        expl: "Conditional formatting in Microsoft Excel allows users to set dynamic rules that automatically highlight time-sensitive rows (e.g., deadlines within 48 hours), ensuring urgent court files are never missed in the queue."
-      },
-      {
-        cat: "Legal Acts - Canada Evidence Act",
-        title: "Spousal Privilege & Incidental Audio",
-        scenario: "During an impaired driving investigation, the driver calls their spouse on speakerphone in the back of the cruiser. Spousal communications may carry legal privilege. What action is required?",
-        options: [
-          "Transcribe the phone call and post it on the incident board.",
-          "Flag the spousal communication with a marker and bring it to the Crown Prosecutor's attention for a legal privilege ruling before broad disclosure.",
-          "Delete the cruiser recording.",
-          "Encourage the driver to keep talking."
-        ],
-        answer: 1,
-        expl: "Privileged communications (spousal privilege, solicitor-client privilege) must be flagged by evidence technicians so Crown Counsel can make a formal determination on disclosure to prevent mistrials."
-      },
-      {
-        cat: "Queue Discipline",
-        title: "Conflicting Directives from Investigators",
-        scenario: "Detective A tells you: 'Do not redact anything on Occurrence 56123, release the raw file now.' However, your review reveals an unredacted 15-year-old victim clearly visible. What must you do?",
-        options: [
-          "Follow Detective A's verbal order immediately; sworn members overrule civilian technicians on legal statutes.",
-          "Politely advise Detective A of the mandatory YCJA Section 110 statutory requirement prohibiting youth disclosure, withhold release, and escalate to your Unit Supervisor if the conflict persists.",
-          "Release the file and blame Detective A if charges are filed against the police.",
-          "Call the 15-year-old's parents and ask if they mind."
-        ],
-        answer: 1,
-        expl: "Statutory legal duties (such as the Youth Criminal Justice Act) are federal law and cannot be waived by an individual investigator. Digital Evidence Technicians must protect statutory compliance and escalate to their Unit Supervisor."
-      },
-      {
-        cat: "Computer Literacy & Backups",
-        title: "Storage Architecture & Cloud Sync",
-        scenario: "A batch of body-cam footage uploaded to a local station dock fails to synchronize with the cloud DEMS repository due to a network outage. What is your immediate protocol?",
-        options: [
-          "Power down the station dock and unplug all cables.",
-          "Verify the files remain securely preserved on local dock cache, alert EPS IT / Systems Operations, and monitor the queue until complete synchronization is verified.",
-          "Tell officers to delete their cameras and start their next shift.",
-          "Take the dock hard drive home to upload from your personal Wi-Fi."
-        ],
-        answer: 1,
-        expl: "Technicians monitor synchronization queues, verify that local non-volatile cache holds the raw data, and notify IT Systems Operations to prevent data loss or truncated transfers."
-      },
-      {
-        cat: "Professional Ethics & Law Enforcement",
-        title: "Integrity & Disciplinary Standards",
-        scenario: "While vetting body-cam footage of an arrest, you notice conduct by an officer that appears to violate internal EPS policy. What is your responsibility as a civilian technician?",
-        options: [
-          "Delete that portion of the video to protect the officer.",
-          "Maintain absolute objectivity, log and preserve the complete evidence without alteration, and follow established reporting procedures according to EPS policy.",
-          "Post the video on social media anonymously.",
-          "Show the video to other clerks during break time."
-        ],
-        answer: 1,
-        expl: "Digital Evidence Technicians must maintain absolute neutrality, objectivity, and integrity. Tampering with or concealing evidence is a serious criminal offense. All evidence must be preserved bit-for-bit."
-      }
-    ];
+  {
+    "cat": "Statutory Compliance & Youth Protection",
+    "title": "Mandatory Redaction under Youth Criminal Justice Act (YCJA S.110)",
+    "scenario": "You are reviewing body-worn video from a retail theft arrest. A 16-year-old youth is detained in handcuffs. In the background, two adult civilian store managers and a 14-year-old companion of the accused are standing near the door. When preparing the judicial disclosure package, what are your legal redaction obligations regarding youth identities?",
+    "options": [
+      "Redact the 16-year-old accused only; non-charged youths and civilian companions in public commercial premises are governed under general municipal privacy standards rather than statutory bans.",
+      "Redact both the 16-year-old accused and the 14-year-old companion; Section 110 of the YCJA strictly prohibits disclosing any information identifying a young person as an accused, victim, or witness dealt with under the Act.",
+      "Leave all individuals unredacted in the initial Crown disclosure transmission, as Section 110 publication bans take legal effect only when evidence is formally introduced into open court.",
+      "Redact the 14-year-old companion as an innocent minor, but leave the 16-year-old accused visible because criminal charges waive youth privacy protections during indictable proceedings."
+    ],
+    "answer": 1,
+    "expl": "Section 110 of the Youth Criminal Justice Act (YCJA) strictly prohibits publishing or disclosing any information that identifies a young person dealt with under the Act\u2014including youth accused, youth victims, and youth witnesses. Both minors must have their faces and identifying attributes redacted prior to disclosure."
+  },
+  {
+    "cat": "Court Disclosure & Stinchcombe Principles",
+    "title": "Crown Transmission vs Defense Disclosure Architecture",
+    "scenario": "A technician is preparing digital evidence for an ongoing impaired driving prosecution. Under EPS DEMU operating policy and the landmark principles of R. v. Stinchcombe, what is the mandatory procedural distinction between the package transmitted to Crown Counsel and the package prepared for defense disclosure?",
+    "options": [
+      "Crown Counsel receives the unredacted master recording alongside itemized redaction logs and privilege flags, whereas defense receives the vetted copy with statutory and third-party redactions applied.",
+      "Both Crown and defense counsel must receive identical redacted copies simultaneously to ensure institutional compliance with Charter Section 7 rules against prosecutorial bias.",
+      "Crown Counsel receives only the redacted file to preserve witness confidentiality, while the unredacted master is permanently sealed in DEMU cold storage unless subpoenaed under a judicial production order.",
+      "Defense counsel receives the complete unredacted digital package directly from DEMU, provided defense counsel signs an administrative undertaking not to disclose third-party identities."
+    ],
+    "answer": 0,
+    "expl": "Under R. v. Stinchcombe and standard police disclosure workflows, Crown is the prosecuting authority and must receive the complete, unredacted first-party package with flagged privilege/statutory markers so they can evaluate the entire case. Defense receives the vetted package with necessary third-party privacy, informant, and YCJA redactions applied."
+  },
+  {
+    "cat": "Digital Forensics & Evidence Integrity",
+    "title": "Cryptographic Hashing & Video Transcoding Verification",
+    "scenario": "An investigator submits proprietary CCTV footage alongside Axon BWC files. You generate an SHA-256 hash of the native CCTV file. To ensure court playback, you convert the proprietary video into an MP4 container. The SHA-256 hash of the resulting MP4 differs from the raw master file. What does this hash mismatch signify?",
+    "options": [
+      "The mismatch confirms file corruption occurred during encoding; the conversion must be aborted and re-attempted using an uncompressed AVI container.",
+      "The difference indicates dropped video keyframes during rendering; the technician must increase export bitrate until the derivative SHA-256 hash matches the master.",
+      "The mismatch is standard because transcoding alters bitstream data; the raw master and its original hash remain the immutable best evidence, while the derivative MP4 receives its own documented hash.",
+      "The discrepancy renders the derivative file legally inadmissible under Canada Evidence Act Section 31.1; the court must be supplied only with the native proprietary player executable."
+    ],
+    "answer": 2,
+    "expl": "Transcoding or converting any media file inherently alters its bitstream structure, resulting in a completely different cryptographic hash. This is expected. Under forensic standards, the native raw master and its original SHA-256 hash remain untouched in the master repository as the Best Evidence, while the playable derivative MP4 is documented with its own distinct hash."
+  },
+  {
+    "cat": "Informer Privilege & Absolute Immunity",
+    "title": "Informer Privilege in Recorded Search Warrant Briefings",
+    "scenario": "During an audio-video recording of a tactical pre-raid briefing, an investigator mentions the confidential informant's handler code and describes the informant's personal vehicle. Crown Counsel requests a full, unredacted copy of the briefing for trial preparation. How must the technician handle the informant details?",
+    "options": [
+      "Release the complete unredacted briefing to Crown Counsel; informer privilege is an evidentiary bar against the defense, but police cannot withhold details from the Crown prosecutor.",
+      "Redact only the handler code while disclosing the vehicle description, as physical property observed on public roadways does not fall under statutory privilege.",
+      "Withhold the entire recording from disclosure and refer the file to the presiding judge to determine whether the informant information is material to the defense's alibi.",
+      "Redact both the handler code and vehicle description, document the redaction under Informer Privilege, and notify Crown; informer privilege is an absolute common-law duty binding both police and Crown."
+    ],
+    "answer": 3,
+    "expl": "Informer privilege is an absolute legal protection that belongs to the Crown and the informant jointly\u2014it cannot be waived by individual officers or Crown prosecutors, and judicial disclosure of any identifying detail is strictly prohibited. The technician must redact all identifying markers and log the legal privilege authority."
+  },
+  {
+    "cat": "Operational Boundaries & FVAD Escalation",
+    "title": "Administrative Redaction Scope vs Forensic Enhancement",
+    "scenario": "An investigator brings surveillance footage of a drive-by shooting where the suspect vehicle\u2019s license plate is obscured by high-speed motion blur. The detective asks you to 'use Premiere Pro's sharpness tools and frame stabilization to clarify the plate numbers.' What is the required operational response?",
+    "options": [
+      "Apply an unsharp mask and contrast adjustment in Adobe Premiere Pro, export the sharpened plate with an audit footnote, and link it to the CAD record.",
+      "Inform the detective that Digital Evidence Technicians handle formatting and redaction only; formal clarification or forensic video analysis must be referred to the Forensic Video Analysis Detail (FVAD).",
+      "Export the frame sequence into Photoshop to trace and reconstruct the degraded alphanumeric characters manually based on pixel brightness gradients.",
+      "Decline the request entirely, informing the detective that Canadian court rules prohibit any post-processing, enhancement, or stabilization of digital video evidence."
+    ],
+    "answer": 1,
+    "expl": "Digital Evidence Technicians perform administrative formatting, queue triage, and statutory redactions. Advanced forensic video enhancement (motion deblurring, photogrammetry, super-resolution) requires LEVA-certified forensic analysts within the Forensic Video Analysis Detail (FVAD) who can produce court-admissible forensic audit documentation and expert witness testimony."
+  },
+  {
+    "cat": "Canada Evidence Act & System Reliability",
+    "title": "Presumption of System Integrity (Canada Evidence Act S. 31.2)",
+    "scenario": "Defense counsel challenges the admissibility of body-worn video, arguing that the technician cannot personally account for every electronic transmission packet between the Axon dock and the cloud server. Under Section 31.2 of the Canada Evidence Act, how is the integrity of an electronic document established in court?",
+    "options": [
+      "By proving that the electronic record-keeping system or cloud repository was operating properly at all material times, or that any malfunction did not compromise the record's integrity.",
+      "By producing the physical solid-state drive from the body camera, accompanied by the manufacturer's signed cryptographic hardware compliance certificate.",
+      "By requiring every sworn officer present during the arrest to swear an affidavit confirming that the visual rendering matches their human recollection frame-for-frame.",
+      "By demonstrating that all cloud servers and network relay nodes reside exclusively within the municipal boundaries of the prosecuting jurisdiction."
+    ],
+    "answer": 0,
+    "expl": "Section 31.2 of the Canada Evidence Act creates a statutory presumption of integrity for electronic documents if it is established that the electronic record-keeping system was operating properly at all material times, or that any periodic system malfunction did not affect the integrity of the document."
+  },
+  {
+    "cat": "Privacy Compliance & FOIP Standards",
+    "title": "Bystander Privacy in Public Municipal Spaces (FOIP S. 17)",
+    "scenario": "Axon body-cam footage captures officers responding to a disturbance inside an Edmonton LRT transit concourse. While escorting the accused, the camera captures multiple uninvolved commuters waiting on benches, as well as an ATM display clearly displaying an unrelated patron's banking balance. What redaction standard applies for public court disclosure?",
+    "options": [
+      "Leave all imagery unblurred; individuals and banking machines in public transit hubs have zero statutory expectation of privacy under provincial legislation.",
+      "Redact the banking machine display only; pedestrian faces captured in municipal public facilities are exempt from third-party privacy redaction rules.",
+      "Redact third-party commuter faces and the ATM banking screen; under FOIP Section 17, non-probative personal and financial identifiers of uninvolved individuals must be protected.",
+      "Redact the entire video track and disclose only the synchronized audio recording between the arresting officer and the accused."
+    ],
+    "answer": 2,
+    "expl": "Under FOIP Section 17 and EPS evidence vetting standards, personal identifiers of uninvolved third parties (faces, vehicle plates) and sensitive personal/financial information (banking displays, medical data) must be redacted when they carry no evidentiary or probative value to the criminal charges."
+  },
+  {
+    "cat": "Technical Media Processing & Codecs",
+    "title": "Variable Frame Rate (VFR) vs Constant Frame Rate (CFR)",
+    "scenario": "When importing mobile phone or legacy CCTV footage into an NLE timeline for court preparation, you observe that audio synchronization drifts noticeably out of alignment as the video progresses. What technical factor is typically responsible, and what is the corrective protocol?",
+    "options": [
+      "The source video uses Variable Frame Rate (VFR) encoding; the media must be transcoded to a Constant Frame Rate (CFR) before processing to ensure persistent timeline synchronization.",
+      "The audio sample rate was recorded at 44.1 kHz instead of 48 kHz; the audio file must be resampled using WavePad before importing into the project.",
+      "The video file was encoded using an interlaced scan mode; the clip must be run through a de-interlacing filter with an adjusted field order.",
+      "The container format lacks SMPTE timecode metadata; the technician must burn a visual timecode overlay into the master file."
+    ],
+    "answer": 0,
+    "expl": "Variable Frame Rate (VFR) recordings (common in smartphones, body cameras with battery-saving modes, and cheap CCTV) vary frame presentation rates, causing NLE timelines to experience cumulative audio/video desynchronization. Transcoding the file to Constant Frame Rate (CFR) resolves the drift."
+  },
+  {
+    "cat": "Legal Privilege & Charter Protections",
+    "title": "Custodial Consultation & Solicitor-Client Privilege",
+    "scenario": "During prisoner transport in a patrol vehicle, the in-car camera captures an accused person using their cell phone on speaker to consult duty counsel following arrest. The recording clearly captures legal advice regarding plea negotiations. What is the technician's mandatory protocol?",
+    "options": [
+      "Transcribe the legal conversation in full and attach it as a separate confidential disclosure schedule for Crown review.",
+      "Disclose the recording unredacted, as conversations conducted inside marked police cruisers are deemed non-confidential under the Criminal Code.",
+      "Delete the in-car video recording from the DEMS repository to prevent defense from filing a Charter Section 10(b) breach application.",
+      "Isolate the privileged segment, apply an audio mute on disclosure copies, place the master file under restricted access hold, and formally alert Crown Counsel."
+    ],
+    "answer": 3,
+    "expl": "Solicitor-client privilege is a constitutional right protected under Section 10(b) of the Charter. When privileged communication is inadvertently captured on police equipment, technicians must isolate and protect the audio from general disclosure, apply restricted access controls in DEMS, and immediately notify Crown Counsel."
+  },
+  {
+    "cat": "Records Management & Error Correction",
+    "title": "CAD vs Ingest File Transposition & Reconciliation",
+    "scenario": "An officer docks an Axon body camera resulting in an ingested video titled 'EPS_2026_094812_CAR12.mp4'. However, the CAD dispatch log lists the occurrence number as '2026-094821', with identical timestamps, GPS coordinates, and assigned officers. What is the required records management action?",
+    "options": [
+      "Overwrite the raw video file's binary header using a hex editing utility to force the internal metadata to match the CAD occurrence number.",
+      "Verify cross-system attributes across CAD and DEMS, document the transposition correction in the audit trail, and index the file to occurrence '2026-094821'.",
+      "Create a secondary duplicate occurrence ticket in CAD numbered '2026-094812' to maintain numerical alignment with the camera file.",
+      "Reject the evidence ingest and flag the camera dock as defective, requiring field technicians to re-record the arrest logs."
+    ],
+    "answer": 1,
+    "expl": "Transposed digits (094812 vs 094821) are common clerical discrepancies that cause evidence to be orphaned in police databases. A Clerk III cross-references independent dispatch attributes, verifies the error, documents the correction in the audit log, and associates the recording with the legitimate CAD occurrence."
+  },
+  {
+    "cat": "Judicial Ceilings & Disclosure Timelines",
+    "title": "Charter Section 11(b) Ceilings & R. v. Jordan",
+    "scenario": "A complex multi-defendant case requires 60 hours of surveillance vetting. If administrative backlogs in digital evidence disclosure lead to protracted court adjournments exceeding statutory limits under R. v. Jordan, what judicial consequence threatens the prosecution?",
+    "options": [
+      "The presiding judge may order a stay of proceedings under Section 11(b) of the Charter, permanently halting the prosecution due to unreasonable trial delay.",
+      "The police service is assessed a mandatory administrative penalty payable to defense counsel for unnecessary court attendance costs.",
+      "The case is automatically transferred from Provincial Court to the Court of King's Bench to trigger an automatic 18-month timeline extension.",
+      "The evidence is admitted without defense cross-examination under the statutory doctrine of institutional substantial compliance."
+    ],
+    "answer": 0,
+    "expl": "Under R. v. Jordan (2016), Canadian courts enforce strict institutional ceilings (18 months in provincial courts without preliminary inquiry, 30 months in superior courts). Institutional disclosure delays that breach these ceilings without exceptional circumstances can result in a stay of proceedings (charges permanently dismissed)."
+  },
+  {
+    "cat": "Redaction Mechanics & Continuity",
+    "title": "Audio Muting vs Video Splicing in Evidence Vetting",
+    "scenario": "An officer\u2019s BWC records an injured victim providing their private Social Insurance Number and credit card details to emergency personnel. When redacting this sensitive data, why does EPS standard operating procedure mandate an audio mute rather than splicing out the video frames?",
+    "options": [
+      "Audio muting requires fewer CPU rendering cycles during batch export than splicing multi-track video timelines in DEMS software.",
+      "Provincial privacy legislation permits the redaction of audio streams but strictly forbids any alteration of video pixels in pre-trial files.",
+      "Removing video frames causes keyframe compression artifacts that permanently corrupt the container\u2019s audio codec profile.",
+      "Audio muting preserves unbroken video timeline continuity and timecode integrity, eliminating defense arguments of concealed physical conduct or evidence tampering."
+    ],
+    "answer": 3,
+    "expl": "Splicing or cutting frames out of police video creates gaps in the timecode, giving rise to defense motions claiming police concealed evidence or omitted critical physical actions during the missing seconds. Audio muting with explanatory audit tags maintains frame-by-frame visual continuity while safeguarding private information."
+  },
+  {
+    "cat": "Video Geometry & Aspect Ratio Standards",
+    "title": "Aspect Ratio Preservation & Geometric Distortion",
+    "scenario": "You are exporting legacy 4:3 standard-definition security footage into a modern 16:9 1080p high-definition container for court presentation. If you stretch the image horizontally to fill the widescreen frame without pillarboxing, what evidentiary problem arises?",
+    "options": [
+      "The video file will fail H.264 profile compliance and refuse to decode in standard Windows Media Player software.",
+      "The audio track will automatically undergo pitch-shifting due to temporal frame interpolation errors during rendering.",
+      "Altering the aspect ratio distorts the physical geometry of subjects, misleading the court regarding suspect height, width, and speed of motion.",
+      "The cryptographic SHA-256 hash will permanently lock the container against future redaction blurs."
+    ],
+    "answer": 2,
+    "expl": "Stretching 4:3 footage to fit 16:9 distorts physical geometry, making individuals appear shorter and broader than they actually are. In court, physical dimensions, suspect descriptions, and distance estimates are critical; technicians must preserve original aspect ratios using pillarboxing (black bars on sides) to maintain geometric fidelity."
+  },
+  {
+    "cat": "Evidentiary Action vs Bystander Privacy",
+    "title": "Use-of-Force Actions Adjacent to Third-Party Bystanders",
+    "scenario": "A body-worn camera captures an officer deploying physical control tactics against an aggressive suspect. Two uninvolved adult bystanders stand 4 feet away shouting advice. The camera shakes violently, causing bystander faces and the physical struggle to overlap within the frame. How must redaction be applied?",
+    "options": [
+      "Redact bystander faces using dynamic tracking masks while ensuring the officer\u2019s hands, physical strikes, and suspect reactions remain completely unobstructed.",
+      "Blur the entire upper quadrant containing both the bystanders and the officer's arm to guarantee civilian anonymity under FOIP guidelines.",
+      "Apply no redactions whatsoever, as bystander privacy rights are legally forfeited when individuals witness a physical police arrest in public.",
+      "Mute the entire audio track to remove bystander commentary while leaving the video unblurred to show physical officer conduct."
+    ],
+    "answer": 0,
+    "expl": "Evidentiary actions\u2014particularly officer use-of-force, weapon deployments, and suspect resistance\u2014must NEVER be obscured or redacted under any circumstances. Technicians must use precision spatial and temporal keyframes to blur only the non-probative bystander faces while leaving all physical interactions 100% visible."
+  },
+  {
+    "cat": "Spreadsheet Management & Data Integrity",
+    "title": "Preventing Duplicate File Entries in Clerk III Intake Tracking",
+    "scenario": "In managing a master intake spreadsheet tracking hundreds of monthly court disclosure files, entering duplicate occurrence numbers leads to redundant processing and misrouted evidence. Which Excel method best prevents duplicate occurrence numbers from being entered into Column A?",
+    "options": [
+      "Applying Conditional Formatting with a duplicate values rule to automatically delete redundant rows upon saving the workbook.",
+      "Inserting a helper column utilizing the formula =VLOOKUP(A1, A:A, 1, FALSE) to suppress subsequent row inputs.",
+      "Executing the Excel 'Consolidate Data' wizard at the conclusion of each daily processing shift.",
+      "Configuring a Data Validation custom rule with the formula: =COUNTIF($A:$A, A1)<=1 to reject duplicate entries at the point of input."
+    ],
+    "answer": 3,
+    "expl": "Data Validation with a =COUNTIF($A:$A, A1)<=1 rule intercepts user input in real time and displays an error alert preventing duplicate values from ever being committed to the cell. Conditional Formatting only changes appearance after entry, and VLOOKUP cannot block data entry."
+  },
+  {
+    "cat": "Audit Trails & Judicial Verification",
+    "title": "Evidentiary Function of the DEMS Redaction Certificate",
+    "scenario": "During a preliminary inquiry, defense counsel files a motion alleging that technicians intentionally blurred an exonerating hand gesture made by the accused. What official record is submitted to the court to rebut this claim and establish procedural transparency?",
+    "options": [
+      "A sworn character reference from the technician's direct supervisor attesting to the technician's professional impartiality.",
+      "The manufacturer hardware certificate proving that the camera dock firmware was certified bug-free during evidence ingest.",
+      "The comprehensive DEMS redaction audit log detailing frame-accurate timestamps, mask coordinates, statutory authorities, and technician user ID.",
+      "A copy of the internal scheduling roster showing that the technician was assigned to routine queue processing on the day of export."
+    ],
+    "answer": 2,
+    "expl": "The disclosable Redaction Audit Log / Certificate is the authoritative record in court. It documents the exact frame numbers, spatial coordinates, software tools, technician credential, and legal rationales (e.g. YCJA s.110, FOIP s.17) applied, proving exactly what was edited and why."
+  },
+  {
+    "cat": "Workplace Wellness & Graphic Exposure",
+    "title": "Mitigating Secondary Traumatic Stress in Evidence Review",
+    "scenario": "As part of daily DEMU duties, a technician is assigned to vet extended video files documenting severe motor vehicle fatalities, domestic violence, and physical abuse. What is the professionally recognized approach within EPS for mitigating vicarious trauma and maintaining performance?",
+    "options": [
+      "Working continuously without pauses to accelerate completion of traumatic queues and minimize cumulative emotional exposure time.",
+      "Discussing specific evidentiary details and graphic imagery with family members at home to process stress through informal debriefing.",
+      "Skipping forward through violent or traumatic footage sections without review and logging the file as verified by visual inspection.",
+      "Setting structured cognitive boundaries, taking periodic micro-breaks, utilizing peer support networks, and proactively engaging EPS EFAP resources."
+    ],
+    "answer": 3,
+    "expl": "EPS emphasizes operational wellness and psychological resilience for members reviewing graphic evidence. Technicians must maintain healthy psychological boundaries, take ergonomic/cognitive micro-breaks, avoid informal disclosures outside work, and utilize Employee and Family Assistance Programs (EFAP) and peer support."
+  },
+  {
+    "cat": "Security Clearance & Confidentiality",
+    "title": "Need-to-Know Governance under Enhanced Security Clearance",
+    "scenario": "An off-duty patrol officer visits the Digital Evidence office and asks to view body-worn video from a high-profile arrest involving a well-known community figure, stating they want to 'see how the unit handled the suspect.' How must the technician respond?",
+    "options": [
+      "Permit the officer to view the recording provided the officer records their badge number in the unit's visitor logbook.",
+      "Firmly decline access; digital evidence is strictly governed by operational need-to-know, and unauthorized viewing breaches Enhanced Security Clearance policies.",
+      "Provide a low-resolution watermarked copy on an encrypted flash drive for the officer's personal educational review.",
+      "Orally summarize the physical events and witness statements while withholding the actual video stream from playback."
+    ],
+    "answer": 1,
+    "expl": "Under EPS Enhanced Security Clearance and police information security standards, records access is strictly governed by verified operational 'need-to-know'. Curiosity viewing\u2014even by sworn members\u2014is a severe security violation that can lead to clearance revocation, disciplinary sanctions, and termination."
+  },
+  {
+    "cat": "Technical Data Ingest & Calibration",
+    "title": "Clock Drift Offset Between Body Camera and CAD Logs",
+    "scenario": "While cross-referencing an Axon BWC ingest against the dispatch CAD log, you notice the body camera timecode is offset by +3 minutes and 42 seconds compared to the CAD call dispatch time. What is the required protocol?",
+    "options": [
+      "Transcode the video file in Premiere Pro to burn a shifted, artificially synchronized timecode directly over the video frames.",
+      "Reject the evidence ingest and flag the video as inadmissible due to corrupted temporal data.",
+      "Adjust the master CAD dispatch log backwards by 3 minutes and 42 seconds to achieve numerical parity with the body camera.",
+      "Document the exact clock drift offset in the DEMS metadata and audit notes, while preserving the native camera timecode without frame alteration."
+    ],
+    "answer": 3,
+    "expl": "Body camera internal clocks may drift between docking cycles. Technicians must never modify or burn altered timecodes onto raw footage, nor alter CAD logs. The verified protocol is to calculate the drift, document the offset in the DEMS metadata and disclosure log, and preserve the raw data unaltered."
+  },
+  {
+    "cat": "Codec Selection & Judicial Interoperability",
+    "title": "H.264 (MPEG-4 AVC) vs H.265 (HEVC) in Court Disclosure",
+    "scenario": "Why is H.264 (MPEG-4 AVC) widely mandated over H.265 (HEVC) for standardized digital evidence court disclosure packages, despite H.265 offering significantly better compression efficiency?",
+    "options": [
+      "H.264 incorporates a mandatory Canadian judicial digital watermark that H.265 compression profiles do not support.",
+      "H.265 strips audio synchronization tracks during export, requiring separate multi-channel audio containers.",
+      "H.264 offers near-universal compatibility across legacy Court, Crown, and defense workstations without requiring proprietary codec licensing or third-party players.",
+      "H.265 is restricted under municipal records retention guidelines due to international proprietary encryption standards."
+    ],
+    "answer": 2,
+    "expl": "In judicial environments, disclosure packages must play reliably on standard government and defense computer systems without third-party codec packs or administrative privileges to install new software. H.264 has ubiquitous hardware and software decoding support, making it the court-safe standard."
+  },
+  {
+    "cat": "Records Retention & Disclosure Workflows",
+    "title": "Investigative Holds vs Defense Production Demands",
+    "scenario": "Defense counsel submits an informal disclosure demand directly to DEMU for body-worn video from an active armed robbery case. The file in DEMS is marked with an active 'Investigative Hold' by the lead detective because accomplices remain unidentified. How must the technician handle this demand?",
+    "options": [
+      "Release the requested video immediately, as defense disclosure rights under R. v. Stinchcombe supersede internal police investigative holds.",
+      "Provide defense counsel with a low-bitrate preview copy while withholding the full-resolution master until the hold expires.",
+      "Direct defense counsel to submit their disclosure request through Crown Prosecution; civilian technicians do not release active case files directly to defense.",
+      "Delete the investigative hold tag in DEMS, as administrative holds cannot remain active past 30 days from incident date."
+    ],
+    "answer": 2,
+    "expl": "Civilian DEMU technicians do not handle direct, informal defense evidence requests, especially on active investigations under hold. All criminal disclosure flows formally through the Crown Prosecution Service and the assigned lead investigator in coordination with the Courts."
+  },
+  {
+    "cat": "Evidence Acts & Privilege Boundaries",
+    "title": "Spousal Communication & Canada Evidence Act S. 4",
+    "scenario": "During an impaired driving investigation, the accused uses their personal phone in the cruiser to call their legal spouse and makes incriminatory remarks. When preparing the recording for Crown disclosure, how should this communication be addressed under Section 4 of the Canada Evidence Act?",
+    "options": [
+      "Redact the communication permanently, as spousal communications are subject to absolute, non-waivable privilege in all Canadian criminal matters.",
+      "Disclose the recording with no commentary, as spousal privilege applies strictly to viva voce witness testimony on the stand, not recorded statements.",
+      "Flag the spousal communication with a timecode marker, insert a privilege advisory in the disclosure notes, and notify Crown Counsel for a legal determination.",
+      "Delete the audio track during the call to prevent defense counsel from filing a motion for unreasonable search and seizure."
+    ],
+    "answer": 2,
+    "expl": "Spousal communication privilege under Section 4 of the Canada Evidence Act involves nuanced legal thresholds. Technicians do not make unilateral final legal rulings or delete recordings; they identify the sensitive exchange, apply a privilege flag with timecode markers, and refer the file to Crown Counsel to decide admissibility."
+  },
+  {
+    "cat": "Digital Evidence Management Architecture",
+    "title": "Immutable Master Repository vs Derivative Working Copies",
+    "scenario": "In an enterprise Digital Evidence Management System (such as Evidence.com), what is the foundational relationship between the 'Master Repository' and 'Derivative Working Copies'?",
+    "options": [
+      "The master file is updated and replaced in place whenever redaction blurs or audio mutes are committed by the technician.",
+      "Derivative copies are archived in active storage while the master file is permanently purged after 90 days to comply with FOIP retention rules.",
+      "The master file remains an immutable, read-only bitstream from which non-destructive derivative working copies are generated for vetting and court export.",
+      "Master files and derivative working copies must produce identical SHA-256 cryptographic hashes upon judicial disclosure."
+    ],
+    "answer": 2,
+    "expl": "The bedrock principle of DEMS and digital evidence architecture is non-destructive workflow: the raw master evidence file is write-once/read-only (immutable). Any conversion, redaction, or clipping creates a distinct derivative working copy, ensuring the original evidence can never be tampered with or overwritten."
+  },
+  {
+    "cat": "Statutory Duties & Chain of Command",
+    "title": "Investigator Directive vs Mandatory Statutory Protection",
+    "scenario": "A senior detective instructs a technician: 'Do not redact the 15-year-old victim\u2019s face in Occurrence 56123; Crown needs to show the jury the victim\u2019s emotional demeanor.' However, YCJA Section 110 mandates youth anonymity. What is the required course of action?",
+    "options": [
+      "Comply with the detective's verbal instruction, noting in the file that sworn investigator rank supersedes civilian statutory compliance.",
+      "Advise the detective that YCJA Section 110 is a non-waivable federal statute, provide Crown with an unredacted copy marked with mandatory youth flags, and escalate to your DEMU supervisor if necessary.",
+      "Unilaterally close the disclosure request and report the detective to the Professional Standards Branch for an ethics violation.",
+      "Redact only the victim's hair and ears while leaving the facial features visible to achieve an operational compromise."
+    ],
+    "answer": 1,
+    "expl": "Statutory federal law (YCJA Section 110) cannot be waived by an individual police officer, regardless of rank. Technicians must respectfully maintain statutory boundaries, inform the investigator of the mandatory protection, ensure Crown receives proper flagged materials, and escalate any departmental conflict to their civilian unit supervisor."
+  },
+  {
+    "cat": "Video Resolution & Evidentiary Quality Assurance",
+    "title": "Resolution Downscaling & Detail Preservation",
+    "scenario": "A 4K (3840x2160) commercial security camera file is ingested into DEMS. The municipal court transmission portal accepts a maximum resolution of 1080p (1920x1080). When downscaling the file for court submission, what critical quality assurance protocol must the technician follow?",
+    "options": [
+      "Apply 200% digital zoom to the downscaled file to force distant pixels into higher spatial alignment.",
+      "Verify that critical evidentiary details (such as facial features and distant license plates) remain legible in the downscaled export, while ensuring the uncompressed 4K master is preserved in DEMS.",
+      "Increase the output audio gain by 12 dB to compensate for the reduction in visual spatial resolution.",
+      "Transcode the video file into an animated GIF container to ensure universal compatibility with court recording software."
+    ],
+    "answer": 1,
+    "expl": "When downscaling high-resolution footage (4K to 1080p), the technician must verify that compression or downsampling does not destroy small, critical evidentiary details like distant license plates or facial features, and verify that the unadulterated 4K master remains preserved in DEMS if forensic enlargement by FVAD is required."
+  }
+];
 
     // Exam Engine Variables
     let currentQ = 0;
