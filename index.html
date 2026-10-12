@@ -376,34 +376,42 @@
         </div>
 
         <!-- Mode & Audio Settings Bar -->
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 my-4 p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 my-4 p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs">
           <div>
             <label class="block text-slate-400 font-semibold mb-1">Drill Mode:</label>
-            <select id="voice-mode-select" onchange="changeVoiceMode(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
-              <option value="exam" selected>📝 Written Exam (25 Questions)</option>
-              <option value="star">🎙️ EPS Oral Board (6 STAR Questions)</option>
+            <select id="voice-mode-select" onchange="changeVoiceMode(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1.5 font-semibold focus:outline-none focus:border-blue-500 text-[11px]">
+              <option value="exam" selected>📝 Written Exam (25Q)</option>
+              <option value="star">🎙️ Oral Board (6 STAR)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Voice Profile:</label>
+            <select id="voice-gender-select" onchange="changeVoiceGender(this.value)" class="w-full bg-slate-900 border border-blue-500/50 text-blue-300 rounded-lg px-2 py-1.5 font-bold focus:outline-none focus:border-blue-400 text-[11px]">
+              <option value="male" selected>👨 Male Examiner (Sergeant)</option>
+              <option value="male-deep">👨‍💼 Deep Male Baritone</option>
+              <option value="female">👩 Female Examiner</option>
             </select>
           </div>
           <div>
             <label class="block text-slate-400 font-semibold mb-1">Audio Method:</label>
-            <select id="voice-input-method" onchange="changeInputMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
-              <option value="mic">🎙️ Two-Way Microphone (Chrome/Edge)</option>
-              <option value="auto" selected>📻 Auto-Paced Audio (All Browsers & Firefox)</option>
+            <select id="voice-input-method" onchange="changeInputMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1.5 font-semibold focus:outline-none focus:border-blue-500 text-[11px]">
+              <option value="mic">🎙️ Two-Way Mic (Chrome/Edge)</option>
+              <option value="auto" selected>📻 Auto-Paced Audio (All)</option>
             </select>
           </div>
           <div>
             <label class="block text-slate-400 font-semibold mb-1">Speech Speed:</label>
-            <select id="voice-rate-select" onchange="changeVoiceRate(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
+            <select id="voice-rate-select" onchange="changeVoiceRate(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1.5 font-semibold focus:outline-none focus:border-blue-500 text-[11px]">
               <option value="0.95">Relaxed (0.95x)</option>
-              <option value="1.0" selected>Standard Pace (1.0x)</option>
-              <option value="1.15">Brisk / Quick (1.15x)</option>
+              <option value="1.0" selected>Standard (1.0x)</option>
+              <option value="1.15">Brisk (1.15x)</option>
             </select>
           </div>
-          <div>
-            <label class="block text-slate-400 font-semibold mb-1">Read Options Aloud:</label>
-            <select id="voice-read-options-select" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
-              <option value="full" selected>Yes - Read Question + Options</option>
-              <option value="fast">Fast - Read Question Only</option>
+          <div class="col-span-2 sm:col-span-1">
+            <label class="block text-slate-400 font-semibold mb-1">Read Options:</label>
+            <select id="voice-read-options-select" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1.5 font-semibold focus:outline-none focus:border-blue-500 text-[11px]">
+              <option value="full" selected>Yes - Full Options A-D</option>
+              <option value="fast">Fast - Question Only</option>
             </select>
           </div>
         </div>
@@ -1805,6 +1813,7 @@
     let voiceCurrentIndex = 0;
     let voiceMode = 'exam'; // 'exam' or 'star'
     let voiceInputMethod = 'auto'; // 'mic' or 'auto'
+    let voiceGender = 'male'; // 'male', 'male-deep', 'female'
     let voiceRate = 1.0;
     let voiceWakeLock = null;
     let speechRecognizer = null;
@@ -1910,6 +1919,59 @@
       voiceRate = parseFloat(rate);
     }
 
+    function changeVoiceGender(gender) {
+      voiceGender = gender;
+      if (synth) synth.cancel();
+      if (voiceIsRunning && voiceState === 'speaking') {
+        runVoiceStep();
+      }
+    }
+
+    function getBestVoice(gender) {
+      if (!synth) return null;
+      const voices = synth.getVoices();
+      if (!voices || voices.length === 0) return null;
+
+      const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+      if (englishVoices.length === 0) return voices[0];
+
+      const maleKeywords = [
+        'david', 'mark', 'george', 'guy', 'ryan', 'daniel', 'oliver', 'alex', 'fred', 'lee', 
+        'male', 'standard-b', 'standard-d', 'wavenet-b', 'wavenet-d', 'neural2-d', 'neural2-j'
+      ];
+
+      const femaleKeywords = [
+        'zira', 'eva', 'susan', 'samantha', 'victoria', 'karen', 'jenny', 'aria', 'hazel', 
+        'catherine', 'helena', 'female', 'woman', 'standard-a', 'standard-c', 'wavenet-a', 'wavenet-c', 'neural2-f'
+      ];
+
+      if (gender === 'male' || gender === 'male-deep') {
+        // Priority 1: Named male voices
+        let match = englishVoices.find(v => {
+          const name = v.name.toLowerCase();
+          return maleKeywords.some(kw => name.includes(kw));
+        });
+        if (match) return match;
+
+        // Priority 2: Any English voice that does not match female keywords
+        match = englishVoices.find(v => {
+          const name = v.name.toLowerCase();
+          return !femaleKeywords.some(kw => name.includes(kw));
+        });
+        if (match) return match;
+
+        return englishVoices[0];
+      } else {
+        // Female voice requested
+        let match = englishVoices.find(v => {
+          const name = v.name.toLowerCase();
+          return femaleKeywords.some(kw => name.includes(kw));
+        });
+        if (match) return match;
+        return englishVoices[0];
+      }
+    }
+
     function speakAudio(text, onEnd) {
       if (!synth) {
         if (onEnd) onEnd();
@@ -1918,10 +1980,19 @@
       synth.cancel();
       const utt = new SpeechSynthesisUtterance(text);
       utt.rate = voiceRate;
-      utt.pitch = 1.0;
-      const voices = synth.getVoices();
-      const voice = voices.find(v => v.lang.startsWith('en-CA') || v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
+
+      // Authentic masculine pitch tuning (deep authoritative sergeant/examiner)
+      if (voiceGender === 'male-deep') {
+        utt.pitch = 0.72; // Deep baritone
+      } else if (voiceGender === 'male') {
+        utt.pitch = 0.84; // Solid, calm male authority
+      } else {
+        utt.pitch = 1.05; // Standard female pitch
+      }
+
+      const voice = getBestVoice(voiceGender);
       if (voice) utt.voice = voice;
+
       utt.onend = () => {
         if (onEnd && voiceIsRunning) onEnd();
       };
@@ -1929,6 +2000,13 @@
         if (onEnd && voiceIsRunning) onEnd();
       };
       synth.speak(utt);
+    }
+
+    // Pre-load voices on browser ready
+    if (synth && synth.onvoiceschanged !== undefined) {
+      synth.onvoiceschanged = () => {
+        getBestVoice(voiceGender);
+      };
     }
 
     function toggleVoiceDrill() {
