@@ -376,12 +376,19 @@
         </div>
 
         <!-- Mode & Audio Settings Bar -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4 p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 my-4 p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs">
           <div>
             <label class="block text-slate-400 font-semibold mb-1">Drill Mode:</label>
             <select id="voice-mode-select" onchange="changeVoiceMode(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
-              <option value="exam" selected>📝 Written Exam Q&A (25 Law & Policy Questions)</option>
-              <option value="star">🎙️ EPS Oral Board Mock Interview (6 STAR Questions)</option>
+              <option value="exam" selected>📝 Written Exam (25 Questions)</option>
+              <option value="star">🎙️ EPS Oral Board (6 STAR Questions)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Audio Method:</label>
+            <select id="voice-input-method" onchange="changeInputMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
+              <option value="mic">🎙️ Two-Way Microphone (Chrome/Edge)</option>
+              <option value="auto" selected>📻 Auto-Paced Audio (All Browsers & Firefox)</option>
             </select>
           </div>
           <div>
@@ -393,11 +400,22 @@
             </select>
           </div>
           <div>
-            <label class="block text-slate-400 font-semibold mb-1">Read Full Options Aloud:</label>
+            <label class="block text-slate-400 font-semibold mb-1">Read Options Aloud:</label>
             <select id="voice-read-options-select" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 font-semibold focus:outline-none focus:border-blue-500">
-              <option value="full" selected>Yes - Read Question + Options A, B, C, D</option>
-              <option value="fast">Fast - Read Question Only (Glance for choices)</option>
+              <option value="full" selected>Yes - Read Question + Options</option>
+              <option value="fast">Fast - Read Question Only</option>
             </select>
+          </div>
+        </div>
+
+        <!-- Firefox / Browser Support Banner -->
+        <div id="browser-support-banner" class="mb-4 p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200 text-xs flex items-start space-x-2.5">
+          <span class="text-base shrink-0">🦊</span>
+          <div>
+            <span class="font-bold text-amber-300">Firefox Browser Notice:</span>
+            Firefox does not have native speech-to-text recognition enabled by default. 
+            <strong>Auto-Paced Bluetooth Audio</strong> is active: questions and options are read aloud over Bluetooth, with a comfortable 6-second pause before revealing the answer.
+            <div class="mt-1 text-[11px] text-slate-400"><em>Tip: For two-way spoken microphone recognition (speaking "A", "B", "C", "D" into your mic), simply open this link in <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>!</em></div>
           </div>
         </div>
 
@@ -1775,43 +1793,79 @@
       renderQuestion(0);
       initRedactionStages();
       loadRedactionStage(0);
+      initVoiceBrowserCheck();
       initSpotter();
       renderCard(0);
     };
 
     // ========================================================
-    // 5. HANDS-FREE BLUETOOTH & VOICE ENGINE
+    // 5. HANDS-FREE BLUETOOTH & VOICE ENGINE (WITH FIREFOX & AUTO-PACED AUDIO SUPPORT)
     // ========================================================
     let voiceIsRunning = false;
     let voiceCurrentIndex = 0;
     let voiceMode = 'exam'; // 'exam' or 'star'
+    let voiceInputMethod = 'auto'; // 'mic' or 'auto'
     let voiceRate = 1.0;
     let voiceWakeLock = null;
     let speechRecognizer = null;
     let synth = window.speechSynthesis;
     let voiceNextTimer = null;
+    let voiceCountdownInterval = null;
     let voiceState = 'idle'; // 'idle', 'speaking', 'listening', 'evaluating'
+
+    const hasNativeSpeechRec = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+    function initVoiceBrowserCheck() {
+      const banner = document.getElementById('browser-support-banner');
+      const select = document.getElementById('voice-input-method');
+      if (hasNativeSpeechRec) {
+        if (banner) {
+          banner.className = "mb-4 p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-emerald-200 text-xs flex items-start space-x-2.5";
+          banner.innerHTML = `
+            <span class="text-base shrink-0">🎙️</span>
+            <div>
+              <span class="font-bold text-emerald-300">Two-Way Microphone Audio Active:</span>
+              Your browser supports native microphone speech recognition. You can speak "A", "B", "C", "D", or "Repeat" over Bluetooth!
+            </div>
+          `;
+        }
+        if (select) {
+          select.value = 'mic';
+          voiceInputMethod = 'mic';
+        }
+      } else {
+        // Firefox or browser without native speech recognition
+        if (select) {
+          select.value = 'auto';
+          voiceInputMethod = 'auto';
+        }
+      }
+    }
 
     function initSpeechRecognizer() {
       const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRec) {
-        console.warn('SpeechRecognition API not available in this browser.');
+      if (!SpeechRec) return null;
+      try {
+        const rec = new SpeechRec();
+        rec.continuous = false;
+        rec.interimResults = false;
+        rec.lang = 'en-US';
+        rec.maxAlternatives = 3;
+        return rec;
+      } catch (e) {
         return null;
       }
-      const rec = new SpeechRec();
-      rec.continuous = false;
-      rec.interimResults = false;
-      rec.lang = 'en-US';
-      rec.maxAlternatives = 3;
-      return rec;
     }
 
     async function requestScreenWakeLock() {
       if ('wakeLock' in navigator) {
         try {
           voiceWakeLock = await navigator.wakeLock.request('screen');
-          document.getElementById('voice-wakelock-status').innerText = '🔒 Screen Locked Awake';
-          document.getElementById('voice-wakelock-status').className = 'text-[11px] px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400 font-mono font-bold';
+          const el = document.getElementById('voice-wakelock-status');
+          if (el) {
+            el.innerText = '🔒 Screen Locked Awake';
+            el.className = 'text-[11px] px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400 font-mono font-bold';
+          }
         } catch (e) {
           console.warn('Wake Lock request error:', e);
         }
@@ -1840,6 +1894,15 @@
         runVoiceStep();
       } else {
         updateVoiceHUDIdle();
+      }
+    }
+
+    function changeInputMethod(method) {
+      voiceInputMethod = method;
+      if (method === 'mic' && !hasNativeSpeechRec) {
+        alert("Your current browser (Firefox) does not support microphone speech-to-text. Please use Chrome or Edge for microphone input, or enjoy Auto-Paced Audio mode here!");
+        document.getElementById('voice-input-method').value = 'auto';
+        voiceInputMethod = 'auto';
       }
     }
 
@@ -1893,6 +1956,7 @@
         try { speechRecognizer.abort(); } catch (e) {}
       }
       if (voiceNextTimer) clearTimeout(voiceNextTimer);
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
       releaseScreenWakeLock();
 
       const btn = document.getElementById('voice-main-btn');
@@ -1964,11 +2028,12 @@
     function runVoiceStep() {
       if (!voiceIsRunning) return;
       if (voiceNextTimer) clearTimeout(voiceNextTimer);
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
 
       const isExam = voiceMode === 'exam';
       const items = isExam ? examQuestions : interviewCards;
       if (voiceCurrentIndex >= items.length) {
-        voiceCurrentIndex = 0; // Loop or complete
+        voiceCurrentIndex = 0; // Loop
       }
 
       const currentItem = items[voiceCurrentIndex];
@@ -1981,7 +2046,6 @@
       let speechScript = '';
       if (isExam) {
         const readOptions = document.getElementById('voice-read-options-select').value;
-        const letters = ['Alpha', 'Bravo', 'Charlie', 'Delta'];
         speechScript = `Question ${voiceCurrentIndex + 1}. ${currentItem.title}. ${currentItem.scenario}. `;
         if (readOptions === 'full') {
           speechScript += `Option A: ${currentItem.options[0]}. `;
@@ -1996,32 +2060,57 @@
 
       speakAudio(speechScript, () => {
         if (!voiceIsRunning) return;
-        listenForVoiceResponse();
+        if (voiceInputMethod === 'mic' && hasNativeSpeechRec) {
+          listenForVoiceResponse();
+        } else {
+          runAutoPacedCountdown();
+        }
       });
+    }
+
+    // Auto-Paced Audio Mode (For Firefox & Drivers who want hands-off audio)
+    function runAutoPacedCountdown() {
+      if (!voiceIsRunning) return;
+      setVoiceHUDState('listening', '⏱️ PAUSE TO THINK / SPEAK (REVEALING IN 6s...)');
+      playBeep(520, 'sine', 0.15);
+      
+      let countdown = 6;
+      document.getElementById('voice-transcript-text').innerText = `"Auto-Paced Mode: Think or speak your answer... Revealing in ${countdown}s (or tap A, B, C, D below)"`;
+      
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
+      voiceCountdownInterval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          document.getElementById('voice-transcript-text').innerText = `"Auto-Paced Mode: Think or speak your answer... Revealing in ${countdown}s (or tap A, B, C, D below)"`;
+        } else {
+          clearInterval(voiceCountdownInterval);
+        }
+      }, 1000);
+
+      voiceNextTimer = setTimeout(() => {
+        if (voiceIsRunning) {
+          if (voiceMode === 'exam') {
+            const q = examQuestions[voiceCurrentIndex];
+            evaluateSpokenChoice(q.answer, true); // true = auto-revealed
+          } else {
+            speakSTARModelAnswer();
+          }
+        }
+      }, 6200);
     }
 
     function listenForVoiceResponse() {
       if (!voiceIsRunning) return;
       setVoiceHUDState('listening', '🎙️ LISTENING FOR YOUR ANSWER... (SAY: A, B, C, D, OR REPEAT)');
       playBeep(587, 'sine', 0.12);
-      document.getElementById('voice-transcript-text').innerText = '"Listening for your voice..."';
+      document.getElementById('voice-transcript-text').innerText = '"Listening for your voice over microphone..."';
 
       if (!speechRecognizer) {
         speechRecognizer = initSpeechRecognizer();
       }
 
       if (!speechRecognizer) {
-        // Fallback for browsers without Web Speech Recognition: Timed Auto-Advance
-        document.getElementById('voice-transcript-text').innerText = '"Microphone recognition unavailable on this browser. Auto-evaluating in 6s..."';
-        voiceNextTimer = setTimeout(() => {
-          if (voiceIsRunning) {
-            if (voiceMode === 'exam') {
-              evaluateSpokenAnswer('B'); // preview
-            } else {
-              speakSTARModelAnswer();
-            }
-          }
-        }, 6000);
+        runAutoPacedCountdown();
         return;
       }
 
@@ -2037,12 +2126,10 @@
           console.warn('SpeechRecognition error:', event.error);
           if (voiceIsRunning && voiceState === 'listening') {
             if (event.error === 'no-speech') {
-              // Prompt user once and restart
               speakAudio("I didn't hear an answer. Say A, B, C, or D, or say Repeat.", () => {
                 if (voiceIsRunning) listenForVoiceResponse();
               });
             } else {
-              // Retry listening
               setTimeout(() => { if (voiceIsRunning) listenForVoiceResponse(); }, 1500);
             }
           }
@@ -2050,7 +2137,6 @@
 
         speechRecognizer.onend = () => {
           if (voiceIsRunning && voiceState === 'listening') {
-            // Restart listening if still waiting for answer
             try { speechRecognizer.start(); } catch (e) {}
           }
         };
@@ -2058,13 +2144,13 @@
         speechRecognizer.start();
       } catch (err) {
         console.warn('Recognizer start exception:', err);
+        runAutoPacedCountdown();
       }
     }
 
     function handleSpokenTranscript(text) {
       const lower = text.toLowerCase();
 
-      // Check command words first
       if (/(repeat|again|say again|pardon|what)/.test(lower)) {
         voiceRepeatQuestion();
         return;
@@ -2079,7 +2165,6 @@
       }
 
       if (voiceMode === 'star') {
-        // Oral Board mode: User speaking response
         if (/(done|finished|that's my answer|complete|next)/.test(lower) || text.length > 25) {
           try { speechRecognizer.stop(); } catch(e) {}
           speakSTARModelAnswer();
@@ -2087,7 +2172,6 @@
         return;
       }
 
-      // Written Exam Mode: Match A, B, C, D
       let detectedChoice = null;
       if (/(a|alpha|option a|choice a|one|1st|first)/.test(lower)) detectedChoice = 0;
       else if (/(b|bravo|option b|choice b|two|2nd|second)/.test(lower)) detectedChoice = 1;
@@ -2096,9 +2180,8 @@
 
       if (detectedChoice !== null) {
         try { speechRecognizer.stop(); } catch (e) {}
-        evaluateSpokenChoice(detectedChoice);
+        evaluateSpokenChoice(detectedChoice, false);
       } else {
-        // Prompt clarification
         speakAudio(`I heard "${text}". Please specify Option A, B, C, or D.`, () => {
           if (voiceIsRunning) listenForVoiceResponse();
         });
@@ -2107,14 +2190,19 @@
 
     function handleManualVoiceChoice(idx) {
       if (voiceMode !== 'exam') return;
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
       if (speechRecognizer) {
         try { speechRecognizer.stop(); } catch (e) {}
       }
-      evaluateSpokenChoice(idx);
+      evaluateSpokenChoice(idx, false);
     }
 
-    function evaluateSpokenChoice(userChoice) {
+    function evaluateSpokenChoice(userChoice, isAutoReveal = false) {
       if (!voiceIsRunning) return;
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
+
       setVoiceHUDState('evaluating', '⚡ EVALUATING RESPONSE...');
 
       const q = examQuestions[voiceCurrentIndex];
@@ -2135,27 +2223,32 @@
         }
       }
 
-      // Verdict indicator
       const verdictEl = document.getElementById('voice-verdict-indicator');
       verdictEl.classList.remove('hidden');
-      verdictEl.innerHTML = isCorrect 
-        ? `<span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🎯 CORRECT (+25 XP)</span>`
-        : `<span class="px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">❌ INCORRECT (Correct: ${correctLetter})</span>`;
+      if (isAutoReveal) {
+        verdictEl.innerHTML = `<span class="px-3 py-1 rounded-full text-xs font-black bg-blue-500/20 text-blue-300 border border-blue-500/40">💡 REVEALED (Answer: Option ${correctLetter})</span>`;
+      } else if (isCorrect) {
+        verdictEl.innerHTML = `<span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🎯 CORRECT (+25 XP)</span>`;
+      } else {
+        verdictEl.innerHTML = `<span class="px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">❌ INCORRECT (Correct: ${correctLetter})</span>`;
+      }
 
-      // Explanation box
       const explEl = document.getElementById('voice-expl-box');
       explEl.classList.remove('hidden');
       explEl.innerHTML = `<strong>Legal & Operational Standard:</strong> ${q.expl}`;
 
       let spokenVerdict = '';
-      if (isCorrect) {
+      if (isAutoReveal) {
+        playBeep(660, 'sine', 0.2);
+        spokenVerdict = `The correct answer is Option ${correctLetter}. ${q.expl.split('.')[0]}. Moving to the next question in three seconds.`;
+      } else if (isCorrect) {
         playCorrect();
         addXP(25);
         spokenVerdict = `Correct! Option ${correctLetter}. ${q.expl.split('.')[0]}. Moving to next question in three seconds.`;
       } else {
         playWrong();
         resetStreak();
-        spokenVerdict = `Incorrect. You selected Option ${userLetter}. The correct answer was Option ${correctLetter}. ${q.expl.split('.')[0]}. Moving to next question in three seconds.`;
+        spokenVerdict = `Incorrect. You selected Option ${userLetter}. The correct answer is Option ${correctLetter}. ${q.expl.split('.')[0]}. Moving to next question in three seconds.`;
       }
 
       speakAudio(spokenVerdict, () => {
@@ -2169,6 +2262,9 @@
 
     function speakSTARModelAnswer() {
       if (!voiceIsRunning) return;
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
+
       setVoiceHUDState('speaking', '🔊 EXAMINER PROVIDING MODEL STAR FEEDBACK...');
       const card = interviewCards[voiceCurrentIndex];
 
@@ -2176,17 +2272,25 @@
       explEl.classList.remove('hidden');
       explEl.innerHTML = `<strong>Benchmark Model Answer for Word/Data Processing Clerk III:</strong><div class="mt-1">${card.star}</div>`;
 
-      // Extract plain text from STAR card
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = card.star;
       const plainStar = tempDiv.innerText.replace(/Situation:|Task:|Action:|Result:/g, '$&: ');
 
-      const responseScript = `Thank you, Candidate Jensen. Key assessment competencies for this response include: ${card.cat}. Here is your benchmark STAR answer: ${plainStar}. Say NEXT or tap next to advance.`;
+      const responseScript = `Thank you, Candidate Jensen. Key assessment competencies evaluated: ${card.cat}. Here is your benchmark STAR answer: ${plainStar}. Say NEXT or tap next to advance.`;
 
       speakAudio(responseScript, () => {
         if (!voiceIsRunning) return;
-        setVoiceHUDState('listening', '🎙️ READY FOR NEXT QUESTION — SAY "NEXT"');
-        listenForVoiceResponse();
+        setVoiceHUDState('listening', '🎙️ READY FOR NEXT QUESTION — SAY "NEXT" OR TAP NEXT');
+        if (voiceInputMethod === 'mic' && hasNativeSpeechRec) {
+          listenForVoiceResponse();
+        } else {
+          voiceNextTimer = setTimeout(() => {
+            if (voiceIsRunning) {
+              voiceCurrentIndex = (voiceCurrentIndex + 1) % interviewCards.length;
+              runVoiceStep();
+            }
+          }, 8000);
+        }
       });
     }
 
@@ -2194,6 +2298,8 @@
       if (speechRecognizer) {
         try { speechRecognizer.stop(); } catch(e) {}
       }
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
       runVoiceStep();
     }
 
@@ -2201,6 +2307,8 @@
       if (speechRecognizer) {
         try { speechRecognizer.stop(); } catch(e) {}
       }
+      if (voiceCountdownInterval) clearInterval(voiceCountdownInterval);
+      if (voiceNextTimer) clearTimeout(voiceNextTimer);
       const total = voiceMode === 'exam' ? examQuestions.length : interviewCards.length;
       voiceCurrentIndex = (voiceCurrentIndex + 1) % total;
       runVoiceStep();
