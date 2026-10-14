@@ -67,7 +67,7 @@
         ⚖️ Legal Guide
       </button>
       <button onclick="setTab('posting')" id="tab-posting" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-emerald-300 hover:text-emerald-200 hover:bg-slate-800 border border-emerald-500/20">
-        📄 Job Posting
+        📂 Posting &amp; Resume
       </button>
       <button onclick="setTab('redaction')" id="tab-redaction" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
         🛡️ Redaction (10)
@@ -1100,299 +1100,232 @@
 
     <!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- 4. OFFICIAL JOB POSTING & REQUISITION GUIDE -->
+        <!-- ========================================== -->
+    <!-- 4. OFFICIAL JOB POSTING & APPLICATION DOSSIER -->
     <!-- ========================================== -->
     <div id="view-posting" class="tab-content hidden">
       <div class="space-y-6">
 
-        <!-- Banner Header -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
-            <div>
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">OFFICIAL REQUISITION #56123</span>
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">CSU 52 UNION</span>
-                <span class="text-xs text-slate-400 font-semibold">City of Edmonton &bull; EPS</span>
+        <!-- DOSSIER SUB-NAVIGATION PILLS -->
+        <div class="flex flex-wrap items-center gap-2 p-1.5 bg-slate-900 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
+          <button onclick="setPostingSubTab('job')" id="subtab-job" class="posting-subtab py-2.5 px-3 rounded-lg transition-all bg-emerald-600 text-white shadow-md">
+            🏢 EPS Job Posting (#56123)
+          </button>
+          <button onclick="setPostingSubTab('resume')" id="subtab-resume" class="posting-subtab py-2.5 px-3 rounded-lg transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+            📄 Submitted Resume
+          </button>
+          <button onclick="setPostingSubTab('letter')" id="subtab-letter" class="posting-subtab py-2.5 px-3 rounded-lg transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+            ✉️ Submitted Cover Letter
+          </button>
+          <button onclick="setPostingSubTab('defense')" id="subtab-defense" class="posting-subtab py-2.5 px-3 rounded-lg transition-all text-amber-300 hover:text-amber-200 hover:bg-slate-800 border border-amber-500/20">
+            🎯 Resume Defense &amp; Interview Q&amp;A
+          </button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SUB-VIEW 1: EPS JOB POSTING DETAILS -->
+        <!-- ========================================== -->
+        <div id="posting-view-job" class="posting-subcontent space-y-6">
+
+          <!-- Banner Header -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">OFFICIAL REQUISITION #56123</span>
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">CSU 52 UNION</span>
+                  <span class="text-xs text-slate-400 font-semibold">City of Edmonton &bull; EPS</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Word/Data Processing Clerk III &ndash; Criminal Body Worn Video Section Technician</h2>
+                <p class="text-xs text-slate-400 mt-1">Edmonton Police Service &bull; Digital Evidence Management Unit (DEMU) &bull; Information Technology &amp; Records Division</p>
               </div>
-              <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Word/Data Processing Clerk III &ndash; Criminal Body Worn Video Section Technician</h2>
-              <p class="text-xs text-slate-400 mt-1">Edmonton Police Service &bull; Digital Evidence Management Unit (DEMU) &bull; Information Technology &amp; Records Division</p>
+              <div class="flex items-center space-x-2">
+                <button onclick="copyJobPosting()" id="copy-posting-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg transition flex items-center space-x-1.5">
+                  <span>📋 Copy Raw Posting</span>
+                </button>
+              </div>
             </div>
-            <div class="flex items-center space-x-2">
-              <button onclick="copyJobPosting()" id="copy-posting-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg transition flex items-center space-x-1.5">
-                <span>📋 Copy Raw Posting</span>
+
+            <!-- Quick Vitals Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 text-xs">
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Hourly Wage</div>
+                <div class="text-base font-black text-emerald-400 mt-0.5">$28.64 &ndash; $35.92</div>
+                <div class="text-[10px] text-slate-500">Band 21B, Grade 013</div>
+              </div>
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Annual Salary</div>
+                <div class="text-base font-black text-white mt-0.5">$59.8K &ndash; $75.0K</div>
+                <div class="text-[10px] text-emerald-400">+ LAPP &amp; Full Benefits</div>
+              </div>
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Hours &amp; Shift</div>
+                <div class="text-base font-black text-blue-400 mt-0.5">4-Day Week (40h)</div>
+                <div class="text-[10px] text-slate-500">06:00&ndash;16:00 (M-Th / T-F)</div>
+              </div>
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Position Status</div>
+                <div class="text-base font-black text-purple-400 mt-0.5">2 Openings</div>
+                <div class="text-[10px] text-slate-500">Temp to Sep 21, 2027</div>
+              </div>
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Target Testing</div>
+                <div class="text-base font-black text-amber-400 mt-0.5">Oct 15 @ 11 AM</div>
+                <div class="text-[10px] text-slate-500">Nexus Unit #134</div>
+              </div>
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Location</div>
+                <div class="text-base font-black text-slate-200 mt-0.5">Nexus Park</div>
+                <div class="text-[10px] text-slate-500">14315 118 Ave (On-Site)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Role Overview Callout -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-4">
+            <div class="flex items-center space-x-3 pb-3 border-b border-slate-800">
+              <span class="text-2xl">🎯</span>
+              <div>
+                <h3 class="text-lg font-bold text-white">About the Job &amp; Core Unit Mission</h3>
+                <p class="text-xs text-slate-400">Verbatim role purpose statement from Edmonton Police Service / LinkedIn posting</p>
+              </div>
+            </div>
+            
+            <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-300 leading-relaxed italic border-l-4 border-l-blue-500">
+              &ldquo;The Edmonton Police Service requires two (2) Digital Evidence Management Technicians to fulfill critical roles in the Digital Evidence Management Unit. In this position, you will process and disclose digital evidence and information from various sources including body-worn video, security and surveillance systems, internally produced recordings for investigative purposes, and other born-digital or digitized sources. You will play a critical role in ensuring and maintaining the integrity, confidentiality, and authenticity of EPS’ digital evidence.&rdquo;
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <div class="font-bold text-emerald-400 flex items-center space-x-1.5">
+                  <span>🔒 Evidence Integrity</span>
+                </div>
+                <p class="text-slate-400 mt-1 leading-relaxed">Preserve pristine original bitstreams, calculate SHA-256 cryptographic hashes, and never alter raw master recordings.</p>
+              </div>
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <div class="font-bold text-blue-400 flex items-center space-x-1.5">
+                  <span>🛡️ Strict Confidentiality</span>
+                </div>
+                <p class="text-slate-400 mt-1 leading-relaxed">Role-based access permissions in Evidence.com, vetting private third-party data under FOIP, and protecting informants (<em>Leipert</em>) and minors (YCJA).</p>
+              </div>
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <div class="font-bold text-purple-400 flex items-center space-x-1.5">
+                  <span>⚖️ Court Authenticity</span>
+                </div>
+                <p class="text-slate-400 mt-1 leading-relaxed">Rigorous chain-of-custody tracking, audit trail logging, and Canada Evidence Act s. 31.1 compliance for Crown court admissibility.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12 Key Responsibilities Grid -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center space-x-3 mb-5 pb-3 border-b border-slate-800">
+              <span class="text-2xl">📋</span>
+              <div>
+                <h3 class="text-lg font-bold text-white">The 12 Key Responsibilities (Posting Breakdown)</h3>
+                <p class="text-xs text-slate-400">Structured analysis of the exact operational duties tested on the written exam</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-blue-400 font-bold text-sm">
+                  <span>📂</span>
+                  <span>Pillar 1: Evidence Ingestion &amp; Quality Control</span>
+                </div>
+                <ul class="space-y-2 text-slate-300 leading-relaxed">
+                  <li class="flex items-start space-x-2">
+                    <span class="text-blue-400 font-bold mt-0.5">1.</span>
+                    <div><strong>Standardized Naming &amp; Indexing:</strong> Ensuring digital evidence is correctly named, indexed, and categorized (Occurrence #, Badge, Call Type) for instant retrieval.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-blue-400 font-bold mt-0.5">2.</span>
+                    <div><strong>Cross-Referencing &amp; Discrepancy Auditing:</strong> Performing rigorous quality checks across CAD dispatch logs, EPROS RMS, and camera metadata to catch incomplete, duplicate, or mismatched entries.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-blue-400 font-bold mt-0.5">3.</span>
+                    <div><strong>Multi-Source Evidence Verification:</strong> Analyzing records across disparate sources (Axon BWV, dashcam, CCTV, cell extractions) ensuring complete capture into DEMS.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-blue-400 font-bold mt-0.5">4.</span>
+                    <div><strong>System Administration &amp; Access Governance:</strong> Maintaining the Digital Evidence Management System (Evidence.com) and enforcing role-based security access controls.</div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm">
+                  <span>🛡️</span>
+                  <span>Pillar 2: Redaction, Vetting &amp; Audit Logs</span>
+                </div>
+                <ul class="space-y-2 text-slate-300 leading-relaxed">
+                  <li class="flex items-start space-x-2">
+                    <span class="text-rose-400 font-bold mt-0.5">5.</span>
+                    <div><strong>Accurate Redaction Markers:</strong> Inserting spatial and temporal redaction masks (faces, MDT screens, door codes, tactical gear) before Crown prosecutor submission.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-rose-400 font-bold mt-0.5">6.</span>
+                    <div><strong>Media Conversion &amp; Technical Vetting:</strong> Using conversion tools to vet media and transcode proprietary CCTV codecs without introducing temporal compression artifacts.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-rose-400 font-bold mt-0.5">7.</span>
+                    <div><strong>Discloseable Technical Logs:</strong> Meticulously recording all procedures, tools, and filters used during redacting, with full awareness that these logs are subject to court disclosure.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-rose-400 font-bold mt-0.5">8.</span>
+                    <div><strong>FVAD Forensic Escalation:</strong> Liaising with the Forensic Video Analysis Detail when specialized optical clarification, speed timing, or frame-averaging is required.</div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
+                  <span>⚖️</span>
+                  <span>Pillar 3: Court Disclosure &amp; Priority Queues</span>
+                </div>
+                <ul class="space-y-2 text-slate-300 leading-relaxed">
+                  <li class="flex items-start space-x-2">
+                    <span class="text-amber-400 font-bold mt-0.5">9.</span>
+                    <div><strong>Time-Sensitive Court Disclosure:</strong> Responding to and fulfilling Court disclosure requests for Crown prosecutors and defense within statutory legal deadlines.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-amber-400 font-bold mt-0.5">10.</span>
+                    <div><strong>High-Volume Queue Prioritization:</strong> Triaging multiple conflicting requests to ensure urgent statutory court dates (e.g. 24h bail hearings) take precedence over routine reviews.</div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-emerald-400 font-bold text-sm">
+                  <span>🚀</span>
+                  <span>Pillar 4: Workflow Optimization &amp; Administration</span>
+                </div>
+                <ul class="space-y-2 text-slate-300 leading-relaxed">
+                  <li class="flex items-start space-x-2">
+                    <span class="text-emerald-400 font-bold mt-0.5">11.</span>
+                    <div><strong>Process Improvement Recommendations:</strong> Proactively suggesting workflow enhancements, automated scripts, and QA measures to streamline unit turnaround times.</div>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-emerald-400 font-bold mt-0.5">12.</span>
+                    <div><strong>Administrative &amp; Record Support:</strong> Executing administrative functions, retention tracking, and supporting EPS' digital evidence governance framework.</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Verbatim LinkedIn & Taleo Posting Text Block -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <div class="flex items-center space-x-2">
+                <span class="text-xl">📄</span>
+                <h3 class="text-base font-bold text-white">Full Verbatim LinkedIn &amp; Taleo Posting Text</h3>
+              </div>
+              <button onclick="copyJobPosting()" class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold transition">
+                Copy Full Text
               </button>
             </div>
-          </div>
-
-          <!-- Quick Vitals Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 text-xs">
-            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Hourly Wage</div>
-              <div class="text-base font-black text-emerald-400 mt-0.5">$28.64 &ndash; $35.92</div>
-              <div class="text-[10px] text-slate-500">Band 21B, Grade 013</div>
-            </div>
-            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Annual Salary</div>
-              <div class="text-base font-black text-white mt-0.5">$59.8K &ndash; $75.0K</div>
-              <div class="text-[10px] text-emerald-400">+ LAPP &amp; Full Benefits</div>
-            </div>
-            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Hours &amp; Shift</div>
-              <div class="text-base font-black text-blue-400 mt-0.5">4-Day Week (40h)</div>
-              <div class="text-[10px] text-slate-500">06:00&ndash;16:00 (M-Th / T-F)</div>
-            </div>
-            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Position Status</div>
-              <div class="text-base font-black text-purple-400 mt-0.5">2 Openings</div>
-              <div class="text-[10px] text-slate-500">Temp to Sep 21, 2027</div>
-            </div>
-            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Target Testing</div>
-              <div class="text-base font-black text-amber-400 mt-0.5">Oct 15 @ 11 AM</div>
-              <div class="text-[10px] text-slate-500">Nexus Unit #134</div>
-            </div>
-            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Location</div>
-              <div class="text-base font-black text-slate-200 mt-0.5">Nexus Park</div>
-              <div class="text-[10px] text-slate-500">14315 118 Ave (On-Site)</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Role Overview Callout -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-4">
-          <div class="flex items-center space-x-3 pb-3 border-b border-slate-800">
-            <span class="text-2xl">🎯</span>
-            <div>
-              <h3 class="text-lg font-bold text-white">About the Job &amp; Core Unit Mission</h3>
-              <p class="text-xs text-slate-400">Verbatim role purpose statement from Edmonton Police Service / LinkedIn posting</p>
-            </div>
-          </div>
-          
-          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-300 leading-relaxed italic border-l-4 border-l-blue-500">
-            &ldquo;The Edmonton Police Service requires two (2) Digital Evidence Management Technicians to fulfill critical roles in the Digital Evidence Management Unit. In this position, you will process and disclose digital evidence and information from various sources including body-worn video, security and surveillance systems, internally produced recordings for investigative purposes, and other born-digital or digitized sources. You will play a critical role in ensuring and maintaining the integrity, confidentiality, and authenticity of EPS’ digital evidence.&rdquo;
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
-              <div class="font-bold text-emerald-400 flex items-center space-x-1.5">
-                <span>🔒 Evidence Integrity</span>
-              </div>
-              <p class="text-slate-400 mt-1 leading-relaxed">Preserve pristine original bitstreams, calculate SHA-256 cryptographic hashes, and never alter raw master recordings.</p>
-            </div>
-            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
-              <div class="font-bold text-blue-400 flex items-center space-x-1.5">
-                <span>🛡️ Strict Confidentiality</span>
-              </div>
-              <p class="text-slate-400 mt-1 leading-relaxed">Role-based access permissions in Evidence.com, vetting private third-party data under FOIP, and protecting informants (<em>Leipert</em>) and minors (YCJA).</p>
-            </div>
-            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
-              <div class="font-bold text-purple-400 flex items-center space-x-1.5">
-                <span>⚖️ Court Authenticity</span>
-              </div>
-              <p class="text-slate-400 mt-1 leading-relaxed">Rigorous chain-of-custody tracking, audit trail logging, and Canada Evidence Act s. 31.1 compliance for Crown court admissibility.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 12 Key Responsibilities Grid -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-          <div class="flex items-center space-x-3 mb-5 pb-3 border-b border-slate-800">
-            <span class="text-2xl">📋</span>
-            <div>
-              <h3 class="text-lg font-bold text-white">The 12 Key Responsibilities (Posting Breakdown)</h3>
-              <p class="text-xs text-slate-400">Structured analysis of the exact operational duties tested on the written exam</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            
-            <!-- Pillar 1 -->
-            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-              <div class="flex items-center space-x-2 text-blue-400 font-bold text-sm">
-                <span>📂</span>
-                <span>Pillar 1: Evidence Ingestion &amp; Quality Control</span>
-              </div>
-              <ul class="space-y-2 text-slate-300 leading-relaxed">
-                <li class="flex items-start space-x-2">
-                  <span class="text-blue-400 font-bold mt-0.5">1.</span>
-                  <div><strong>Standardized Naming &amp; Indexing:</strong> Ensuring digital evidence is correctly named, indexed, and categorized (Occurrence #, Badge, Call Type) for instant retrieval.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-blue-400 font-bold mt-0.5">2.</span>
-                  <div><strong>Cross-Referencing &amp; Discrepancy Auditing:</strong> Performing rigorous quality checks across CAD dispatch logs, EPROS RMS, and camera metadata to catch incomplete, duplicate, or mismatched entries.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-blue-400 font-bold mt-0.5">3.</span>
-                  <div><strong>Multi-Source Evidence Verification:</strong> Analyzing records across disparate sources (Axon BWV, dashcam, CCTV, cell extractions) ensuring complete capture into DEMS.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-blue-400 font-bold mt-0.5">4.</span>
-                  <div><strong>System Administration &amp; Access Governance:</strong> Maintaining the Digital Evidence Management System (Evidence.com) and enforcing role-based security access controls.</div>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Pillar 2 -->
-            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-              <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm">
-                <span>🛡️</span>
-                <span>Pillar 2: Redaction, Vetting &amp; Audit Logs</span>
-              </div>
-              <ul class="space-y-2 text-slate-300 leading-relaxed">
-                <li class="flex items-start space-x-2">
-                  <span class="text-rose-400 font-bold mt-0.5">5.</span>
-                  <div><strong>Accurate Redaction Markers:</strong> Inserting spatial and temporal redaction masks (faces, MDT screens, door codes, tactical gear) before Crown prosecutor submission.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-rose-400 font-bold mt-0.5">6.</span>
-                  <div><strong>Media Conversion &amp; Technical Vetting:</strong> Using conversion tools to vet media and transcode proprietary CCTV codecs without introducing temporal compression artifacts.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-rose-400 font-bold mt-0.5">7.</span>
-                  <div><strong>Discloseable Technical Logs:</strong> Meticulously recording all procedures, tools, and filters used during redacting, with full awareness that these logs are subject to court disclosure.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-rose-400 font-bold mt-0.5">8.</span>
-                  <div><strong>FVAD Forensic Escalation:</strong> Liaising with the Forensic Video Analysis Detail when specialized optical clarification, speed timing, or frame-averaging is required.</div>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Pillar 3 -->
-            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-              <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
-                <span>⚖️</span>
-                <span>Pillar 3: Court Disclosure &amp; Priority Queues</span>
-              </div>
-              <ul class="space-y-2 text-slate-300 leading-relaxed">
-                <li class="flex items-start space-x-2">
-                  <span class="text-amber-400 font-bold mt-0.5">9.</span>
-                  <div><strong>Time-Sensitive Court Disclosure:</strong> Responding to and fulfilling Court disclosure requests for Crown prosecutors and defense within statutory legal deadlines.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-amber-400 font-bold mt-0.5">10.</span>
-                  <div><strong>High-Volume Queue Prioritization:</strong> Triaging multiple conflicting requests to ensure urgent statutory court dates (e.g. 24h bail hearings) take precedence over routine reviews.</div>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Pillar 4 -->
-            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-              <div class="flex items-center space-x-2 text-emerald-400 font-bold text-sm">
-                <span>🚀</span>
-                <span>Pillar 4: Workflow Optimization &amp; Administration</span>
-              </div>
-              <ul class="space-y-2 text-slate-300 leading-relaxed">
-                <li class="flex items-start space-x-2">
-                  <span class="text-emerald-400 font-bold mt-0.5">11.</span>
-                  <div><strong>Process Improvement Recommendations:</strong> Proactively suggesting workflow enhancements, automated scripts, and QA measures to streamline unit turnaround times.</div>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-emerald-400 font-bold mt-0.5">12.</span>
-                  <div><strong>Administrative &amp; Record Support:</strong> Executing administrative functions, retention tracking, and supporting EPS' digital evidence governance framework.</div>
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Qualifications, Screening & Kyle's Profile Alignment -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-          <div class="flex items-center space-x-3 mb-5 pb-3 border-b border-slate-800">
-            <span class="text-2xl">🎓</span>
-            <div>
-              <h3 class="text-lg font-bold text-white">Qualifications &amp; Screening Toolkit Alignment</h3>
-              <p class="text-xs text-slate-400">How Kyle Jensen's credentials match the exact requirements and pre-screening software questionnaire</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            
-            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-              <h4 class="font-bold text-blue-400 text-sm">Mandatory &amp; Asset Qualifications</h4>
-              <div class="space-y-2">
-                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-start space-x-2">
-                  <span class="text-emerald-400 font-bold">✓</span>
-                  <div>
-                    <strong class="text-white">Education:</strong> Grade 12 + Microcomputer training.
-                    <div class="text-slate-400 text-[11px] mt-0.5">Kyle: NAIT DMIT Diploma (Video Production Major), Dean's Honor Roll.</div>
-                  </div>
-                </div>
-                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-start space-x-2">
-                  <span class="text-emerald-400 font-bold">✓</span>
-                  <div>
-                    <strong class="text-white">Experience:</strong> 3+ years diversified office / technical processing.
-                    <div class="text-slate-400 text-[11px] mt-0.5">Kyle: 6+ years telecom operations, dispatch ticketing, inventory logs at TELUS.</div>
-                  </div>
-                </div>
-                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-start space-x-2">
-                  <span class="text-emerald-400 font-bold">✓</span>
-                  <div>
-                    <strong class="text-white">Statutory Literacy:</strong> Criminal Code, Evidence Acts, GARP, ATIA/FOIP.
-                    <div class="text-slate-400 text-[11px] mt-0.5">Thoroughly mastered across Legal Guide &amp; Exam modules.</div>
-                  </div>
-                </div>
-                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-start space-x-2">
-                  <span class="text-emerald-400 font-bold">✓</span>
-                  <div>
-                    <strong class="text-white">Working Conditions:</strong> Exposure to graphic/disturbing content &amp; strictly on-site.
-                    <div class="text-slate-400 text-[11px] mt-0.5">Full psychological screening consent given; fully prepared for evidentiary realities.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-              <h4 class="font-bold text-indigo-400 text-sm">Specific Software Tested on Pre-Screen</h4>
-              <div class="grid grid-cols-2 gap-2 text-[11px]">
-                <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800">
-                  <div class="font-bold text-white flex items-center space-x-1">
-                    <span>🎬</span><span>Adobe Premiere Pro</span>
-                  </div>
-                  <div class="text-slate-400 text-[10px] mt-1">Non-linear editing, keyframe motion tracking, gaussian blurs, mosaic shields.</div>
-                </div>
-                <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800">
-                  <div class="font-bold text-white flex items-center space-x-1">
-                    <span>🔄</span><span>AVS Video Converter</span>
-                  </div>
-                  <div class="text-slate-400 text-[10px] mt-1">Transcoding proprietary CCTV (.dav/.sec) to MP4/H.264 court-playable formats.</div>
-                </div>
-                <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800">
-                  <div class="font-bold text-white flex items-center space-x-1">
-                    <span>🔊</span><span>WavePad Sound Editor</span>
-                  </div>
-                  <div class="text-slate-400 text-[10px] mt-1">Audio redaction, 1kHz tone insertion, silence masking, vocal pitch distortion.</div>
-                </div>
-                <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800">
-                  <div class="font-bold text-white flex items-center space-x-1">
-                    <span>🗄️</span><span>Evidence.com / Omnivore</span>
-                  </div>
-                  <div class="text-slate-400 text-[10px] mt-1">Axon cloud repository, SHA-256 audit hashing, uncompressed CCTV screen capture.</div>
-                </div>
-              </div>
-              <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 text-[11px]">
-                <strong class="text-white">Microsoft Office Suite:</strong> Advanced Excel cross-referencing (VLOOKUP/XLOOKUP, pivot discrepancy auditing) and Word disclosure memos.
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Full Verbatim LinkedIn & Taleo Posting Text Block -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-            <div class="flex items-center space-x-2">
-              <span class="text-xl">📄</span>
-              <h3 class="text-base font-bold text-white">Full Verbatim LinkedIn &amp; Taleo Posting Text</h3>
-            </div>
-            <button onclick="copyJobPosting()" class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold transition">
-              Copy Full Text
-            </button>
-          </div>
-          <div id="raw-posting-text" class="p-4 bg-slate-950 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 whitespace-pre-wrap leading-relaxed max-h-96 overflow-y-auto">Job Title: Word/Data Processing Clerk III - Criminal Body Worn Video Section Technician
+            <div id="raw-posting-text" class="p-4 bg-slate-950 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 whitespace-pre-wrap leading-relaxed max-h-96 overflow-y-auto">Job Title: Word/Data Processing Clerk III - Criminal Body Worn Video Section Technician
 Job Number: 56123
 Employer: Edmonton Police Service / City of Edmonton
 Department: Digital Evidence Management Unit (DEMU) - Information Technology & Records
@@ -1441,12 +1374,329 @@ General & Screening:
 - Applicants may be required to undergo a knowledge or skills assessment test.
 - Working Conditions: the successful candidate will be exposed to video and content that may be graphic. This position requires an on-site presence and the option to work remotely is not available at this time.
 - As part of your pre-hire screening, you will be required to complete an Enhanced Security Clearance. Should you accept employment with the Edmonton Police Service you acknowledge and agree to participate in future Enhanced Security Re-Clearances at scheduled intervals or in any other circumstances, exigent or otherwise, as required by the Human Resources Division.</div>
+          </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SUB-VIEW 2: SUBMITTED RESUME -->
+        <!-- ========================================== -->
+        <div id="posting-view-resume" class="posting-subcontent hidden space-y-6">
+
+          <!-- Header Card -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+              <div>
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/40">SUBMITTED APPLICATION RESUME</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">KYLE JENSEN</h2>
+                <div class="text-sm font-bold text-blue-400 uppercase tracking-wide mt-0.5">Digital Evidence Management &amp; Video Production Technician</div>
+                <div class="text-xs text-slate-400 mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                  <span>📍 Fort Saskatchewan, AB</span>
+                  <span>📞 <strong>403-896-1048</strong></span>
+                  <span>✉️ kyle.jensen.jobs@gmail.com</span>
+                  <span>🚗 AB Class 5 (Clean Abstract)</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="copyResumeText()" id="copy-resume-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-lg transition flex items-center space-x-1.5">
+                  <span>📋 Copy Resume Text</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Professional Profile -->
+            <div class="mt-6 p-4 rounded-xl bg-slate-950 border border-slate-800">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">Professional Profile</h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed text-justify">
+                Technically disciplined Digital Media &amp; IT professional with a formal NAIT Diploma in Digital Media &amp; IT (Video Production Major, Dean&rsquo;s Honor Roll) and 6+ years of rigorous operational compliance experience. Expert in video codec conversion, non-linear editing (Adobe Premiere Pro), frame-accurate spatial and temporal redaction masking, audio noise filtering, and disclosable procedural documentation. Proven record of operating under strict Standard Operating Procedures (SOPs), safeguarding confidential information (ATIA/POPA standards), and preserving chain-of-custody across 12,000+ incident-free operational field hours.
+              </p>
+            </div>
+          </div>
+
+          <!-- Core Competencies -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <h3 class="text-base font-bold text-white mb-4 pb-2 border-b border-slate-800">Core Technical &amp; Operational Competencies</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                <div class="font-bold text-emerald-400 text-sm">Digital Media &amp; Video Processing</div>
+                <p class="text-slate-300 leading-relaxed">Adobe Premiere Pro, Media Encoding &amp; Transcoding (AVS Converter, Omnivore standards, HandBrake), Audio Editing (WavePad, Audition), Video Codecs (H.264, H.265/HEVC, MPEG-4, AVCHD), Container Formats (MP4, MOV, MKV, AVI), Aspect Ratios, Frame Rates &amp; Interlacing.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                <div class="font-bold text-rose-400 text-sm">Redaction &amp; Disclosure Protocols</div>
+                <p class="text-slate-300 leading-relaxed">Spatial &amp; Temporal Redaction Markers, Dynamic Object Tracking, Face/Bystander Pixelation &amp; Gaussian Blurring, Audio Muting &amp; Bleeping, Frame-by-Frame Vetting, Disclosable Procedural Logging.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                <div class="font-bold text-purple-400 text-sm">Evidence Integrity &amp; Legislation</div>
+                <p class="text-slate-300 leading-relaxed">Digital Evidence Management Systems (DEMS / Evidence.com workflows), Chain-of-Custody Governance, Generally Accepted Recordkeeping Principles, Canada &amp; Alberta Evidence Acts, Privacy Standards (ATIA &amp; POPA / FOIP), FVAD Technical Liaison.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                <div class="font-bold text-blue-400 text-sm">Systems &amp; Information Processing</div>
+                <p class="text-slate-300 leading-relaxed">Microsoft Office (Word, Excel, PowerPoint), Case Number Cross-Referencing, Occurrence File Tracking, Quality Assurance &amp; Duplicate Audit, Queue Triage, C# Logic Scripting, Zero Incident Safety Record.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Experience -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+            <h3 class="text-base font-bold text-white pb-2 border-b border-slate-800">Relevant Professional Experience</h3>
+
+            <!-- TELUS -->
+            <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800/80 pb-2">
+                <div>
+                  <span class="text-base font-bold text-white">TELUS</span>
+                  <span class="text-xs text-slate-400 ml-2">&mdash; Telecommunications Service Technician (Lead Rover &amp; Escalations)</span>
+                </div>
+                <span class="text-xs font-bold text-blue-400 font-mono">01/2019 &ndash; 05/2025 (Full-Time)</span>
+              </div>
+              <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc list-inside">
+                <li>Served as Lead Rover escalation specialist across <strong>12,000+ incident-free field hours</strong>; triaged repeat trouble queues, investigated complex network faults, and audited technician documentation in centralized dispatch systems to ensure 100% data integrity.</li>
+                <li>Maintained strict adherence to technical Standard Operating Procedures (SOPs), access control protocols, and information privacy legislation across high-volume commercial and residential service accounts.</li>
+                <li>Installed, tested, and repaired fibre optic (GPON/FTTH) and copper network infrastructure (Cat5e, Cat6, coaxial), performing precision optical fusion splicing, power loss attenuation tests, and hardware provisioning.</li>
+                <li>Documented work orders, cross-referenced multi-system provisioning databases, and recorded detailed technical troubleshooting notes with audit-ready accuracy for engineering and management review.</li>
+              </ul>
+            </div>
+
+            <!-- DIGITAL MEDIA & VIDEO -->
+            <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800/80 pb-2">
+                <div>
+                  <span class="text-base font-bold text-white">Digital Video Production &amp; Post-Production</span>
+                  <span class="text-xs text-slate-400 ml-2">&mdash; Lead Editor &amp; Media Specialist</span>
+                </div>
+                <span class="text-xs font-bold text-blue-400 font-mono">09/2013 &ndash; Present (Contract &amp; Project)</span>
+              </div>
+              <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc list-inside">
+                <li>Managed complete non-linear editing (NLE) pipelines in Adobe Premiere Pro and After Effects for institutional and corporate deliverables (including <em>Earth Group</em> PSA and <em>St. Stephen's College</em> promotional media).</li>
+                <li>Applied precision spatial and temporal masking, blur filters, and audio noise reduction to protect bystander privacy and redact sensitive identifiers while maintaining master footage integrity and export standards.</li>
+                <li>Executed batch format transcoding, aspect ratio adjustments, and metadata tagging across proprietary recording streams, ensuring seamless playback, accurate indexing, and rapid asset retrieval.</li>
+                <li>Logged detailed editing histories and export parameters, maintaining consistent version control and directory structures.</li>
+              </ul>
+            </div>
+
+            <!-- IDEAL INTEGRATIONS -->
+            <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800/80 pb-2">
+                <div>
+                  <span class="text-base font-bold text-white">Ideal Integrations</span>
+                  <span class="text-xs text-slate-400 ml-2">&mdash; Smart Home &amp; Security Systems Specialist</span>
+                </div>
+                <span class="text-xs font-bold text-blue-400 font-mono">09/2025 &ndash; 02/2026 (Full-Time)</span>
+              </div>
+              <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc list-inside">
+                <li>Installed, configured, and tested commercial and residential IP surveillance cameras, digital network video recorders (NVRs), and electronic access control keypads; verified uninterrupted video signal transmission and resolution settings.</li>
+                <li>Completed formal DSC training for security panel wiring, sensor calibration, and zone alarm reporting protocols.</li>
+              </ul>
+            </div>
+
+            <!-- HUDSON'S BAY -->
+            <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800/80 pb-2">
+                <div>
+                  <span class="text-base font-bold text-white">Hudson&rsquo;s Bay Company</span>
+                  <span class="text-xs text-slate-400 ml-2">&mdash; Logistics &amp; Inventory Lead</span>
+                </div>
+                <span class="text-xs font-bold text-blue-400 font-mono">10/2010 &ndash; 01/2019 (Intermittent Full-Time)</span>
+              </div>
+              <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc list-inside">
+                <li>Supervised receiving operations, verified freight manifests against inventory databases, and preserved chain-of-custody across multi-trailer shipments with zero loss discrepancies.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Education & Credentials -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <h3 class="text-base font-bold text-white mb-4 pb-2 border-b border-slate-800">Education &amp; Professional Credentials</h3>
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <div class="font-bold text-white text-sm">NAIT (Northern Alberta Institute of Technology)</div>
+                <span class="text-blue-400 font-mono font-semibold">09/2013 &ndash; 04/2015</span>
+              </div>
+              <div class="text-emerald-400 font-semibold">Diploma in Digital Media &amp; IT &mdash; Video Production Major (Dean&rsquo;s Honor Roll)</div>
+              <p class="text-slate-400 leading-relaxed">Coursework: Digital Video Editing, Audio Engineering, Camera &amp; Lighting Operations, Digital Media Ingestion &amp; Transcoding, Visual Storytelling &amp; Media Ethics.</p>
+              <div class="pt-2 border-t border-slate-800 text-slate-400">
+                <strong class="text-slate-300">Licensing &amp; Safety:</strong> Alberta Class 5 Driver&rsquo;s Licence (Driving since 2010, Clean Abstract) &bull; Standard First Aid &amp; CPR-C &bull; WHMIS &bull; Confined Space &amp; Fall Protection.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SUB-VIEW 3: SUBMITTED COVER LETTER -->
+        <!-- ========================================== -->
+        <div id="posting-view-letter" class="posting-subcontent hidden space-y-6">
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800 mb-6">
+              <div>
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40">SUBMITTED APPLICATION COVER LETTER</span>
+                <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Formal Letter to EPS Selection Committee</h2>
+                <p class="text-xs text-slate-400 mt-1">Submitted via City of Edmonton Taleo portal on September 30, 2026</p>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="copyCoverLetterText()" id="copy-letter-btn" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg transition flex items-center space-x-1.5">
+                  <span>📋 Copy Cover Letter</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Letter Container -->
+            <div id="raw-letter-text" class="p-6 sm:p-8 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-4">
+              
+              <div class="border-b border-slate-800 pb-4 text-xs text-slate-400 space-y-1">
+                <div class="text-white font-bold text-sm">KYLE JENSEN</div>
+                <div>Fort Saskatchewan, AB &bull; 403-896-1048 &bull; kyle.jensen.jobs@gmail.com</div>
+                <div class="text-slate-500 pt-2">Date: September 30, 2026</div>
+                <div class="pt-2 text-slate-300">
+                  <strong>Selection Committee, Digital Evidence Management Unit</strong><br>
+                  Edmonton Police Service<br>
+                  Nexus Business Park, #110 14315 118 Avenue NW<br>
+                  Edmonton, AB T5L 4S6
+                </div>
+              </div>
+
+              <div class="font-bold text-blue-400 uppercase tracking-wide text-xs pt-2">
+                RE: Application for Criminal Body Worn Video Section Technician (Job Number: 56123)
+              </div>
+
+              <p class="text-justify">
+                I am writing to express my strong interest in the Word/Data Processing Clerk III – Criminal Body Worn Video Section Technician position with the Edmonton Police Service. With a formal Diploma in Digital Media &amp; IT (Video Production Major) from NAIT and more than six years of technical operations, supervisory escalation, and systems compliance experience, I offer a grounded combination of non-linear video editing proficiency, database discipline, and respect for chain-of-custody protocols to support the Digital Evidence Management Unit.
+              </p>
+
+              <p class="text-justify">
+                Through my training at NAIT and subsequent post-production work, I have developed extensive experience working with video codecs (H.264/HEVC/MPEG), audio/video synchronization, and media conversion tools. I am proficient in non-linear editing using Adobe Premiere Pro and familiar with conversion utilities and audio editing environments such as WavePad and AVS Converter. I understand how to apply precision spatial and temporal redaction markers—tracking faces, objects, and bystander identities—while preserving original evidentiary integrity. Crucially, I recognize that every step, technique, and software tool used during the redaction and vetting process must be meticulously recorded, knowing this documentation is disclosable in judicial proceedings.
+              </p>
+
+              <p class="text-justify">
+                My background as a Service Technician and Lead Rover at TELUS provided more than 12,000 incident-free hours under rigorous Standard Operating Procedures, access controls, and privacy standards. In that role, I was trusted with supervisory triage on repeat trouble queues, auditing dispatch records, cross-referencing multi-tiered databases, and conducting root-cause investigations on complex faults. That experience built an instinctive discipline for error-checking, indexing occurrence records, and ensuring that no detail is lost when cross-referencing files across independent systems.
+              </p>
+
+              <p class="text-justify">
+                I understand the serious operational and legal responsibilities tied to the Digital Evidence Management System, court disclosure deadlines, and collaboration with the Forensic Video Analysis Detail (FVAD). I am familiar with the statutory principles governing evidence handling, including the Canada and Alberta Evidence Acts, Generally Accepted Recordkeeping Principles, and privacy frameworks (ATIA and POPA). Furthermore, I have the maturity and emotional composure necessary to review sensitive, graphic, and disturbing audio/video footage with professional objectivity.
+              </p>
+
+              <p class="text-justify">
+                I am fully prepared to complete the Enhanced Security Clearance and psychological screening, and I welcome the opportunity to contribute my technical diligence to the Edmonton Police Service. Thank you for your time and consideration.
+              </p>
+
+              <div class="pt-4 border-t border-slate-800 text-xs">
+                <div>Sincerely,</div>
+                <div class="font-bold text-white text-sm mt-1">Kyle Jensen</div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SUB-VIEW 4: RESUME DEFENSE & INTERVIEW Q&A -->
+        <!-- ========================================== -->
+        <div id="posting-view-defense" class="posting-subcontent hidden space-y-6">
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="pb-4 border-b border-slate-800">
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">INTERVIEW &amp; TEST PREPARATION</span>
+              <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Resume Defense &amp; Probing Questions Master Guide</h2>
+              <p class="text-xs text-slate-400 mt-1">The top 6 probing questions the selection panel or supervisors may ask about your resume, with model STAR talking points.</p>
+            </div>
+
+            <div class="space-y-4 mt-6 text-xs sm:text-sm">
+              
+              <!-- Q1 -->
+              <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
+                  <span>❓ Q1: Transition from Field Tech to Office Evidence Processing</span>
+                </div>
+                <p class="text-slate-300 font-semibold italic">&ldquo;Your background is heavily in telecom and security field service at TELUS and Ideal Integrations. Why do you want an office-based evidence clerk role?&rdquo;</p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300 space-y-2 text-xs">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">🎯 Model Answer &amp; Key Talking Points:</div>
+                  <p class="leading-relaxed">
+                    &ldquo;My foundational education is actually a <strong>NAIT Diploma in Digital Media &amp; IT majoring in Video Production</strong>, where I graduated on the Dean's Honor Roll. While I spent six rewarding years at TELUS, what made me successful there was my strict procedural discipline, auditing dispatch queues, and cross-referencing multi-tiered databases across 12,000 incident-free hours. The Criminal Body Worn Video Section Technician role is where my two greatest strengths unite: formal hands-on expertise in video codecs, editing, and redaction pipelines, backed by proven fidelity to Standard Operating Procedures and data integrity.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              <!-- Q2 -->
+              <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-blue-400 font-bold text-sm">
+                  <span>❓ Q2: Currency of Video Editing Skills (Graduated NAIT 2015)</span>
+                </div>
+                <p class="text-slate-300 font-semibold italic">&ldquo;You graduated from NAIT in 2015. How have you kept your non-linear video editing and technical media skills up to date?&rdquo;</p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300 space-y-2 text-xs">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">🎯 Model Answer &amp; Key Talking Points:</div>
+                  <p class="leading-relaxed">
+                    &ldquo;I have maintained active project-based video editing and post-production work continuously since 2013 using <strong>Adobe Premiere Pro and After Effects</strong>, delivering institutional media for clients such as Earth Group and St. Stephen's College. I routinely handle keyframe tracking, spatial blurring, noise reduction, and batch format transcoding. Furthermore, my recent work at Ideal Integrations directly involved configuring IP cameras, Network Video Recorders (NVRs), streaming bitrates, and video container exports, so my technical media literacy has remained active and continuous.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              <!-- Q3 -->
+              <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-purple-400 font-bold text-sm">
+                  <span>❓ Q3: Lead Rover Escalations &amp; Database Cross-Referencing</span>
+                </div>
+                <p class="text-slate-300 font-semibold italic">&ldquo;You highlight being a 'Lead Rover' at TELUS. What does that mean, and how does it relate to catching CAD/RMS discrepancies in DEMU?&rdquo;</p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300 space-y-2 text-xs">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">🎯 Model Answer &amp; Key Talking Points:</div>
+                  <p class="leading-relaxed">
+                    &ldquo;As a Lead Rover, I was assigned repeat trouble queues—the difficult escalation jobs where prior technicians couldn't resolve the fault. Success required auditing past ticketing notes, finding where previous records were incomplete or miscategorized, cross-referencing provisioning databases against physical infrastructure, and documenting the true root cause with audit-ready notes. In DEMU, that exact discipline ensures that CAD occurrence numbers, officer badge tags, and camera serials reconcile 100% before Crown submission.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              <!-- Q4 -->
+              <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm">
+                  <span>❓ Q4: Redaction Workflow &amp; Preserving Evidence Integrity</span>
+                </div>
+                <p class="text-slate-300 font-semibold italic">&ldquo;If tasked with redacting a complex arrest video in Adobe Premiere Pro or Axon Redaction Studio, what is your exact workflow?&rdquo;</p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300 space-y-2 text-xs">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">🎯 Model Answer &amp; Key Talking Points:</div>
+                  <p class="leading-relaxed">
+                    &ldquo;First, the golden rule: <strong>never alter the master evidence file</strong>. I verify the SHA-256 hash and duplicate the working copy in DEMS. I review the occurrence file to identify statutory protection requirements—such as bystander faces under FOIP s. 17 or youth under YCJA s. 110. I apply spatial blur or pixelation masks with dynamic keyframe tracking across their motion vector to prevent frame bleed. For audio, I insert a 1 kHz tone or silence over phone numbers or private data using WavePad or Premiere. Finally, I maintain a comprehensive technical redaction log documenting every tool, filter, and timestamp, knowing this memo is disclosable in court under <em>Stinchcombe</em>.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              <!-- Q5 -->
+              <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-teal-400 font-bold text-sm">
+                  <span>❓ Q5: Chain of Custody &amp; Inventory Accuracy at HBC</span>
+                </div>
+                <p class="text-slate-300 font-semibold italic">&ldquo;You noted 'zero loss discrepancies' at Hudson's Bay Company in logistics. How is logistics relevant to police evidence?&rdquo;</p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300 space-y-2 text-xs">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">🎯 Model Answer &amp; Key Talking Points:</div>
+                  <p class="leading-relaxed">
+                    &ldquo;Both domains are governed by the principle of an unbroken <strong>chain of custody</strong>. In logistics, if a physical manifest doesn't reconcile with the electronic inventory database, accountability is lost. In DEMU, Generally Accepted Recordkeeping Principles (GARP) require the exact same fidelity: every piece of digital media—whether an Axon BWV stream, a merchant's CCTV USB, or a 911 audio file—must have verified origin, secure custody transfer, and documented retention classification with zero unrecorded gaps.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              <!-- Q6 -->
+              <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm">
+                  <span>❓ Q6: Coping with Graphic &amp; Traumatic Content</span>
+                </div>
+                <p class="text-slate-300 font-semibold italic">&ldquo;DEMU technicians regularly review footage of domestic violence, fatalities, serious assaults, and overdoses. How do you prepare yourself psychologically?&rdquo;</p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300 space-y-2 text-xs">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">🎯 Model Answer &amp; Key Talking Points:</div>
+                  <p class="leading-relaxed">
+                    &ldquo;I have spent years responding to critical field dispatches and understand the realities of emergency services. I approach sensitive footage through the lens of a professional forensic technician: my purpose is to uphold justice, protect the legal rights of all parties, and ensure court integrity. I maintain healthy personal boundaries, participate openly in peer support and clinical wellness check-ins, and have consented fully to the EPS psychological screening process.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </div>
     </div>
-
-    </main>
+</main>
 
   <!-- JAVASCRIPT GAME ENGINE -->
   <script>
@@ -3874,6 +4124,90 @@ General & Screening:
         }
       }).catch(err => {
         alert("Copied text to clipboard!");
+      });
+    }
+
+
+    // Dossier Sub-tabs (Job Posting, Resume, Letter, Defense)
+    function setPostingSubTab(subId) {
+      document.querySelectorAll('.posting-subcontent').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.posting-subtab').forEach(el => {
+        el.className = 'posting-subtab py-2.5 px-3 rounded-lg transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800';
+      });
+      const activeContent = document.getElementById(`posting-view-${subId}`);
+      const activeBtn = document.getElementById(`subtab-${subId}`);
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = 'posting-subtab py-2.5 px-3 rounded-lg transition-all bg-emerald-600 text-white shadow-md';
+    }
+
+    function copyResumeText() {
+      const resumeText = `KYLE JENSEN
+Digital Evidence Management & Video Production Technician
+Fort Saskatchewan, AB • (403) 896-1048 • kyle.jensen.jobs@gmail.com
+Portfolio: Digital Media Reel (Google Drive)
+
+PROFESSIONAL PROFILE
+Technically disciplined Digital Media & IT professional with a formal NAIT Diploma in Digital Media & IT (Video Production Major, Dean's Honor Roll) and 6+ years of rigorous operational compliance experience. Expert in video codec conversion, non-linear editing (Adobe Premiere Pro), frame-accurate spatial and temporal redaction masking, audio noise filtering, and disclosable procedural documentation. Proven record of operating under strict Standard Operating Procedures (SOPs), safeguarding confidential information (ATIA/POPA standards), and preserving chain-of-custody across 12,000+ incident-free operational field hours.
+
+CORE TECHNICAL & OPERATIONAL COMPETENCIES
+- Digital Media & Video Processing: Adobe Premiere Pro, Media Encoding & Transcoding (AVS Converter, Omnivore standards, HandBrake), Audio Editing (WavePad, Audition), Video Codecs (H.264, H.265/HEVC, MPEG-4, AVCHD), Container Formats (MP4, MOV, MKV, AVI), Aspect Ratios, Frame Rates & Interlacing.
+- Redaction & Disclosure Protocols: Spatial & Temporal Redaction Markers, Dynamic Object Tracking, Face/Bystander Pixelation & Gaussian Blurring, Audio Muting & Bleeping, Frame-by-Frame Vetting, Disclosable Procedural Logging.
+- Evidence Integrity & Legislation: Digital Evidence Management Systems (DEMS / Evidence.com workflows), Chain-of-Custody Governance, Generally Accepted Recordkeeping Principles, Canada & Alberta Evidence Acts, Privacy Standards (ATIA & POPA / FOIP), FVAD Technical Liaison.
+- Systems & Information Processing: Microsoft Office (Word, Excel, PowerPoint), Case Number Cross-Referencing, Occurrence File Tracking, Quality Assurance & Duplicate Audit, Queue Triage, C# Logic Scripting, Zero Incident Safety Record.
+
+RELEVANT PROFESSIONAL EXPERIENCE
+TELUS — Telecommunications Service Technician (Lead Rover & Escalations)
+Edmonton & Regional AB | 01/2019 – 05/2025 (Full-Time)
+- Served as Lead Rover escalation specialist across 12,000+ incident-free field hours; triaged repeat trouble queues, investigated complex network faults, and audited technician documentation in centralized dispatch systems to ensure 100% data integrity.
+- Maintained strict adherence to technical Standard Operating Procedures (SOPs), access control protocols, and information privacy legislation across high-volume commercial and residential service accounts.
+- Installed, tested, and repaired fibre optic (GPON/FTTH) and copper network infrastructure (Cat5e, Cat6, coaxial), performing precision optical fusion splicing, power loss attenuation tests, and hardware provisioning.
+- Documented work orders, cross-referenced multi-system provisioning databases, and recorded detailed technical troubleshooting notes with audit-ready accuracy for engineering and management review.
+
+Digital Video Production & Post-Production — Lead Editor & Media Specialist
+Edmonton, AB | 09/2013 – Present (Contract & Project)
+- Managed complete non-linear editing (NLE) pipelines in Adobe Premiere Pro and After Effects for institutional and corporate deliverables (including Earth Group PSA and St. Stephen's College promotional media).
+- Applied precision spatial and temporal masking, blur filters, and audio noise reduction to protect bystander privacy and redact sensitive identifiers while maintaining master footage integrity and export standards.
+- Executed batch format transcoding, aspect ratio adjustments, and metadata tagging across proprietary recording streams, ensuring seamless playback, accurate indexing, and rapid asset retrieval.
+- Logged detailed editing histories and export parameters, maintaining consistent version control and directory structures.
+
+Ideal Integrations — Smart Home & Security Systems Specialist
+Edmonton, AB | 09/2025 – 02/2026 (Full-Time)
+- Installed, configured, and tested commercial and residential IP surveillance cameras, digital network video recorders (NVRs), and electronic access control keypads; verified uninterrupted video signal transmission and resolution settings.
+- Completed formal DSC training for security panel wiring, sensor calibration, and zone alarm reporting protocols.
+
+Hudson’s Bay Company — Logistics & Inventory Lead
+Edmonton & Red Deer, AB | 10/2010 – 01/2019 (Intermittent Full-Time)
+- Supervised receiving operations, verified freight manifests against inventory databases, and preserved chain-of-custody across multi-trailer shipments with zero loss discrepancies.
+
+EDUCATION & PROFESSIONAL CREDENTIALS
+NAIT (Northern Alberta Institute of Technology) — Edmonton, AB
+Diploma in Digital Media & IT (Video Production Major) | 09/2013 – 04/2015 (Full-Time)
+Dean’s Honor Roll • Coursework: Digital Video Editing, Audio Engineering, Camera & Lighting Operations, Digital Media Ingestion & Transcoding, Visual Storytelling & Media Ethics.
+Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clean Abstract) • Standard First Aid & CPR-C • WHMIS • Confined Space & Fall Protection.`;
+
+      navigator.clipboard.writeText(resumeText).then(() => {
+        const btn = document.getElementById('copy-resume-btn');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = "<span>✓ Copied to Clipboard!</span>";
+          playCorrect();
+          setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }
+      });
+    }
+
+    function copyCoverLetterText() {
+      const el = document.getElementById('raw-letter-text');
+      if (!el) return;
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-letter-btn');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = "<span>✓ Copied to Clipboard!</span>";
+          playCorrect();
+          setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }
       });
     }
 
