@@ -320,7 +320,7 @@
           <div class="flex items-center space-x-2 text-xs">
             <span class="text-slate-400">Card</span>
             <span id="interview-idx" class="font-bold text-white">1</span>
-            <span class="text-slate-500">/ 6</span>
+            <span id="interview-total" class="text-slate-500">/ 10</span>
           </div>
         </div>
 
@@ -2233,78 +2233,57 @@
 
     // ========================================================
     const interviewCards = [
-      {
-        cat: "Graphic Video Exposure & Mental Resilience",
-        q: "In this position, you will be regularly exposed to body-worn video and evidence containing graphic violence, traumatic vehicle collisions, and disturbing content. How have you handled high-stress environments in the past, and how do you protect your personal well-being?",
-        star: `
-          <div class="space-y-2">
-            <p><strong class="text-blue-400">Situation:</strong> Throughout over 6 years in field technical operations and customer response at TELUS, and over 12,000 incident-free operational hours, I have worked in high-stress, unpredictable environments requiring calm composure and emotional discipline.</p>
-            <p><strong class="text-blue-400">Task:</strong> Maintaining complete objectivity, focus on the technical task, and upholding high quality control without allowing stressful stimuli to impair judgment.</p>
-            <p><strong class="text-blue-400">Action:</strong> I practice strict professional compartmentalization—focusing on the objective evidentiary task (verifying timestamps, audio tracks, and redaction bounds) rather than personal emotional absorption. Off shift, I maintain healthy decompression habits through physical fitness, structured routines, and open communication. I also recognize secondary traumatic stress and strongly value EPS's Employee Wellness resources.</p>
-            <p><strong class="text-blue-400">Result:</strong> An unblemished 12,000+ hour field safety record, reliable shift attendance, and consistent high accuracy under heavy operational queues.</p>
-          </div>
-        `
-      },
-      {
-        cat: "High Volume & Court Deadline Prioritization",
-        q: "You have multiple court disclosure packages due by the end of the day, and an investigator demands immediate expedited processing of an unrelated video file. How do you triage your workload and handle the investigator?",
-        star: `
-          <div class="space-y-2">
-            <p><strong class="text-blue-400">Situation:</strong> In high-throughput technical queue environments, urgent priority escalations regularly clash with routine daily service deadlines.</p>
-            <p><strong class="text-blue-400">Task:</strong> Uphold legal court disclosure obligations (R. v. Stinchcombe / R. v. Jordan deadlines) while remaining courteous and collaborative with police members.</p>
-            <p><strong class="text-blue-400">Action:</strong> I assess statutory urgency (e.g. in-custody bail hearings vs scheduled trial disclosures). I communicate clearly with the investigator: acknowledging their request, providing a realistic estimated completion time, and explaining the statutory deadlines currently in the queue. If an unresolvable queue conflict occurs, I promptly consult the Unit Supervisor to re-balance priorities.</p>
-            <p><strong class="text-blue-400">Result:</strong> Maintaining 100% adherence to court deadlines, zero dropped files, and positive professional relationships with sworn investigative units.</p>
-          </div>
-        `
-      },
-      {
-        cat: "Meticulous Attention to Detail & Quality Control",
-        q: "Can you provide an example of a time when your meticulous eye for detail caught a critical error before it created serious consequences?",
-        star: `
-          <div class="space-y-2">
-            <p><strong class="text-blue-400">Situation:</strong> During technical system integration and database reconciliation projects involving thousands of client assets and enterprise account records.</p>
-            <p><strong class="text-blue-400">Task:</strong> Cross-referencing physical hardware identifiers, serial numbers, and account profiles against centralized CRM database records to ensure zero discrepancies.</p>
-            <p><strong class="text-blue-400">Action:</strong> Rather than relying on automated batch scripts alone, I instituted a manual verification check on transposed digits and conflicting address records. During one major deployment, I caught transposed serial numbers across client gateways that would have misrouted service and corrupted billing audit trails.</p>
-            <p><strong class="text-blue-400">Result:</strong> Prevented system-wide database corruption, achieved a 100% reconciliation rate, and reinforced my reputation for zero-defect documentation.</p>
-          </div>
-        `
-      },
-      {
-        cat: "Technical Software & Media Conversion Aptitude",
-        q: "This role requires working with specialized digital evidence software, media transcoders (Omnivore, AVS, Premiere), and evidence platforms. What is your experience with video formats and digital systems?",
-        star: `
-          <div class="space-y-2">
-            <p><strong class="text-blue-400">Situation:</strong> Academic credential in Digital Media and IT from NAIT (Dean's Honor Roll, 3.7 GPA, Video Production major) combined with extensive enterprise technology experience.</p>
-            <p><strong class="text-blue-400">Task:</strong> Managing complex video codecs, container formats (MP4, AVI, proprietary CCTV containers), aspect ratios, bitrates, and audio mastering.</p>
-            <p><strong class="text-blue-400">Action:</strong> Over the past decade, I have produced and edited client PSAs, promotional media, and instructional video series. I understand non-linear video editing (Premiere Pro), audio wave editing, compression codecs, and metadata tagging at an architectural level. I know how to convert obscure surveillance formats into court-compliant standard containers without aspect ratio stretching or dropped frames.</p>
-            <p><strong class="text-blue-400">Result:</strong> Immediate technical onboarding speed; zero learning curve on media containers, audio levels, and digital video workflows.</p>
-          </div>
-        `
-      },
-      {
-        cat: "Strict Confidentiality & Security Integrity",
-        q: "You will have access to sensitive police evidence and private citizen recordings. How do you handle confidential information and maintain integrity under an Enhanced Security Clearance?",
-        star: `
-          <div class="space-y-2">
-            <p><strong class="text-blue-400">Situation:</strong> Operating in technical environments with access to private residential smart security systems, camera feeds, client account data, and infrastructure records.</p>
-            <p><strong class="text-blue-400">Task:</strong> Strict adherence to privacy legislation (FOIP, POPA, ATIA) and maintaining absolute ethical standards.</p>
-            <p><strong class="text-blue-400">Action:</strong> I treat all operational data on a strict 'need-to-know' basis. I never discuss cases or footage outside authorized channels, never access records out of personal curiosity, and ensure my workstation is locked whenever unattended. I understand that maintaining public trust in the Edmonton Police Service depends entirely on our personal integrity.</p>
-            <p><strong class="text-blue-400">Result:</strong> A flawless personal reputation, zero privacy or security violations throughout 15 years in customer, corporate, and technical service.</p>
-          </div>
-        `
-      },
-      {
-        cat: "Collaboration & Continuous Process Improvement",
-        q: "Why do you want to join the Edmonton Police Service as a Digital Evidence Management Technician, and what do you bring to our team?",
-        star: `
-          <div class="space-y-2">
-            <p><strong class="text-blue-400">Situation:</strong> Seeking a long-term, high-impact civilian career where technical media expertise and meticulous administrative discipline directly support the administration of justice.</p>
-            <p><strong class="text-blue-400">Action:</strong> I bring a unique hybrid background: formal technical training in digital media from NAIT, deep experience with high-volume technical documentation, dependable shift reliability (ready for 06:00 compressed 4-day rotations), and a collaborative mindset focused on process improvement.</p>
-            <p><strong class="text-blue-400">Result:</strong> You gain a dependable, motivated technician who respects the law, takes pride in evidence integrity, and will hit the ground running at Nexus Business Centre.</p>
-          </div>
-        `
-      }
-    ];
+  {
+    "cat": "Graphic Video Exposure & Psychological Resilience",
+    "q": "In this position, you will be regularly exposed to body-worn video and evidence containing graphic violence, traumatic vehicle collisions, and disturbing content. How have you handled high-stress environments in the past, and how do you protect your personal well-being?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> Throughout over six years in telecommunications and smart security field operations, including over 12,000 incident-free operational hours, I routinely worked in unpredictable, high-stress field conditions requiring emotional composure, rapid problem-solving, and strict safety discipline.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To maintain complete professional objectivity, uphold meticulous quality control, and prevent stressful or chaotic stimuli from degrading focus or judgment.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I practice disciplined professional compartmentalization. In DEMU, my focus is anchored on the objective technical task: verifying millisecond timestamps, audio waveforms, cryptographic hashes, and exact redaction boundaries. Off shift, I maintain healthy decompression habits through structured fitness routines, personal hobbies, and strong family communication. I also recognize secondary traumatic stress and proactively embrace EPS Employee Wellness and Peer Support resources without hesitation.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> An unblemished 12,000+ hour field safety record, reliable shift attendance, and consistent high accuracy under heavy operational queues.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "High-Volume Triage & Strict Court Deadlines",
+    "q": "You have multiple court disclosure packages due by the end of the day, and an investigator demands immediate expedited processing of an unrelated video file. How do you triage your workload and handle the investigator?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> In high-throughput queue operations, urgent investigator escalations regularly clash with statutory daily processing deadlines.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To uphold strict court disclosure obligations (such as in-custody bail and R. v. Stinchcombe / Jordan deadlines) while remaining collaborative, respectful, and transparent with the attending investigator.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I triage requests based on legal urgency\u2014differentiating between an active in-custody court hearing and an administrative review. I communicate clearly with the investigator: acknowledging their operational need, providing an honest estimated completion window, and explaining the hard court deadlines currently on the workstation. If two statutory deadlines directly conflict, I promptly bring the queue to my Unit Supervisor to re-balance priorities collaboratively.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> 100% adherence to critical court deadlines, zero dropped files, and positive professional rapport with investigative members.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Meticulous Accuracy & Quality Control",
+    "q": "Describe a time when you caught a minor error or technical discrepancy that could have led to a major problem if left unnoticed. How did you handle it?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> While commissioning integrated security and communication panels, I was verifying hardware MAC addresses and subscriber partition loops against the master engineering provisioning sheet.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To ensure every sensor zone, hardware serial number, and network route mapped with 100% accuracy before arming and dispatch integration.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> During my standard secondary cross-check, I noticed two transposed hex digits in a hardware serial number that otherwise passed standard ping testing. Leaving it uncorrected would have caused remote monitoring signals to route to an incorrect client partition. I halted deployment, traced the provisioning log, corrected the database entry, and documented the resolution in the shift log.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> Prevented a severe operational routing failure, reinforced my standard of 'measure twice, cut once', and established a cross-check checklist that my team adopted for subsequent deployments.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Handling Difficult or Demanding Sworn Members",
+    "q": "Police officers work in high-stress roles and may be frustrated when body camera policies or redaction procedures cause delays. How do you handle an interaction with a frustrated or demanding officer?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> In field operations, I regularly interfaced with frustrated clients and contractors during unexpected service disruptions or rigid procedural constraints.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To de-escalate tension, listen actively, and provide clear technical solutions without violating departmental policy or legal standards.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I remain calm, professional, and composed. I do not take operational frustration personally. I acknowledge the officer's time pressure, listen to their immediate objective, and explain the 'why' behind the procedure\u2014such as how an unverified hash or missed redaction could jeopardize their case in court under defense cross-examination. I then focus on what I *can* do immediately to expedite their workflow within policy boundaries.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> Diffuses tension rapidly, builds trust between civilian support staff and sworn members, and protects the integrity of the criminal prosecution.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Strict Confidentiality & Information Security",
+    "q": "In this role, you will see unreleased police footage involving people you might know or high-profile public incidents. How do you handle sensitive information, and what does confidentiality mean to you?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> Throughout my technical career and DMIT studies, I have held access to proprietary client infrastructure, security alarm master codes, and private enterprise networks.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To maintain uncompromising discretion and adhere strictly to FOIP, the Criminal Code, and police information security protocols.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> To me, confidentiality is an absolute professional oath, not a guideline. I operate strictly on a 'need-to-know' basis: I only access files directly assigned to my active queue. I never discuss case details with family, friends, or unassigned colleagues, and I never search out of curiosity. I treat every civilian's digital record and every officer's recording as protected judicial property that must remain strictly within secure systems.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> An unblemished record of trust, zero security infractions across my entire career, and total reliability handling sensitive records.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Technical Software & Media Conversion Aptitude",
+    "q": "You will encounter third-party surveillance video submitted in obscure proprietary formats that cannot be opened. How do you approach technical troubleshooting when software or media files fail?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> During my Digital Media and IT (DMIT) diploma at NAIT and subsequent technical work, I frequently encountered corrupted media containers, unsupported video codecs, and missing hardware drivers.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To extract, transcode, and verify proprietary media into court-playable formats while preserving original bitstream integrity and hash verification.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I follow a structured diagnostic workflow: first, isolate the master source file in read-only storage and calculate its SHA-256 hash. I identify the native container wrapper (.dav, .h264, .sec) and inspect the metadata stream. Using certified media utilities and proprietary standalone players, I generate a synchronized, authenticated MP4 derivative for court review while keeping the raw master untouched, documenting the entire transcode pipeline in the audit log.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> Flawless media conversions that stand up to judicial scrutiny under Canada Evidence Act standards, eliminating playback failures in the courtroom.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Adhering Strictly to Standard Operating Procedures (SOPs)",
+    "q": "Tell us about a time when taking a shortcut was tempting or suggested to save time, but you chose to follow the formal procedure. Why was that important?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> During a major fiber network cutover with tight service window deadlines, a peer suggested skipping secondary optical continuity testing and power-meter verification to meet the clock.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> Uphold rigorous testing standards and verify that every splice met exact decibel loss thresholds before closing the enclosure.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I politely declined the shortcut. I explained that an unverified marginal loss would cause intermittent packet drops later, requiring hours of emergency troubleshooting under live traffic. I executed the full OTDR power-meter tests methodically, confirmed all attenuation values were well within specification, and documented the readings in the completion package.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> The cutover was completed cleanly with zero post-launch incidents. In police digital evidence, following SOPs is even more critical\u2014a shortcut on redaction or hash verification can result in evidence being excluded from trial.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Continuous Process Improvement & Workflow Efficiency",
+    "q": "Give an example of how you identified an inefficiency in a data handling or administrative workflow and took the initiative to improve it.",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> At my technical facility, inventory tracking for specialized diagnostic equipment and client hardware was tracked through disjointed paper logs and manual whiteboards, leading to misplaced items and lost prep time.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To establish a centralized, accurate, and rapid tracking mechanism that eliminated manual errors and saved technician staging time.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> Leveraging my NAIT DMIT database training, I designed a standardized digital tracking template utilizing barcode scanning and standardized naming conventions. I created simple operational guidelines and trained shift members on how to log check-outs, return audits, and maintenance flags in seconds.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> Reduced equipment prep time by approximately 35%, completely eliminated missing hardware discrepancies, and streamlined inventory auditing for management.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Teamwork & Multi-Shift Handovers",
+    "q": "The Digital Evidence Unit operates across rotating shifts. How do you ensure seamless continuity when handing over complex files to the next shift?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> Working in multi-shift operations where tasks frequently span across team changeovers, incomplete communications can result in missed deadlines or duplicate work.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To ensure incoming shift technicians have complete, unambiguous visibility into ongoing jobs, pending exports, and urgent court priorities.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I maintain rigorous documentation habits. Before shift handover, I update all case notes in the digital queue: detailing exact progress (e.g., audio redactions complete from 00:00 to 14:30; pending review on 14:30 to 22:00), highlighting statutory deadlines, and noting any specific investigator instructions. I conduct an active 5-minute verbal handover with the incoming member to answer questions directly.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> Seamless file continuity, zero duplicated effort or missed handoffs, and an established reputation as an exceptionally reliable shift partner.</p>\n      </div>\n    "
+  },
+  {
+    "cat": "Why EPS & Why This Civilian Technician Role",
+    "q": "Why do you want to work for the Edmonton Police Service as a Body Worn Video Section Technician, and why should we select you over other candidates?",
+    "star": "\n      <div class=\"space-y-2\">\n        <p><strong class=\"text-blue-400\">Situation:</strong> Over the past decade, I have built a rock-solid foundation: graduating from NAIT's Digital Media and IT program, completing 6+ years of field technical excellence, and logging 12,000+ incident-free operational hours across the Edmonton region.</p>\n        <p><strong class=\"text-blue-400\">Task:</strong> To transition my technical aptitude, data discipline, and procedural dependability into a long-term, high-impact public service career with EPS.</p>\n        <p><strong class=\"text-blue-400\">Action:</strong> I bring the exact intersection of skills this unit needs: technical fluency with video containers, databases, and audio tools from my DMIT education; proven speed and meticulous accuracy under heavy operational queues; and a deep commitment to the Edmonton community and the integrity of the justice system. I don't see this as just clerical data entry\u2014I see it as safeguarding evidence that protects victims, supports officers, and upholds justice.</p>\n        <p><strong class=\"text-blue-400\">Result:</strong> You get a technician who is disciplined, dependable from day one, deeply respectful of the sworn mission, and committed to long-term career growth within EPS.</p>\n      </div>\n    "
+  }
+];
 
     let currentCardIdx = 0;
     let cardAnswerRevealed = false;
@@ -2315,6 +2294,7 @@
       const card = interviewCards[idx];
 
       document.getElementById('interview-idx').innerText = idx + 1;
+      if(document.getElementById('interview-total')) document.getElementById('interview-total').innerText = '/ ' + interviewCards.length;
       document.getElementById('card-category').innerText = card.cat;
       document.getElementById('card-question').innerText = card.q;
       
