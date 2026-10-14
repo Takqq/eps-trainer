@@ -1085,6 +1085,35 @@
   }
 ];
 
+    
+    let currentQ = 0;
+    let userAnswers = new Array(examQuestions.length).fill(null);
+    let examTimeSec = 0;
+    let examTimerInterval = null;
+
+    // Shuffling utility (Fisher-Yates Algorithm)
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function randomizeExam() {
+      // 1. Shuffle question order
+      shuffleArray(examQuestions);
+
+      // 2. Shuffle choices (A, B, C, D) within each question & update answer index
+      examQuestions.forEach(q => {
+        const correctText = q.options[q.answer];
+        shuffleArray(q.options);
+        q.answer = q.options.indexOf(correctText);
+      });
+
+      userAnswers = new Array(examQuestions.length).fill(null);
+    }
+
     function startTimer() {
       if (examTimerInterval) clearInterval(examTimerInterval);
       examTimeSec = 0;
