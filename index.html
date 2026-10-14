@@ -60,13 +60,16 @@
         <span class="text-base">🎧</span>
         <span><strong>Walking your dog?</strong> Quiz hands-free via Gemini Mobile Voice with your earbuds!</span>
       </div>
-      <div class="flex items-center space-x-2">
-        <a href="EPS_DEMU_Audio_Walk_Quiz_Context.pdf" download class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold transition flex items-center space-x-1 shadow">
-          <span>📥 Download 4-Page PDF</span>
-        </a>
-        <button onclick="openWalkModal()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-indigo-200 rounded-lg font-semibold border border-indigo-500/30 transition">
-          📋 Gemini Voice Prompt
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="copy70Questions()" id="banner-copy-70-btn" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold transition flex items-center space-x-1 shadow text-xs">
+          <span>📋 Copy All 70 Questions for Gemini</span>
         </button>
+        <a href="eps_question_bank_70.txt" target="_blank" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-semibold border border-slate-700 transition text-xs">
+          📄 Raw Text
+        </a>
+        <a href="EPS_DEMU_Audio_Walk_Quiz_Context.pdf" download class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold transition flex items-center space-x-1 shadow text-xs">
+          <span>📥 PDF</span>
+        </a>
       </div>
     </div>
   </div>
@@ -4411,6 +4414,59 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
           playCorrect();
           setTimeout(() => { btn.innerText = orig; }, 2000);
         }
+      });
+    }
+
+
+    // Copy all 70 questions formatted for Gemini Voice Quizmaster
+    function copy70Questions() {
+      let output = [];
+      output.push("=== SYSTEM INSTRUCTIONS FOR GEMINI QUIZMASTER ===");
+      output.push("You are Kyle Jensen's voice quizmaster preparing him for his Edmonton Police Service (EPS) written test tomorrow for Word/Data Processing Clerk III – Criminal Body Worn Video Section Technician (#56123).");
+      output.push("Kyle is on a walk with his dog wearing earbuds.");
+      output.push("");
+      output.push("CRITICAL RULES:");
+      output.push("1. You must quiz Kyle using the 70 numbered questions below sequentially from Q1 to Q70. NEVER REPEAT A QUESTION.");
+      output.push("2. State the question number and category: 'Question [X] of 70: [Category/Title]'.");
+      output.push("3. Read the Scenario/Question. DO NOT read the options out loud unless Kyle specifically asks for them.");
+      output.push("4. Wait for Kyle's spoken answer.");
+      output.push("5. Verify his answer: say 'Correct!' or gently correct him, provide the 1-sentence legal/technical explanation, and immediately ask the next numbered question.");
+      output.push("");
+      output.push("==================================================");
+      output.push("");
+
+      let qNum = 1;
+      examQuestions.forEach(q => {
+        const ansText = q.options[q.answer];
+        output.push(`Q${qNum} [${q.cat}]: ${q.title}`);
+        output.push(`Question/Scenario: ${q.scenario}`);
+        output.push(`Correct Answer: ${ansText}`);
+        output.push(`Explanation: ${q.expl}`);
+        output.push("----------------------------------------");
+        qNum++;
+      });
+
+      codecQuestions.forEach(q => {
+        const ansText = q.options[q.answer];
+        output.push(`Q${qNum} [${q.cat}]: ${q.title}`);
+        output.push(`Question/Scenario: ${q.scenario}`);
+        output.push(`Correct Answer: ${ansText}`);
+        output.push(`Explanation: ${q.expl}`);
+        output.push("----------------------------------------");
+        qNum++;
+      });
+
+      const fullText = output.join("\n");
+      navigator.clipboard.writeText(fullText).then(() => {
+        const btn = document.getElementById('banner-copy-70-btn');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = "<span>✓ All 70 Questions Copied!</span>";
+          playCorrect();
+          setTimeout(() => { btn.innerHTML = orig; }, 3000);
+        }
+      }).catch(err => {
+        window.open('eps_question_bank_70.txt', '_blank');
       });
     }
 
