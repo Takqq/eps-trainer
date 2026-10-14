@@ -54,23 +54,26 @@
     </div>
   </header>
 
-  <!-- NAVIGATION TABS -->
+    <!-- NAVIGATION TABS -->
   <nav class="max-w-6xl mx-auto px-4 mt-6">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
-      <button onclick="setTab('exam')" id="tab-exam" class="nav-tab py-2.5 px-2.5 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md">
-        📝 Written Exam (50Q)
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
+      <button onclick="setTab('exam')" id="tab-exam" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md">
+        📝 Exam (50Q)
       </button>
-      <button onclick="setTab('codec')" id="tab-codec" class="nav-tab py-2.5 px-2.5 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
-        🎬 Codecs &amp; Jargon (20Q)
+      <button onclick="setTab('codec')" id="tab-codec" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        🎬 Codecs (20Q)
       </button>
-      <button onclick="setTab('redaction')" id="tab-redaction" class="nav-tab py-2.5 px-2.5 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
-        🛡️ Redaction Sandbox (10)
+      <button onclick="setTab('legal')" id="tab-legal" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-amber-300 hover:text-amber-200 hover:bg-slate-800 border border-amber-500/20">
+        ⚖️ Legal Guide
       </button>
-      <button onclick="setTab('spotter')" id="tab-spotter" class="nav-tab py-2.5 px-2.5 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
-        🔍 CAD Discrepancy Spotter
+      <button onclick="setTab('redaction')" id="tab-redaction" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        🛡️ Redaction (10)
       </button>
-      <button onclick="setTab('interview')" id="tab-interview" class="nav-tab py-2.5 px-2.5 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
-        📋 Oral Interview STAR
+      <button onclick="setTab('spotter')" id="tab-spotter" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        🔍 CAD Spotter
+      </button>
+      <button onclick="setTab('interview')" id="tab-interview" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+        📋 Oral STAR
       </button>
     </div>
   </nav>
@@ -321,6 +324,246 @@
               <p class="text-slate-300 leading-relaxed"><strong class="text-white">Linear vs Bezier:</strong> Change Spatial Interpolation from Auto-Bezier to <em class="text-teal-300">Linear</em> to prevent masks from arcing in weird loops during face tracking.</p>
               <p class="text-slate-300 leading-relaxed"><strong class="text-white">Mask Expansion &amp; Feather:</strong> Expansion enlarges the blur perimeter over hair/ears; Feathering softens the edge from harsh cookie-cutter lines to smooth gradients.</p>
               <p class="text-slate-300 leading-relaxed"><strong class="text-white">Video Levels:</strong> Rec. 709 Legal (16–235) vs Full (0–255). Full range sent to legal monitors crushes dark shadows to pure black.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    
+    <!-- ========================================== -->
+    <!-- 3. STATUTORY LAWS & LEGAL PROTECTIONS FIELD GUIDE -->
+    <!-- ========================================== -->
+    <div id="view-legal" class="tab-content hidden">
+      <div class="space-y-6">
+
+        <!-- Banner Header -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+            <div>
+              <div class="flex items-center space-x-2">
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">DEMU FIELD DESK MANUAL</span>
+                <span class="text-xs text-slate-400 font-semibold">Statutory Reference &amp; Case Law</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Statutory Laws &amp; Legal Protections Master Guide</h2>
+              <p class="text-xs text-slate-400 mt-1">Plain-English reference for every act, section, legal precedent, and privacy threshold applied in police digital evidence management.</p>
+            </div>
+            <div class="px-3 py-1.5 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 font-mono">
+              Role: Word/Data Processing Clerk III
+            </div>
+          </div>
+
+          <!-- Quick Decision Hierarchy -->
+          <div class="mt-6 p-4 rounded-xl bg-slate-950/80 border border-slate-800">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">⚡ The Golden Redaction Hierarchy (What to Shield vs What to Disclose)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/40">
+                <div class="font-bold text-rose-300">1. ABSOLUTE SHIELD</div>
+                <div class="text-slate-300 mt-1"><strong>Informer Privilege &amp; Undercover:</strong> Identity of confidential informants (<em>R. v. Leipert</em>) and undercover members. Zero exceptions. Solid mask + audio warp.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/40">
+                <div class="font-bold text-amber-300">2. STATUTORY BAN</div>
+                <div class="text-slate-300 mt-1"><strong>Minors / Youths (YCJA s.110):</strong> Any person under 18 (accused, victim, or witness). Face, clothing, name, school. Remains protected even after turning 18.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-blue-950/30 border border-blue-500/40">
+                <div class="font-bold text-blue-300">3. PRIVACY &amp; TACTICS</div>
+                <div class="text-slate-300 mt-1"><strong>FOIP (s.17, 18, 20):</strong> Bystander faces, third-party medical charts, domestic safe houses, cruiser MDT screens, SWAT entry methods, police cell numbers.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/40">
+                <div class="font-bold text-emerald-300">4. MANDATORY DISCLOSURE</div>
+                <div class="text-slate-300 mt-1"><strong>Crown Evidence (<em>Stinchcombe</em>):</strong> Accused conduct, victim injuries, weapons, physical damage, uniformed police actions. Never withheld or altered.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. ALBERTA FOIP ACT BREAKDOWN -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-slate-800">
+            <span class="text-2xl">🏛️</span>
+            <div>
+              <h3 class="text-lg font-bold text-white">Freedom of Information and Protection of Privacy Act (FOIP - Alberta)</h3>
+              <p class="text-xs text-slate-400">Provincial legislation governing all public bodies, including Edmonton Police Service and City of Edmonton.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <!-- Section 17 -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-blue-400 text-sm">Section 17(1) — Personal Privacy</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">Privacy Balancing Test</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">What it protects:</strong> Prevents the "unreasonable invasion of a third party's personal privacy."</p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>Uninvolved Bystanders:</strong> Pedestrians walking by a traffic stop, customers sitting in an LRT train car, neighbors watching from apartment doorways.</li>
+                <li><strong>Medical &amp; Health Records:</strong> Prescription labels, open hospital triage charts, Alberta Personal Health Numbers (PHN).</li>
+                <li><strong>Private Financial Data:</strong> Credit card numbers, banking receipts, Social Insurance Numbers.</li>
+                <li><strong>Unlisted Identifiers:</strong> Personal cell phone numbers, private home addresses written on letters on a coffee table.</li>
+              </ul>
+              <div class="p-2 rounded bg-slate-900 text-slate-400 text-[11px]"><strong class="text-amber-300">Technician Action:</strong> Apply Gaussian blur or Mosaic pixelation to faces/screens; insert 1,000 Hz tone over spoken phone numbers or home addresses.</div>
+            </div>
+
+            <!-- Section 18 -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-emerald-400 text-sm">Section 18 — Individual or Public Safety</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Life &amp; Physical Safety</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">What it protects:</strong> Withholds information if disclosure could reasonably be expected to threaten the safety or physical/mental health of an individual.</p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>Safe Houses &amp; Domestic Shelters:</strong> Street addresses, building entrances, or interior layouts of women's emergency shelters or temporary witness safe houses.</li>
+                <li><strong>Persons in Acute Crisis:</strong> Individuals in psychiatric distress, suicide attempts, or severe mental health episodes where disclosure would cause severe psychological harm.</li>
+                <li><strong>Targeted Victims:</strong> Stalking victims' new employment locations or unlisted vehicle licence plates.</li>
+              </ul>
+              <div class="p-2 rounded bg-slate-900 text-slate-400 text-[11px]"><strong class="text-amber-300">Technician Action:</strong> Solid black mask over building address signs, pamphlets with crisis shelter phone lines, and room interiors.</div>
+            </div>
+
+            <!-- Section 20 -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-rose-400 text-sm">Section 20 — Law Enforcement Harm Test</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">Tactics &amp; Officer Safety</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">What it protects:</strong> Withholds records that could harm a law enforcement matter or reveal confidential tactical techniques.</p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>Cruiser Mobile Data Terminals (MDT):</strong> In-car computer screens displaying active CAD queues, internal police cell lines, CPIC queries, or officer notes.</li>
+                <li><strong>Specialized Tactical Methods:</strong> EPS Tactical Unit (SWAT) breaching mechanisms, covert surveillance camera placements, specialized entry hand signals.</li>
+                <li><strong>Police Communications:</strong> Unpublished direct divisional telephone extensions, tactical radio talk-groups, access door security PIN codes.</li>
+              </ul>
+              <div class="p-2 rounded bg-slate-900 text-slate-400 text-[11px]"><strong class="text-amber-300">Technician Action:</strong> Solid opaque mask over the entire MDT computer display whenever the officer glances at the center console.</div>
+            </div>
+
+            <!-- Section 27 -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-indigo-400 text-sm">Section 27 — Legal Advice &amp; Crown Privilege</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">Solicitor-Client Privilege</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">What it protects:</strong> Protects privileged communications between public body employees and legal counsel.</p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>Crown Consultation:</strong> Body camera footage where an arresting officer telephones a Crown prosecutor to discuss charge viability, search warrant wording, or legal trial strategy.</li>
+                <li><strong>Internal Police Legal:</strong> Legal advice rendered by City of Edmonton or EPS legal advisors to sworn members.</li>
+              </ul>
+              <div class="p-2 rounded bg-slate-900 text-slate-400 text-[11px]"><strong class="text-amber-300">Technician Action:</strong> Mute or redact the verbal audio stream of the telephone consultation and log as "FOIP s.27 Legal Privilege".</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. YCJA & PIPA BREAKDOWN -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-slate-800">
+            <span class="text-2xl">⚖️</span>
+            <div>
+              <h3 class="text-lg font-bold text-white">Youth Criminal Justice Act (YCJA) &amp; PIPA Boundaries</h3>
+              <p class="text-xs text-slate-400">Federal protections for young persons and jurisdictional boundaries between public vs private data.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <!-- YCJA Section 110 -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-amber-400 text-sm">YCJA Section 110 — Youth Identity Protection</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">Federal Criminal Statute</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">Core Principle:</strong> Strict statutory prohibition against publishing or disclosing the name or identifying features of a young person (under 18) dealt with under the YCJA.</p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>All Roles Protected:</strong> Applies equally to youth <em>accused/suspects</em>, youth <em>victims</em>, and youth <em>witnesses</em>.</li>
+                <li><strong>What to Redact:</strong> Facial features, distinctive hair/tattoos, full names spoken aloud, school uniforms/logos, student IDs, parent names, home addresses.</li>
+                <li><strong>Longevity (Crucial!):</strong> Protection does <em>not</em> expire when the youth turns 18. It remains permanently protected unless an adult sentence was formally ordered by a youth justice court.</li>
+              </ul>
+              <div class="p-2 rounded bg-slate-900 text-slate-400 text-[11px]"><strong class="text-amber-300">Technician Rule:</strong> If in doubt whether a person is 17 or 18, check CAD/RMS DOB. If under 18, redact 100% of identifying features.</div>
+            </div>
+
+            <!-- PIPA vs FOIP -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-teal-400 text-sm">PIPA vs FOIP — Jurisdictional Boundary</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-500/20 text-teal-300 border border-teal-500/40">Provincial Jurisdiction</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">Core Distinction:</strong> Knowing which privacy law applies to private enterprise vs municipal police.</p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>PIPA (Personal Information Protection Act):</strong> Applies to <em>private sector organizations</em> in Alberta (businesses, bars, convenience stores, landlords, private malls). Governs how a store records CCTV.</li>
+                <li><strong>FOIP:</strong> Applies to <em>public bodies</em> (EPS, City of Edmonton, provincial departments).</li>
+                <li><strong>The Evidence Handover:</strong> When a business provides private CCTV to EPS, custody transitions to police. FOIP, the Criminal Code, and <em>Stinchcombe</em> govern how DEMU redacts and discloses that video to court.</li>
+              </ul>
+              <div class="p-2 rounded bg-slate-900 text-slate-400 text-[11px]"><strong class="text-amber-300">Test Takeaway:</strong> DEMU operates under FOIP; private businesses operate under PIPA.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. COMMON LAW PRECEDENTS & CHARTER RULES -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-slate-800">
+            <span class="text-2xl">⚖️</span>
+            <div>
+              <h3 class="text-lg font-bold text-white">Supreme Court Landmark Precedents &amp; Charter Rights</h3>
+              <p class="text-xs text-slate-400">Judicial rulings that define Crown disclosure, informant protection, and courtroom speed.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <!-- R. v. Stinchcombe -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="font-bold text-indigo-400 text-sm">R. v. Stinchcombe (1991)</div>
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">First-Party Disclosure Duty</div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">The Rule:</strong> The Crown has an absolute constitutional duty to disclose all relevant first-party material to the defense—both <em class="text-emerald-300">inculpatory</em> (supporting guilt) and <em class="text-amber-300">exculpatory</em> (supporting innocence).</p>
+              <p class="text-slate-400 leading-relaxed">Police cannot withhold, delete, or selectively edit body camera footage because an officer made an error or the video contradicts an officer's notes. The court decides what is relevant; the technician must preserve the entire unedited master.</p>
+            </div>
+
+            <!-- R. v. Leipert -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="font-bold text-rose-400 text-sm">R. v. Leipert (1997)</div>
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">Informer Privilege</div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">The Rule:</strong> Informer Privilege is an absolute legal shield. It belongs to the Crown and the informant, and cannot be waived by a police officer. There is almost zero judicial exception (only "innocence at stake").</p>
+              <p class="text-slate-400 leading-relaxed">If body camera footage captures a confidential informant talking to police, the technician must apply solid visual masks, audio frequency pitch-shifting, and redact location clues to prevent any possibility of identification.</p>
+            </div>
+
+            <!-- R. v. Jordan & Bail S.503 -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="font-bold text-amber-400 text-sm">R. v. Jordan (2016) &amp; CC S.503</div>
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">Court Timeline Constraints</div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">R. v. Jordan:</strong> Sets strict ceilings for trials: 18 months for provincial courts; 30 months for superior courts. Disclosure delays by police cause charges to be stayed (dismissed).</p>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">Criminal Code S.503 (Bail):</strong> An accused in custody must be brought before a justice within <strong>24 hours</strong>. Video disclosure for bail hearings is priority #1 in the technician queue.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. EVIDENCE ACTS & GARP RECORDKEEPING PRINCIPLES -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-slate-800">
+            <span class="text-2xl">🗄️</span>
+            <div>
+              <h3 class="text-lg font-bold text-white">Evidence Acts &amp; Generally Accepted Recordkeeping Principles (GARP)</h3>
+              <p class="text-xs text-slate-400">Rules governing electronic document admissibility, system integrity certificates, and digital preservation.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <!-- Canada & Alberta Evidence Acts -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="font-bold text-blue-400 text-sm">Canada Evidence Act (s. 31.1) &amp; Alberta Evidence Act</div>
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">Presumption of Electronic Document Integrity</div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">Section 31.1 Canada Evidence Act:</strong> The integrity of an electronic document is legally presumed if it is established that the electronic records storage system was operating properly at all material times.</p>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">Certificate of Document Integrity:</strong> The DEMU technician issues a formal statutory certificate verifying that Evidence.com maintained write-once cloud storage, recorded automated audit trails, and SHA-256 cryptographic hashes matched ingest.</p>
+              <p class="text-slate-400 leading-relaxed"><strong class="text-white">Form 5.2 (Report to a Justice):</strong> When police seize physical digital media (DVDs, USBs, SD cards), Criminal Code Section 489.1 requires filing a Form 5.2 to account to the court for the physical item.</p>
+            </div>
+
+            <!-- GARP Principles -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="font-bold text-emerald-400 text-sm">Generally Accepted Recordkeeping Principles (GARP)</div>
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">Information Governance Standard</div>
+              <p class="text-slate-300 leading-relaxed"><strong class="text-white">Key Principles Applied Daily in DEMU:</strong></p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li><strong>Principle of Integrity:</strong> Reasonable guarantee of authenticity through cryptographic checksums (SHA-256) and immutable write-once master storage.</li>
+                <li><strong>Principle of Protection:</strong> Restricting access to sensitive files (Restricted Access Groups) to protect confidentiality.</li>
+                <li><strong>Principle of Retention:</strong> Maintaining files according to statutory limitation periods (Summary: 2–3 yrs; Indictable: 10 yrs; Homicide: Indefinite).</li>
+                <li><strong>Principle of Disposition:</strong> Deleting non-evidentiary files only through authorized, audited administrative workflows (never rogue field deletions).</li>
+                <li><strong>Principle of Accountability:</strong> Automatic logging of every single user click, view, edit, or download.</li>
+              </ul>
             </div>
           </div>
         </div>
