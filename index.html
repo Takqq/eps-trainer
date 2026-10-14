@@ -80,7 +80,21 @@
     <!-- ========================================== -->
     <div id="view-exam" class="tab-content block">
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-        
+
+        <!-- Category Filter Selector Pills -->
+        <div class="flex flex-wrap items-center gap-2 mb-5 p-2.5 bg-slate-950/70 rounded-xl border border-slate-800">
+          <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider px-2 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-pulse"></span>Filter:
+          </span>
+          <button id="cat-btn-all" onclick="filterExamCategory('ALL')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-blue-600 text-white shadow">All 70 Questions</button>
+          <button id="cat-btn-codec" onclick="filterExamCategory('Video & Audio Editing / Codecs Deep-Dive')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-amber-300 border border-amber-500/40 hover:bg-slate-700">🎬 Codecs & Editing (20 Qs)</button>
+          <button id="cat-btn-demu" onclick="filterExamCategory('Video/Audio Editing & Media Technical Processing')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">🎞️ DEMU Tools (10 Qs)</button>
+          <button id="cat-btn-axon" onclick="filterExamCategory('Axon Hardware & Ingestion Architecture')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">📹 Axon Hardware (10 Qs)</button>
+          <button id="cat-btn-foip" onclick="filterExamCategory('Statutory Compliance & Privacy Legislation')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">⚖️ FOIP & YCJA (10 Qs)</button>
+          <button id="cat-btn-court" onclick="filterExamCategory('Court Disclosure & Evidence Integrity')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">🏛️ Court Disclosure (10 Qs)</button>
+          <button id="cat-btn-garp" onclick="filterExamCategory('Records Management, Evidence Acts & GARP Principles')" class="cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">🗄️ Evidence Acts & GARP (10 Qs)</button>
+        </div>
+
         <!-- Header & Progress bar -->
         <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800">
           <div>
@@ -432,7 +446,7 @@
     // ========================================================
     // 1. QUESTION DATABASE (50 Comprehensive High-Yield Questions)
     // ========================================================
-    const examQuestions = [
+    const allExamQuestions = [
   {
     "cat": "Axon Hardware & Ingestion Architecture",
     "title": "Axon Body 3/4 Pre-Event Buffer Audio Configuration",
@@ -1082,12 +1096,274 @@
     ],
     "answer": 1,
     "expl": "When physical digital media (SD cards, USB drives, optical discs) are seized or submitted, best evidence rules require that the physical item itself be logged into the secure Property/Exhibit locker with a chain-of-custody barcode. Technicians create a bit-level forensic image or verified direct digital copy with SHA-256 hash validation for ingestion into Evidence.com, ensuring the physical master exhibit remains preserved."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Codec vs Container (Wrapper) Distinction",
+    "scenario": "A police report states that an in-car surveillance video is an 'MP4 file', but when loaded into an editing suite, the software displays an error stating 'Unsupported Video Format'. What is the technical difference between a media container and a codec that explains this error?",
+    "options": [
+      "The file extension .mp4 is merely a container wrapper holding audio/video streams; if the editing software lacks the specific codec used to compress the internal video stream (e.g. HEVC/H.265 or proprietary AVC), it cannot decode the frames.",
+      "MP4 is an uncompressed raw audio format that cannot contain video streams unless converted to an analog composite video signal first.",
+      "The computer operating system has run out of physical RAM, which causes Windows Media Player to automatically alter file extension names.",
+      "Container formats can only hold text documents; video codecs are standalone hardware chips that must be physically inserted into the motherboard."
+    ],
+    "answer": 0,
+    "expl": "A container (wrapper) such as MP4, MOV, MKV, or AVI packages video streams, audio streams, subtitles, and metadata into a single file. A codec (coder-decoder) like H.264, H.265/HEVC, or ProRes is the specific mathematical algorithm that compresses and decompresses the raw media data. A system can recognize an MP4 container but fail playback if it lacks the codec needed to decode the internal video stream."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Interlaced vs Progressive Scanning & Deinterlacing Combing Artifacts",
+    "scenario": "When pausing a 1080i legacy surveillance video in Adobe Premiere Pro during a high-speed vehicle pursuit, the technician notices jagged horizontal 'comb-like' teeth along the edges of the moving car. What is the cause of this visual artifact and how is it corrected?",
+    "options": [
+      "The camera lens had moisture condensation on its glass surface, which can be cleaned by increasing digital sharpness filters.",
+      "The footage is interlaced (recording alternating odd and even horizontal scan fields at separate moments), creating combing on rapid motion; it must be deinterlaced into progressive frames.",
+      "The video bitrate was too high for the hard drive buffer, which caused dropped scan lines across horizontal display rows.",
+      "The vehicle was exceeding the speed of light, which breaks standard digital video rasterization algorithms in Adobe Premiere."
+    ],
+    "answer": 1,
+    "expl": "Interlaced video (e.g., 1080i) captures alternating odd and even horizontal lines (fields) sequentially in time. Fast lateral motion between fields creates jagged horizontal serrations known as 'combing' or 'mice teeth'. Deinterlacing (using line interpolation, blending, or Yadif algorithms) converts the fields into full progressive frames (1080p), eliminating the jagged artifacts for clean court display."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "GOP Architecture: I-Frames (Intra) vs Inter-Frame Temporal Compression (P/B-Frames)",
+    "scenario": "When trimming an H.264 video clip in a basic converter without re-encoding, the cut snaps to a point two seconds earlier than requested, or the first second of the cut displays severe grey macroblocking. Why does inter-frame temporal compression behave this way?",
+    "options": [
+      "Inter-frame codecs compress video across a Group of Pictures (GOP); only I-frames (Intra-frames) contain complete images, while P-frames and B-frames store only changes, requiring cuts to land on an I-frame unless fully re-rendered.",
+      "The hard drive read head skipped a sector because the video file was stored near the outer rim of the magnetic storage platter.",
+      "H.264 requires every fifth frame to be painted entirely in grey scale to synchronize color palettes across standard computer monitors.",
+      "Trimming tools automatically delete two seconds of audio to prevent acoustic speaker damage during rapid scrubbing."
+    ],
+    "answer": 0,
+    "expl": "In temporal video compression (inter-frame coding), an I-frame (Intra-frame / Keyframe) is a completely self-contained compressed image. P-frames (predicted) and B-frames (bi-directional) only store pixel changes relative to surrounding frames. Trimming without re-encoding ('lossless cut' or 'stream copy') must snap to an I-frame; cutting on a P or B frame without their reference I-frame results in corruption, smearing, or missing image data."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Bitrate Encoding Modes: CBR vs VBR (1-Pass vs 2-Pass)",
+    "scenario": "A DEMU technician is exporting an hour-long courtroom video exhibit that includes 45 minutes of a static interrogation room followed by 15 minutes of a dynamic outdoor struggle. Which bitrate encoding strategy optimizes visual quality while maintaining predictable file sizes?",
+    "options": [
+      "Single-pass Constant Bitrate (CBR) set at 500 kbps to guarantee that fast motion receives the exact same low data rate as a frozen screen.",
+      "Two-Pass Variable Bitrate (VBR), where pass one analyzes scene complexity and pass two allocates higher bitrates to the high-motion struggle and lower bitrates to the static room.",
+      "Zero-bitrate encoding, which strips all digital data packets from the file so it can be streamed over low-bandwidth voice telephone lines.",
+      "Constant Quantization Parameter set to maximum compression to deliberately pixelate the officer's face during court testimony."
+    ],
+    "answer": 1,
+    "expl": "Variable Bitrate (VBR) dynamically adjusts data allocation: simple scenes (static interview rooms) consume fewer bits, while complex, high-motion scenes receive higher bitrates to prevent blockiness. Two-pass VBR scans the entire timeline first to map motion complexity, distributing bits with maximum efficiency and superior image quality compared to rigid Constant Bitrate (CBR)."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Timecode Standards: Drop-Frame (DF) vs Non-Drop-Frame (NDF) at 29.97 fps",
+    "scenario": "An in-car video recorded at 29.97 fps uses Non-Drop-Frame (NDF) timecode. Over the course of an 8-hour shift, the defense attorney argues that the video clock has drifted and does not match the wall clock at the crime scene by almost 30 seconds. What is the technical explanation for this discrepancy?",
+    "options": [
+      "The camera's internal lithium clock battery died halfway through the shift, causing the internal processor to lose electrical synchronization.",
+      "NDF timecode assumes exactly 30 fps, but at 29.97 fps it gains 108 frames (approx. 3.6 seconds) of discrepancy every hour; Drop-Frame timecode drops specific frame numbers (not actual video) to match real-time clocks.",
+      "The police cruiser was traveling westbound against the Earth's magnetic rotation, creating relativistic Doppler time distortion.",
+      "Alberta daylight saving time statutes require all police in-car video cameras to subtract 30 seconds every eight hours."
+    ],
+    "answer": 1,
+    "expl": "NTSC television standard operates at 29.97 fps (not true 30). Non-Drop-Frame (NDF) counts 30 timecode frames per second, causing the timecode to run slower than real-time by 3.6 seconds per hour (28.8 seconds over 8 hours). Drop-Frame (DF) timecode resolves this by dropping two frame numbers every minute (except every tenth minute) from the counter display—dropping timecode labels, not actual video frames—to keep video time matched with real-world wall clock time."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Digital Audio Standards: 48 kHz vs 44.1 kHz & 16-bit vs 24-bit Dynamic Range",
+    "scenario": "When configuring sequence settings in Adobe Premiere Pro or project defaults in WavePad for video evidence post-production, what are the industry-standard audio sample rate and bit depth specifications?",
+    "options": [
+      "44.1 kHz sample rate at 8-bit depth, which was the audio standard originally designed for compact disc music albums in 1982.",
+      "48 kHz sample rate at 16-bit or 24-bit depth, which is the universal standard for professional video production and forensic digital evidence playback.",
+      "11.025 kHz sample rate at 4-bit depth, which minimizes audio file size to allow transmission over dial-up modem channels.",
+      "96 kHz sample rate at 64-bit floating point, which is legally mandated by the Criminal Code for all municipal bylaws."
+    ],
+    "answer": 1,
+    "expl": "In professional video production and digital evidence management, 48 kHz (48,000 samples per second) at 16-bit or 24-bit resolution is the universal standard. 44.1 kHz was developed for consumer audio CDs. Recording or conforming to 48 kHz ensures sample-accurate synchronization with 24, 25, 29.97, and 30 fps video timebases without sample rate conversion aliasing."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Audio Dynamics: Peak Normalization vs Dynamic Range Compression",
+    "scenario": "An officer's body-worn recording contains very faint suspect whispers (recorded around -36 dBFS) interspersed with extremely loud gunshots that peak at 0 dBFS. What is the fundamental difference between applying Peak Normalization versus Dynamic Range Compression in WavePad?",
+    "options": [
+      "Peak Normalization raises the entire track uniformly based on the loudest peak (which would do nothing here since gunshots already hit 0 dBFS), while Compression narrows the dynamic range by attenuating loud peaks and boosting quiet whispers.",
+      "Normalization converts stereo audio into mono, while dynamic range compression deletes all frequencies above 20 kHz.",
+      "Peak normalization is an analog process using vacuum tubes, while compression can only be executed on optical tape recorders.",
+      "Compression permanently deletes the quiet parts of the recording, while normalization mutes the loudest parts of the track."
+    ],
+    "answer": 0,
+    "expl": "Peak Normalization adjusts the entire audio file by a fixed mathematical gain so that the single highest peak reaches a target level (e.g. -0.1 dBFS). If gunshots already peak near 0 dBFS, normalization cannot amplify the quiet dialogue. Dynamic Range Compression automatically attenuates signals above a threshold and applies makeup gain, narrowing the volume difference between whispers and gunshots so speech becomes audible without distorting peaks."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Audio Equalization & Filtering: High-Pass, Low-Pass, and 60 Hz Notch Filters",
+    "scenario": "A technician must clean up an interrogation room recording that suffers from an irritating electrical mains hum (60 Hz in North America) and air conditioner rumble, while preserving human vocal clarity. What combination of audio filters in WavePad should be deployed?",
+    "options": [
+      "A severe low-pass filter at 50 Hz to remove all frequencies where human speech consonants and vowels exist.",
+      "A high-pass filter (rolling off sub-80 Hz rumble) combined with a narrow Notch Filter centered at precisely 60 Hz to eliminate electrical mains hum without harming vocal warmth.",
+      "A high-shelf boost at 18 kHz to amplify ultrasonic frequencies beyond the human hearing spectrum.",
+      "An acoustic echo-chamber reverb filter to make the interrogation room sound like a cathedral."
+    ],
+    "answer": 1,
+    "expl": "North American alternating current (AC) electrical lines oscillate at 60 Hz, often inducing a persistent 60 Hz buzz in poorly shielded microphones. A narrow Notch Filter targets and eliminates only 60 Hz (and its harmonics). Combining this with a High-Pass filter (attenuating non-vocal sub-80 Hz HVAC rumble) cleans the background while keeping vocal fundamentals (100 Hz–3.5 kHz) crisp and untouched."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Digital Audio Metering: dBFS Scale & Digital Clipping at 0 dBFS",
+    "scenario": "When monitoring audio waveforms in Adobe Premiere Pro, the meters enter the red zone and hit 0 dBFS during an officer shout, resulting in harsh, crunchy, unpleasant distortion. What has occurred technically?",
+    "options": [
+      "The audio signal exceeded the maximum digital representation limit (0 Decibels Full Scale), resulting in hard clipping where waveform peaks are squared off into harsh harmonic distortion.",
+      "The audio track was converted from digital binary pulses into FM radio waves inside the computer casing.",
+      "The computer monitor's refresh rate exceeded 144 Hz, causing visual distortion on the audio meter graph.",
+      "The microphone ran out of battery power and automatically reversed its acoustic polarity to draw power from the officer's uniform."
+    ],
+    "answer": 0,
+    "expl": "In digital audio (dBFS / Decibels Full Scale), 0 dBFS represents the absolute maximum level digital integers can represent. If an incoming audio signal exceeds 0 dBFS, the analog-to-digital converter or processing bus 'clips' off the top and bottom of the sine wave into a flat square shape, producing permanent, harsh non-linear digital distortion (clipping) that cannot be cleanly undone."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Acoustic Phase Issues: Phase Cancellation & Polarity Inversion",
+    "scenario": "A body-worn camera and an in-car cruiser microphone capture the same officer speaking from slightly different distances. When both audio tracks are played simultaneously in Premiere Pro, the officer's voice sounds hollow, thin, and almost completely disappears. What acoustic phenomenon is happening?",
+    "options": [
+      "The microphones experienced acoustic phase cancellation, where audio waves from the two sources arrive out of phase and their opposite wave peaks and troughs cancel each other out.",
+      "The camera's internal Bluetooth transmitter overheated and muted both microphones to protect the processor.",
+      "The sound waves were traveling faster than the speed of light due to acoustic refraction in cold Alberta air.",
+      "The officer's badge number was not entered into the timeline sequence properties before initiating playback."
+    ],
+    "answer": 0,
+    "expl": "When two microphones capture the same sound source from different distances, the sound reaches them with a slight time delay. If the sound waves arrive 180 degrees out of phase, the positive pressure peak of one wave meets the negative trough of the other, cancelling frequencies out (destructive interference / phase cancellation), causing the audio to sound hollow, distant, or thin. Inverting polarity or aligning waveforms fixes this."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Keyframe Dynamics: Spatial Interpolation vs Temporal Interpolation",
+    "scenario": "While tracking a Gaussian blur mask over a moving suspect's face in Adobe Premiere Pro, the mask unexpectedly arcs out in a wide curved loop between two keyframes instead of moving in a direct straight line. Which setting in Premiere Pro controls this behavior?",
+    "options": [
+      "The computer's mouse sensitivity DPI setting inside the Windows Control Panel.",
+      "Spatial Interpolation: changing keyframes from Auto Bezier (which curves paths between points) to Linear (which moves in a direct straight line between coordinates).",
+      "The sequence framerate setting, which must be set to 12 frames per second to prevent mask curvature.",
+      "The monitor aspect ratio, which distorts pixel coordinates when using widescreen displays."
+    ],
+    "answer": 1,
+    "expl": "Keyframes have two forms of interpolation: Temporal (how speed changes over time) and Spatial (how position moves through physical 2D screen space). Premiere Pro often defaults position keyframes to 'Auto Bezier' spatial interpolation, creating unwanted looping curves ('boomerang effect') between points. Right-clicking the keyframes and setting Spatial Interpolation to 'Linear' forces the mask to track in a straight line directly between keyframed coordinates."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Redaction Mask Geometry: Mask Feathering vs Mask Expansion",
+    "scenario": "When redacting the face of a confidential informant in Adobe Premiere Pro, the technician needs the blurred oval to completely cover the head and ears while blending softly into the background without a sharp, distracting cookie-cutter edge. What two mask properties achieve this balance?",
+    "options": [
+      "Mask Opacity set to 10% and Timeline Framerate set to 60 fps.",
+      "Increasing Mask Expansion (growing the outer boundary to enclose hair/ears) and applying a moderate Mask Feather (softening the perimeter boundary from hard edge to gradual alpha gradient).",
+      "Setting video resolution to 320x240 and exporting as an uncompressed bitmap image sequence.",
+      "Applying a 3D lens flare effect directly over the center of the informant's eyes."
+    ],
+    "answer": 1,
+    "expl": "In Adobe Premiere Pro masking: Mask Expansion expands or contracts the boundary of the mask path in pixels without altering the keyframe points (ensuring full coverage of ears, hair, and chin). Mask Feather softens and blends the outer perimeter edge across a specified pixel gradient, preventing harsh, sharp borderlines that distract viewers while guaranteeing no confidential features peek through."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Compression Paradigms: Lossy (H.264/HEVC) vs Visually Lossless / Intra-frame (ProRes/DNxHR)",
+    "scenario": "Why are editing intermediate codecs like Apple ProRes 422 or Avid DNxHR preferred for complex multi-pass forensic video processing over highly compressed delivery codecs like H.264 or H.265?",
+    "options": [
+      "H.264 files can only be played on handheld smartphones, while ProRes can only be projected in IMAX commercial movie theatres.",
+      "ProRes and DNxHR use intra-frame (all-I-frame) compression with minimal generational loss across multiple export passes, whereas lossy inter-frame H.264 degrades image quality and introduces compression artifacts upon every re-render.",
+      "ProRes completely removes all color information to reduce video files to black and white for courtroom neutrality.",
+      "H.264 files require ten times more disk space than uncompressed 8K ProRes raw files."
+    ],
+    "answer": 1,
+    "expl": "Delivery codecs like H.264 and H.265 use aggressive inter-frame lossy compression; repeatedly editing, applying filters, and re-rendering H.264 introduces 'generation loss' (macroblocking, banding, and detail loss). Intermediate codecs like Apple ProRes or Avid DNxHR compress each frame individually (all-I-frame) with high bit depth and chroma subsampling (4:2:2), preserving pristine visual fidelity across multiple editing passes."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Video Levels & Dynamic Range: Broadcast Legal Range (16-235) vs Full Range (0-255)",
+    "scenario": "A technician exports a court exhibit from an editing suite, but on the courtroom projector, shadow details in a dark alleyway appear completely crushed to solid black, and highlights are blown out. What video signal level mismatch causes this phenomenon?",
+    "options": [
+      "The video was tagged as Full Range (0–255) levels during export but interpreted by the display system as Legal/Broadcast Range (16–235), crushing shadows and clipping bright highlights.",
+      "The video camera was pointed directly at the moon during the recording, which permanently reverses pixel luminance.",
+      "The technician forgot to apply a sepia tint filter to the timeline before rendering the final court copy.",
+      "The courtroom electrical wiring is running on European 50 Hz power instead of Canadian 60 Hz current."
+    ],
+    "answer": 0,
+    "expl": "Standard 8-bit digital video can represent 256 luminance steps (0–255). Full Range (PC/Data levels 0–255) uses the complete scale. Broadcast/Legal Range (Rec. 709 / Studio levels 16–235) reserves 0–15 and 236–255 for footroom/headroom. If an 8-bit file authored in Full Range is played on a system expecting Legal levels, code values below 16 are clipped to absolute black (crushing dark details in night scenes), and values above 235 clip to white."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Media Processing: Remuxing (Re-wrapping) vs Transcoding (Re-encoding)",
+    "scenario": "An officer submits a dashcam recording inside an MKV container. The Crown prosecution software only accepts MP4 files. The internal video stream is already standard H.264 and the audio is AAC. What is the fastest and most forensically sound way to convert this file in media utilities?",
+    "options": [
+      "Re-encode the entire video at maximum compression settings using an online web converter that watermark-stamps the footage.",
+      "Remux (re-wrap) the file into an MP4 container by copying the raw streams without re-encoding, taking seconds and causing zero generational loss or pixel alterations.",
+      "Print out every frame on physical photo paper and scan them into a multi-page PDF document.",
+      "Burn the MKV file to an audio compact disc and rip the tracks using Windows Media Player."
+    ],
+    "answer": 1,
+    "expl": "When the underlying streams (e.g. H.264 video, AAC audio) are already compliant with the destination format, transcoding (re-encoding) is unnecessary and harmful because it causes loss of quality and takes significant CPU time. Remuxing (re-wrapping) extracts the pristine raw bitstreams from the MKV container and places them into an MP4 container with zero re-compression, zero generational loss, and near-instant processing."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Aspect Ratios: Display Aspect Ratio (DAR) vs Pixel Aspect Ratio (PAR) Distortion",
+    "scenario": "When reviewing an imported legacy commercial CCTV video in Adobe Premiere Pro, all people in the footage appear unnaturally tall and skinny, and circular vehicle wheels look like vertical ovals. What technical setting in Premiere Pro corrects this geometry?",
+    "options": [
+      "The monitor contrast knob must be turned 90 degrees counter-clockwise.",
+      "Right-click the footage, select Modify > Interpret Footage, and adjust the Pixel Aspect Ratio (PAR) from non-square (e.g. NTSC 0.91 or Anamorphic 1.33) to Square Pixels (1.0).",
+      "Apply a vertical directional blur effect to stretch the pixels until the wheels appear round.",
+      "Crop 50% of the video from the top and bottom of the frame using the razor blade tool."
+    ],
+    "answer": 1,
+    "expl": "Modern digital displays use Square Pixels (Pixel Aspect Ratio 1.0), where each pixel is equally wide and tall. Legacy video formats (such as standard-definition NTSC/PAL or anamorphic HD) utilize non-square rectangular pixels (e.g., 0.91, 1.2, or 1.33). If non-square footage is incorrectly displayed on square-pixel timelines, subjects look stretched or squished. Correcting PAR via 'Interpret Footage' restores true physical geometry."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Camera Sensor Artifacts: Rolling Shutter ('Jello Effect') vs Global Shutter",
+    "scenario": "During high-speed cruiser driving, body-worn camera footage of passing street poles shows the poles leaning diagonally at an angle, and sudden vehicle vibration causes the image to wobble like gelatin ('jello effect'). What CMOS sensor scanning methodology causes this artifact?",
+    "options": [
+      "Rolling Shutter, where the CMOS sensor scans the image row-by-row sequentially from top to bottom, causing fast-moving objects or rapid vibrations to displace across scan lines.",
+      "Global Shutter, where all pixels on the sensor are exposed simultaneously at the exact same instant in time.",
+      "Thermal lens expansion caused by operating police vehicle windshield defrosters on cold winter mornings.",
+      "The camera's internal GPS receiver transmitting radio waves directly across the optical image sensor."
+    ],
+    "answer": 0,
+    "expl": "Most body cameras and smartphones utilize CMOS sensors with a Rolling Shutter, capturing the scene row-by-row from top to bottom over several milliseconds. If an object moves rapidly (or the camera pans/vibrates quickly) during this readout, vertical objects appear slanted diagonally, and vibration creates a characteristic rubbery wobble known as the 'jello effect'. Global shutters expose the entire sensor simultaneously, preventing this artifact."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Video Compression Artifacts: Macroblocking vs Color Banding",
+    "scenario": "During a nighttime drug investigation recorded in a dark alley with low street lighting, the technician notices large square pixel blocks flickering in the shadows and distinct stepped contour bands across the sky instead of smooth gradients. What are these two distinct video artifacts called?",
+    "options": [
+      "Macroblocking (caused by insufficient bitrate to encode high-frequency discrete cosine transform blocks) and Color Banding (caused by low bit depth quantizing smooth gradients into visible steps).",
+      "Analog tape static and VHS tracking slippage caused by dirty magnetic playback heads inside the computer.",
+      "Chromatic aberration caused by ultraviolet laser pointers aimed at the camera lens by suspects.",
+      "Optical flare caused by streetlights reflecting off the officer's uniform metal badge."
+    ],
+    "answer": 0,
+    "expl": "Macroblocking occurs in DCT/transform-based codecs (like H.264) when the allocated bitrate is too low to represent complex or noisy visual information, making the 8x8 or 16x16 pixel compression blocks visible. Color Banding (contouring) occurs when bit depth is insufficient (e.g. 8-bit color offering only 256 shades per channel), turning subtle gradients in darkness or sky into discrete, stepped contour stripes."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Premiere Pro Media Ingestion: Audio Conforming & Peak File (.pek / .cfa) Caching",
+    "scenario": "When a technician imports an external surveillance video with compressed audio into Adobe Premiere Pro, a status bar in the lower right corner displays 'Conforming audio...' and disk activity surges for two minutes before waveforms appear on the timeline. What is Premiere Pro doing during this conforming process?",
+    "options": [
+      "Transmitting the entire video recording to Adobe headquarters in California for copyright infringement verification.",
+      "Decompressing the audio into high-performance uncompressed 32-bit floating point scratch files (.cfa) and generating visual waveform cache data (.pek) for real-time playback.",
+      "Deleting all vulgar language from the audio track pursuant to municipal communications guidelines.",
+      "Permanently formatting the technician's hard drive to remove temporary Internet browser cookies."
+    ],
+    "answer": 1,
+    "expl": "When Premiere Pro imports compressed audio formats (like MP3, AAC, or AC3), it 'conforms' the audio by decompressing it into uncompressed 32-bit float audio files (.cfa) and drawing graphic waveform peak files (.pek). This caching allows the timeline to scrub instantly, render waveform visuals accurately, and apply real-time DSP effects without straining the CPU on decoding compressed audio blocks."
+  },
+  {
+    "cat": "Video & Audio Editing / Codecs Deep-Dive",
+    "title": "Multi-Camera Timeline Assembly: Audio Waveform Sync vs Timecode Sync",
+    "scenario": "A DEMU technician must assemble a multi-angle timeline featuring four body-worn cameras from officers who responded to the same critical incident. What are the two primary technical methods in Adobe Premiere Pro to synchronize these four camera angles onto a unified multi-cam timeline?",
+    "options": [
+      "Guessing the start times by eye and dragging clips manually until officers' footsteps roughly sound similar on computer speakers.",
+      "Synchronizing by matching Audio Waveforms (automated acoustic cross-correlation) or synchronizing by Timecode (matching embedded SMPTE / GPS clock metadata across all clips).",
+      "Exporting each video to an iPhone and pressing the play button on all four phones with four fingers simultaneously.",
+      "Cutting each clip into 10-second segments and shuffling them into alphabetical order based on file name."
+    ],
+    "answer": 1,
+    "expl": "In Adobe Premiere Pro Multi-Camera Source Sequences: Timecode Synchronization uses synchronized embedded GPS/internal timecode (SMPTE) to lock cameras to the exact millisecond instantly. If timecodes differ or drift, Audio Waveform Synchronization analyzes ambient audio frequencies across all recordings, automatically aligning shared acoustic transients (such as cruiser sirens, car doors slamming, or taser discharges) with sample accuracy."
   }
 ];
 
     
+    let currentCategory = 'ALL';
+    let examQuestions = [];
     let currentQ = 0;
-    let userAnswers = new Array(examQuestions.length).fill(null);
+    let userAnswers = [];
     let examTimeSec = 0;
     let examTimerInterval = null;
 
@@ -1100,17 +1376,57 @@
       return arr;
     }
 
-    function randomizeExam() {
-      // 1. Shuffle question order
-      shuffleArray(examQuestions);
+    function filterExamCategory(cat) {
+      currentCategory = cat;
+      // Update UI button styles
+      const filterBtns = {
+        'ALL': 'cat-btn-all',
+        'Video & Audio Editing / Codecs Deep-Dive': 'cat-btn-codec',
+        'Video/Audio Editing & Media Technical Processing': 'cat-btn-demu',
+        'Axon Hardware & Ingestion Architecture': 'cat-btn-axon',
+        'Statutory Compliance & Privacy Legislation': 'cat-btn-foip',
+        'Court Disclosure & Evidence Integrity': 'cat-btn-court',
+        'Records Management, Evidence Acts & GARP Principles': 'cat-btn-garp'
+      };
 
-      // 2. Shuffle choices (A, B, C, D) within each question & update answer index
-      examQuestions.forEach(q => {
+      Object.entries(filterBtns).forEach(([c, btnId]) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          if (c === cat) {
+            btn.className = "cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-blue-600 text-white shadow";
+          } else {
+            btn.className = c === 'Video & Audio Editing / Codecs Deep-Dive'
+              ? "cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-amber-300 border border-amber-500/40 hover:bg-slate-700"
+              : "cat-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700";
+          }
+        }
+      });
+
+      resetExam();
+    }
+
+    function randomizeExam() {
+      // 1. Filter questions based on currentCategory
+      let pool = [];
+      if (currentCategory === 'ALL') {
+        pool = allExamQuestions.map(q => JSON.parse(JSON.stringify(q)));
+      } else {
+        pool = allExamQuestions
+          .filter(q => q.cat === currentCategory)
+          .map(q => JSON.parse(JSON.stringify(q)));
+      }
+
+      // 2. Shuffle question order
+      shuffleArray(pool);
+
+      // 3. Shuffle choices (A, B, C, D) within each question & update answer index
+      pool.forEach(q => {
         const correctText = q.options[q.answer];
         shuffleArray(q.options);
         q.answer = q.options.indexOf(correctText);
       });
 
+      examQuestions = pool;
       userAnswers = new Array(examQuestions.length).fill(null);
     }
 
