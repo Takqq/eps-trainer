@@ -53,6 +53,23 @@
       </div>
     </div>
   </header>
+  <!-- AUDIO WALK BANNER -->
+  <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 border-b border-indigo-900/40 px-4 py-2 text-xs">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center space-x-2 text-indigo-300">
+        <span class="text-base">🎧</span>
+        <span><strong>Walking your dog?</strong> Quiz hands-free via Gemini Mobile Voice with your earbuds!</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <a href="EPS_DEMU_Audio_Walk_Quiz_Context.pdf" download class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold transition flex items-center space-x-1 shadow">
+          <span>📥 Download 4-Page PDF</span>
+        </a>
+        <button onclick="openWalkModal()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-indigo-200 rounded-lg font-semibold border border-indigo-500/30 transition">
+          📋 Gemini Voice Prompt
+        </button>
+      </div>
+    </div>
+  </div>
 
     <!-- NAVIGATION TABS -->
     <nav class="max-w-6xl mx-auto px-4 mt-6">
@@ -4373,6 +4390,85 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
       });
     }
 
+
+    // Walk Modal Functions
+    function openWalkModal() {
+      const modal = document.getElementById('walk-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+    function closeWalkModal() {
+      const modal = document.getElementById('walk-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+    function copyGeminiWalkPrompt() {
+      const el = document.getElementById('gemini-prompt-text');
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        const btn = document.getElementById('modal-copy-btn');
+        if (btn) {
+          const orig = btn.innerText;
+          btn.innerText = "✓ Copied to Clipboard!";
+          playCorrect();
+          setTimeout(() => { btn.innerText = orig; }, 2000);
+        }
+      });
+    }
+
   </script>
+  <!-- GEMINI WALK MODAL -->
+  <div id="walk-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">🐕🎧</span>
+          <div>
+            <h3 class="text-base font-bold text-white">Gemini Mobile Audio Walk Quizzer</h3>
+            <p class="text-xs text-slate-400">45-minute interactive voice drill for your dog walk</p>
+          </div>
+        </div>
+        <button onclick="closeWalkModal()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+      </div>
+
+      <div class="text-xs text-slate-300 space-y-2">
+        <p><strong>How to use during your walk:</strong></p>
+        <ol class="list-decimal list-inside space-y-1 text-slate-400">
+          <li>Tap <strong>Copy Voice Prompt</strong> below (or upload the downloaded PDF).</li>
+          <li>Open the <strong>Gemini app</strong> on your phone and paste it into a new chat.</li>
+          <li>Tap the <strong>Microphone / Gemini Live icon</strong>, put your earbuds in, and start walking!</li>
+        </ol>
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400">
+          <span>Prompt text:</span>
+          <button onclick="copyGeminiWalkPrompt()" id="modal-copy-btn" class="text-emerald-400 hover:text-emerald-300 font-bold transition">
+            📋 Copy Prompt
+          </button>
+        </div>
+        <div id="gemini-prompt-text" class="p-3 bg-slate-950 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 max-h-48 overflow-y-auto leading-relaxed">You are Kyle Jensen's interactive audio quizmaster and Edmonton Police Service (EPS) Digital Evidence Management Unit (DEMU) Field Supervisor. Kyle is taking a 45-minute walk with his dog, listening to you through his earbuds via voice chat. He is preparing for his written test tomorrow for Word/Data Processing Clerk III – Criminal Body Worn Video Section Technician (#56123).
+
+YOUR RULES:
+1. Ask ONE question at a time. Never give walls of text. Keep questions conversational and scenario-based.
+2. Wait for Kyle to speak his answer.
+3. If he is right, say "Spot on, Kyle!" and give a 1-sentence legal/technical rationale. If he misses or is unsure, gently explain the correct answer and cite the law (FOIP, YCJA, Evidence Act, Case Law) or codec principle.
+4. Smoothly cycle through all 5 testing domains:
+   - Domain 1: Axon BWV Hardware & Ingestion (30s pre-event buffer video-only, dock upload hash mismatch, retention tags)
+   - Domain 2: Redaction & Statutory Law (R. v. Leipert absolute informer privilege, YCJA s.110 youth ban, FOIP s.17/18 personal privacy/safety, FOIP s.20 tactical methods, Stinchcombe Crown disclosure)
+   - Domain 3: Video & Audio Codecs (I-frames vs P/B-frames, remuxing vs transcoding, 1 kHz tone bleeps, AVS Video Converter for CCTV, WavePad for audio redaction & pitch shifts)
+   - Domain 4: CAD vs RMS Discrepancy Spotting (UTC vs MDT 1-hour time drift, OCC numbers, badge tags, call type vs retention)
+   - Domain 5: Oral STAR Interview & Resume Defense (TELUS Lead Rover 12,000 incident-free hours, NAIT DMIT diploma, emotional composure with graphic content)
+5. Start immediately by greeting Kyle and asking your first scenario question!</div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
+        <a href="EPS_DEMU_Audio_Walk_Quiz_Context.pdf" download class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline">
+          Download Complete 4-Page PDF
+        </a>
+        <button onclick="closeWalkModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">
+          Done / Close
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
