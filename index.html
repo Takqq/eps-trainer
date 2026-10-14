@@ -824,264 +824,264 @@
     "expl": "Police retention schedules strictly correlate with offence severity and statutory limitation periods. Minor summary or regulatory offences are typically retained for 2 to 3 years after all court appeals expire, whereas major indictable offences, sexual assaults, and homicides are retained for decades or indefinitely."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "Priority 1 vs Priority 2 CAD Dispatch Classification",
-    "scenario": "A 911 caller reports an armed robbery at a convenience store where a suspect brandishing a machete is actively threatening the cashier. Moments later, another caller reports a suspect who smashed a car window and fled on foot two minutes ago. How are these two calls prioritized in CAD?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Adobe Premiere Pro – Dynamic Mask Tracking & Keyframe Drift Correction",
+    "scenario": "A DEMU technician is redacting the face of an undercover officer in Adobe Premiere Pro across an erratic 4-minute body-worn camera clip. During a foot pursuit, the subject rapidly turns their head and ducks under an awning, causing the automated Mask Path tracker to lose track and drift off the face for 12 frames. What is the mandatory corrective action?",
     "options": [
-      "Both calls are classified as Priority 3 Routine investigations to be queued in chronological order of telephone call receipt.",
-      "The armed robbery is Priority 1 (Imminent Threat to Life in Progress), while the car break-in is Priority 2 or 3 (Property / Suspect Fled).",
-      "The car break-in is Priority 1 because property crimes have stricter municipal performance metrics under City of Edmonton bylaws.",
-      "Both calls must be canceled if patrol cruisers are currently on a scheduled meal break at the local divisional station."
+      "Accept the automated track because 12 frames at 30 fps is less than half a second and human eyes cannot perceive unmasked identity at that speed.",
+      "Increase the Gaussian blur radius on the master video track to 100% so that the entire scene is obscured during the foot pursuit sequence.",
+      "Stop the tracker, navigate manually to the first slipped frame, and create frame-by-frame manual keyframes to anchor the mask over the face until the track re-locks.",
+      "Apply a hard cut in the timeline to delete the 12 offending frames from the video and audio tracks before exporting to Crown disclosure."
     ],
-    "answer": 1,
-    "expl": "In police Computer Aided Dispatch (CAD) systems, Priority 1 is reserved for events involving imminent danger to human life or violent crimes in progress requiring immediate emergency response (lights and sirens). Incidents where suspects have fled or property is damaged without immediate threat fall into lower priority queues."
+    "answer": 2,
+    "expl": "In forensic video redaction, even a single unmasked frame ('flash frame') can unlawfully reveal protected identities (such as undercover members, youths, or confidential informants). Automated mask tracking in Adobe Premiere Pro frequently slips during sudden head turns or occlusions; technicians must manually step through frame-by-frame and reposition keyframes to maintain continuous coverage."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "Reconciling UTC Ingest Timestamps with Local Mountain Daylight Time (MDT)",
-    "scenario": "A body-worn camera records an incident in Edmonton on July 15 at 14:30:00 MDT (Mountain Daylight Time, UTC -6). When the raw metadata XML is inspected, the ingest timestamp reads '20:30:00Z'. Is there a timing error in the recording?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "WavePad Sound Editor – Audio Redaction Standard (Tone Insertion vs Muting)",
+    "scenario": "While preparing a video for defense disclosure in WavePad Sound Editor, a technician must redact a witness shouting their personal telephone number and home address. What is the standard technical protocol for redacting this spoken audio segment?",
     "options": [
-      "Yes; the camera clock is running exactly six hours fast, proving the internal clock crystal is defective and must be recalibrated.",
-      "No; the 'Z' designator represents Greenwich Mean Time (UTC), which is precisely 6 hours ahead of Mountain Daylight Time (MDT).",
-      "Yes; police computers in Alberta are legally required by provincial statute to operate exclusively on Central Standard Time.",
-      "No; the six-hour difference represents the amount of time the video spent waiting in the divisional charging dock buffer."
+      "Permanently cut and delete the timeline timecode corresponding to the spoken digits so the total video duration shrinks by three seconds.",
+      "Insert an industry-standard 1,000 Hz continuous sine tone (bleep) or replace with ambient room tone at identical decibels, documenting timestamps in the redaction log.",
+      "Reverse the audio track phase 180 degrees across the entire 30-minute interview so that dialogue sounds garbled and unintelligible on playback.",
+      "Export the audio track as an uncompressed 8-bit mono file to degrade vocal fidelity until the numbers are indecipherable."
     ],
     "answer": 1,
-    "expl": "Modern digital recording hardware and cloud databases store internal timestamps in Coordinated Universal Time (UTC / Zulu time 'Z'). Edmonton is in the Mountain Time Zone, which observes UTC-6 during Daylight Saving Time (MDT) and UTC-7 during Standard Time (MST). 20:30:00Z is exactly 14:30:00 MDT."
+    "expl": "Audio redaction in criminal justice proceedings must never alter the overall playback runtime or timeline synchronization. Redacted segments are replaced either with a standardized 1,000 Hz tone ('bleep') or matched ambient room tone at identical decibel levels, paired with a timestamped disclosure log. Truncating the timeline would corrupt timecode sync and invite allegations of evidence tampering."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "CAD Premise Hazard Flags (HAZ) & Clerk Cross-Referencing",
-    "scenario": "While reconciling CAD dispatch logs with a body-worn video file from an assault call, a clerk notes a CAD warning flag 'HAZ: PREV VIOLENCE / FIREARMS ON SITE'. Why is this CAD flag critical when reviewing the officer's pre-activation conduct?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "AVS Video Converter – Proprietary CCTV Transcoding & Forensic Container Integrity",
+    "scenario": "A gas station robbery surveillance clip is delivered in a proprietary CCTV container format (.dav or .sec) that cannot be played in standard Crown court viewers or Evidence.com. How must the technician utilize conversion software like AVS Video Converter to prepare the file for disclosure?",
     "options": [
-      "It explains why the officer activated emergency equipment and engaged buffering mode early prior to arrival on the street.",
-      "It proves the officer had an obligation to immediately cancel the call and wait for federal military assistance to arrive.",
-      "It allows the clerk to automatically double the criminal charges filed against the suspect without Crown authorization.",
-      "It indicates the building owner has paid a municipal property tax surcharge for enhanced police surveillance monitoring."
+      "Transcode the stream into a universal container (MP4 / H.264) using constant framerate, while permanently preserving the untouched master .dav file alongside the export.",
+      "Convert the file into a low-resolution animated GIF so that it can be embedded directly into the officer's Microsoft Word summary report.",
+      "Overwrite the proprietary raw file on the thumb drive with the converted MP4 file to prevent duplicate video entries in the evidence locker.",
+      "Change the file extension from .dav to .mp4 in Windows File Explorer without re-encoding and send it directly to the Crown prosecutor."
     ],
     "answer": 0,
-    "expl": "CAD Premise Hazard (HAZ) flags alert responding officers to known officer-safety risks (weapons history, violent tendencies, vicious animals, chemical hazards). Cross-referencing hazard flags helps technicians contextualize officer actions, equipment staging, and the timing of camera activation during operational reviews."
+    "expl": "Proprietary security DVR containers (.dav, .sec, .h264) require transcoding into universal standards (e.g., MP4/H.264) for court playback. However, under chain of custody and Canada Evidence Act rules, the original, unaltered proprietary file must always be preserved as the master evidence exhibit, with the converted file designated as a disclosure working copy."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "Standard Police 10-Codes: 10-23 (On Scene) vs 10-8 (Available)",
-    "scenario": "A CAD log indicates Unit 12-A broadcast '10-23' at 19:14:00, but the officer's Axon camera was not activated until 19:22:15. What does the status code '10-23' signify in CAD, and what does the eight-minute discrepancy indicate?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "WavePad – Acoustic Equalization & Low-Frequency Noise Attenuation",
+    "scenario": "An officer's body camera captures a quiet roadside conversation where heavy traffic rumble and idling engine noise mask the suspect's verbal admissions. What processing steps should a technician apply in WavePad to enhance vocal intelligibility for investigative review?",
     "options": [
-      "'10-23' indicates the unit cleared the scene; the discrepancy means the camera recorded while the officer was driving back to station.",
-      "'10-23' indicates arrival on scene; the gap shows the officer was on scene for eight minutes before initiating event recording.",
-      "'10-23' indicates the officer is taking a scheduled meal break; the gap confirms the camera was buffering during lunch.",
-      "'10-23' indicates an officer in immediate duress; the gap proves dispatch failed to send backup units to the call."
+      "Apply a low-pass filter at 100 Hz and maximize dynamic range compression to boost all background bass rumble.",
+      "Apply a high-pass filter to roll off frequencies below 80–100 Hz, apply a subtle parametric EQ vocal boost around 1–3 kHz, and save as an enhanced working copy.",
+      "Pitch-shift the entire recording down two octaves to make the suspect's voice sound deeper and more distinct over vehicular noise.",
+      "Delete the original audio file from Evidence.com and replace it permanently with the equalized audio track."
     ],
     "answer": 1,
-    "expl": "In standard North American police communications, '10-23' means 'Arrived at scene' (or On Scene). An eight-minute gap between broadcasting 10-23 in CAD and pressing the camera activation button highlights an operational delay that must be reviewed against the officer's notes to determine why recording was not initiated upon arrival."
+    "expl": "Vocal speech fundamentals and intelligibility primarily occupy the 300 Hz to 3,500 Hz frequency band, whereas vehicular rumble and wind turbulence dominate below 100 Hz. Applying a high-pass filter (attenuating sub-100 Hz noise) and boosting 1–3 kHz clarifies speech. Crucially, forensic standards require saving this as an 'enhanced copy' while preserving the original master audio untouched."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "Duplicate CAD Event Merging & Digital Evidence Linking",
-    "scenario": "Six separate 911 callers report a multi-vehicle collision on Whitemud Drive. CAD calltakers generate three separate event numbers (EV-101, EV-102, EV-103) before the dispatcher merges them under master event EV-101. How should the DEMU clerk catalog the officers' BWV files?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Adobe Premiere Pro – Drop-Frame vs Non-Drop-Frame Timecode Drift",
+    "scenario": "A technician synchronizes an Axon Body 4 video (recorded at 30.00 fps constant frame rate) with an in-car camera system recording at 29.97 fps (NTSC drop-frame). At the start of the 2-hour timeline, lips match perfectly, but after 90 minutes, audio and video drift out of sync by several seconds. How is this resolved in Premiere Pro?",
     "options": [
-      "Delete all video recordings associated with EV-102 and EV-103 because duplicate event numbers invalidate police recordings.",
-      "Tag all ingested recordings with the master occurrence number (EV-101) while cross-referencing merged CAD incident numbers in the metadata.",
-      "Force each officer to return to the highway to re-record individual videos for each separate caller event number.",
-      "Create three separate paid Evidence.com accounts to store the videos independently under different corporate profiles."
+      "Manually cut one second of video out of the in-car footage every five minutes to force it to catch up with the body camera audio track.",
+      "Interpret the 29.97 fps footage in Premiere Pro or set a unified sequence timebase so both streams calculate frame counts consistently without timecode drift.",
+      "Accelerate the playback speed of the entire Axon body camera recording to 125% using the Rate Stretch tool.",
+      "Instruct the Crown prosecutor that video cameras naturally drift and courts do not require multi-angle alignment in criminal trials."
     ],
     "answer": 1,
-    "expl": "In major incidents, multiple callers generate duplicate CAD calls that dispatchers merge under a single primary occurrence number. DEMU technicians ensure all ingested body-worn video files are indexed to the master occurrence number while maintaining cross-reference links to the merged secondary call IDs in the case metadata."
+    "expl": "The discrepancy between 30.00 fps (true 30) and 29.97 fps (NTSC fractional rate) causes approximately 3.6 seconds of cumulative timecode drift over one hour if not properly interpreted or conformed. In Premiere Pro, conforming sequence settings and interpreting footage frame rates ensure that timecodes, audio clocks, and multi-camera playback remain frame-accurate."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "CAD Event Triage for Unfounded Alarms vs Real Incidents",
-    "scenario": "Officers are dispatched Priority 2 to a commercial burglar alarm. Upon arrival, they determine a cleaning employee accidentally tripped the sensor. The CAD call is cleared as 'UNFOUNDED / ACCIDENTAL ALARM'. What is the retention policy for the attending officer's BWV footage?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Digital Watermarking & Synchronized Timecode Burn-In Overlays",
+    "scenario": "Crown Prosecution requests a synchronized court presentation video featuring two body-worn camera angles side-by-side for a trial jury. What visual overlays should the DEMU technician burn into the disclosed working copy?",
     "options": [
-      "The footage must be kept indefinitely in case the cleaning employee commits a burglary three years in the future.",
-      "The footage is classified under Non-Evidentiary / False Alarm retention (typically 90 to 180 days) and automatically purged post-retention.",
-      "The video must be broadcast on municipal cable television to inform taxpayers of false alarm costs.",
-      "The technician must convert the video to 35mm physical film reel for permanent archival in City Hall basements."
+      "Flashing red text across the center of the video declaring the accused person guilty of the charged offences.",
+      "The personal home addresses and phone numbers of the investigating officers displayed in prominent bold fonts.",
+      "Synchronized timecode burn-in (showing exact UTC or MDT time), camera/officer identifier tags, and a subtle disclosure classification notice.",
+      "Animated lower-third television graphics with sound effects every time an officer exits their patrol vehicle."
     ],
-    "answer": 1,
-    "expl": "Footage from routine calls resulting in no offences, no charges, no use of force, and no citizen complaints (such as false commercial alarms) is categorized as Non-Evidentiary. These files follow abbreviated retention schedules (often 90 to 180 days) and are automatically purged by Evidence.com algorithms to prevent cloud storage bloat."
+    "answer": 2,
+    "expl": "Court presentation copies frequently incorporate synchronized timecode burn-ins (showing exact real-time hours, minutes, seconds, and frames), officer badge/camera identifiers, and an official disclosure notice (e.g., 'EPS DEMU - Court Presentation Copy'). This allows judges, juries, and counsel to follow exact multi-angle chronology without obscuring critical evidentiary details."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "CAD Call Remarks & 911 Audio Synchronization",
-    "scenario": "A defense lawyer claims the 911 call taker misrepresented their client's words in the CAD remarks, biasing the responding officers. When compiling the comprehensive disclosure file, what digital assets must the clerk assemble to resolve the claim?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Axon Redaction Studio – Automated Object Tracking & Frame Dropout QA",
+    "scenario": "In Axon Redaction Studio, a technician utilizes automated face detection to blur eight bystanders in a busy commercial LRT concourse. After the automated rendering completes, what is the mandatory quality assurance (QA) step prior to finalizing the disclosure export?",
     "options": [
-      "Only the arresting officer's handwritten notebook entries, as secondary CAD computer text is legally inadmissible in Alberta courts.",
-      "The CAD incident narrative report, the synchronized Master 911 audio WAV recording, and the responding units' radio dispatch audio transmissions.",
-      "A personal letter of reprimand written to the 911 call taker demanding they apologize to the defense attorney.",
-      "An automated text-to-speech AI recreation of what the caller might have said during a stressful phone call."
-    ],
-    "answer": 1,
-    "expl": "A complete Digital Evidence disclosure package for CAD-disputed calls includes three synchronized assets: the raw CAD event audit log (showing exact keystroke timestamps of calltaker entries), the master 911 telephony audio recording, and the recorded radio dispatch audio channel."
-  },
-  {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "Emergency Duress (Signal 100 / 10-33) CAD Event Protocols",
-    "scenario": "A constable broadcasts '10-33' (Officer in Trouble / Emergency) over the radio during a violent struggle. How does the CAD system respond, and how does this affect evidence preservation in DEMU?",
-    "options": [
-      "CAD sounds an audible tone on all dispatch consoles, locks the channel for emergency traffic only, and DEMU flags all unit cameras for mandatory preservation.",
-      "The CAD system automatically shuts off power to all street lights within two kilometers to conceal police movements.",
-      "Dispatch immediately clears all records of the event from the computer system to protect departmental public relations.",
-      "The CAD system sends an automated SMS message to all municipal bus drivers instructing them to detour around the quadrant."
+      "Perform a complete manual frame-by-frame scrub review to identify and correct any 'mask dropouts' caused by sudden head turns or lighting changes.",
+      "Immediately export and transmit the file to defense counsel without viewing it, relying entirely on the artificial intelligence validation score.",
+      "Delete the entire video because automated redaction tools are strictly forbidden by Alberta provincial court disclosure guidelines.",
+      "Add a disclaimer in the file metadata stating that any unblurred bystander faces are the legal responsibility of the defense counsel."
     ],
     "answer": 0,
-    "expl": "A '10-33' or 'Signal 100' indicates an officer in immediate peril. The CAD system activates visual/audible alarms and clears the radio talkgroup for emergency traffic. In DEMU, any recording tied to an officer duress event automatically triggers mandatory retention and supervisor review protocols for potential use-of-force proceedings."
+    "expl": "Automated redaction algorithms in Axon Redaction Studio can lose tracking ('dropout') when subjects turn away, pass behind obstacles, or enter low-light zones. Technicians must conduct a thorough manual scrub (frame-by-frame or slow-motion playback) to verify that no bystander identities are revealed for even a fraction of a second before releasing the disclosed record."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "Multijurisdictional CAD Handover (EPS & RCMP / Strathcona County)",
-    "scenario": "A stolen vehicle pursuit originates in Fort Saskatchewan (RCMP jurisdiction) and enters north Edmonton, where EPS units take over and make the arrest. How are digital records and CAD logs coordinated between the two agencies?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Corrupted Video Container Header Repair (Moov Atom / Truncated MP4)",
+    "scenario": "During an extreme cold weather deployment, an officer's camera battery dies abruptly mid-recording during a violent confrontation. When docked, the resulting .mp4 file cannot be opened because the index header (moov atom) was never written to disk. How can this file be forensically recovered?",
     "options": [
-      "RCMP and EPS evidence cannot legally be combined; the suspect must be tried in two separate courthouses simultaneously.",
-      "EPS creates an internal occurrence number, ingests EPS BWV, and securely transfers files to the RCMP lead investigator via secure digital evidence sharing.",
-      "The EPS technician deletes the EPS video footage and directs the Crown to rely entirely on RCMP dashcam recordings.",
-      "Both agencies must submit their physical cameras to the Solicitor General in Calgary for permanent impoundment."
+      "Discard the file as unrecoverable because digital video cannot exist without an operating system shutdown command.",
+      "Open the file in Microsoft Notepad, type 'END_OF_FILE' at the bottom of the raw binary text, and save the document as a .wmv file.",
+      "Send the camera back to the factory in Arizona to have the internal flash memory chips physically melted down for recycling.",
+      "Use a specialized video container repair utility referencing a finalized sample file from the same camera and settings to reconstruct the moov atom header."
+    ],
+    "answer": 3,
+    "expl": "When an MP4/MOV recording terminates abruptly without clean shutdown, the raw audio/video frames are written to flash storage, but the indexing header ('moov atom' containing frame offsets and duration) is missing. Using forensic repair tools (like untrunc or specialized media repair suites) and a reference file from the same camera model/profile, technicians can reconstruct the missing index and restore the entire video."
+  },
+  {
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Audio Channel Mapping & In-Car Lapel vs Cabin Microphone Isolation",
+    "scenario": "An in-car police recording system captures two distinct audio streams: the officer's wireless body microphone on Channel 1 (Left) and the backseat prisoner transport microphone on Channel 2 (Right). When played back in stereo, crosstalk and phase issues make the officer unintelligible. How should the technician handle this in editing software?",
+    "options": [
+      "Delete Channel 1 completely and rely exclusively on the prisoner microphone to capture all conversations inside and outside the vehicle.",
+      "Split the stereo track into discrete dual mono tracks, allowing Channel 1 and Channel 2 to be leveled, filtered, or redacted independently.",
+      "Export the file with zero audio tracks to avoid introducing confusion in the courtroom regarding who was speaking.",
+      "Merge both channels into a single mono track at maximum volume without checking for acoustic phase cancellation."
     ],
     "answer": 1,
-    "expl": "Inter-agency investigations require coordinated digital evidence sharing. EPS creates an internal occurrence number linked to the RCMP file number, ingests and catalogs all EPS body-worn video and CAD logs, and transmits the complete digital evidence package to the lead investigating agency via authenticated Evidence.com Partner Sharing."
+    "expl": "Multi-channel in-car camera systems record distinct physical microphones to separate channels (e.g., officer wireless transmitter on Left, rear cabin on Right). In Premiere Pro or WavePad, separating stereo channels into discrete mono tracks enables independent level adjustment, isolated redaction (e.g., redacting prisoner outbursts while preserving officer speech), and eliminates acoustic phase cancellation."
   },
   {
-    "cat": "CAD Triage & Dispatch Architecture",
-    "title": "CAD Time of Dispatch vs En Route vs On Scene Analytics",
-    "scenario": "An administrative review analyzes an officer's response times. The CAD log shows: Call Received 10:00, Dispatched 10:01, En Route (10-7) 10:04, On Scene (10-23) 10:12. How does the DEMU clerk verify the officer's vehicle travel path against the timeline?",
+    "cat": "Video/Audio Editing & Media Technical Processing",
+    "title": "Lossless vs Lossy Compression Thresholds for Court Exhibits",
+    "scenario": "A high-definition 4K surveillance video depicting an armed robbery contains a critical sequence where a suspect's distinctive tattoo is visible on a hand. The Crown asks the technician to compress the 15 GB file for transmission. What encoding parameters must the technician maintain?",
     "options": [
-      "Cross-referencing cruiser Automated Vehicle Location (AVL) GPS telemetry logs against the camera's internal GPS track coordinates.",
-      "Calling local gas stations along the suspected route to ask clerks if they saw a marked police cruiser drive past.",
-      "Reviewing the officer's odometer reading at the end of their twelve-hour shift and dividing by the total hours worked.",
-      "Assuming the CAD timestamps are purely approximate estimates that carry no evidentiary reliability."
+      "Compress the file to 320x240 resolution at 12 fps with maximum spatial compression to ensure it fits on a standard 1.44 MB floppy disk.",
+      "Apply aggressive artificial sharpening and color oversaturation filters to make the tattoo appear blacker and more dramatic than real life.",
+      "Maintain original native resolution and frame rate, utilizing high-profile H.264/H.265 encoding with two-pass variable bitrate high enough to avoid macroblocking.",
+      "Convert the video to an analog VHS tape and physically deliver the cassette to the courthouse security desk."
+    ],
+    "answer": 2,
+    "expl": "When compressing digital evidence for disclosure transmission, technicians must preserve the forensic integrity of fine details (such as tattoos, facial features, or weapon markings). Maintaining native resolution (e.g., 1080p/4K) and original frame rates while utilizing high-profile H.264/H.265 at adequate bitrates (avoiding blocky compression artifacts) ensures the exhibit remains clear and admissible in court."
+  },
+  {
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Canada Evidence Act (Section 31.1) & Electronic Records System Integrity",
+    "scenario": "During a voir dire hearing, defense counsel challenges the admissibility of a body-worn camera video, claiming that digital files can easily be edited or fabricated. How does the DEMU technician establish legal admissibility under Section 31.1 of the Canada Evidence Act?",
+    "options": [
+      "Provide a personal verbal opinion that police officers never make mistakes or alter video recordings under any circumstances.",
+      "Produce a Certificate of Electronic Document Integrity demonstrating the DEMS system was operating properly and cryptographic SHA-256 hashes confirm zero alteration.",
+      "Show that the video was posted on the Edmonton Police Service public YouTube channel and received mostly positive comments.",
+      "Confirm that the video was reviewed and approved by a panel of three retired municipal politicians before being disclosed."
+    ],
+    "answer": 1,
+    "expl": "Section 31.1 of the Canada Evidence Act establishes that the integrity of an electronic document is presumed if it is established that the electronic records system was operating properly at all material times. DEMU technicians satisfy this burden through formal Certificates of Integrity, system audit logs, and cryptographic hash verification (SHA-256) proving the file has not been altered since initial ingestion."
+  },
+  {
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Alberta Evidence Act – Presumption of Integrity in Ordinary Course of Business",
+    "scenario": "Under the Alberta Evidence Act, what foundational requirement must be met for a digital recording stored in an EPS evidence repository to benefit from the statutory presumption of document integrity?",
+    "options": [
+      "The digital file must have been recorded on physical magnetic tape and blessed by a notary public prior to digital upload.",
+      "The video must show at least one uniformed supervisor visibly acknowledging the camera lens at the start of every shift.",
+      "The record must be created, ingested, and maintained in the usual and ordinary course of police business pursuant to standard operating policies.",
+      "The file must be encrypted with a secret personal password known only to the individual frontline patrol constable."
+    ],
+    "answer": 2,
+    "expl": "The Alberta Evidence Act recognizes electronic documents as authentic when they are recorded and stored in the usual and ordinary course of business using reliable automated systems with documented operational standards. Adherence to standard operating procedures (SOPs) and routine automated ingestion provides the legal foundation for the presumption of integrity."
+  },
+  {
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Generally Accepted Recordkeeping Principles (GARP) – Principle of Integrity",
+    "scenario": "As a Word/Data Processing Clerk III in DEMU, how do you apply the GARP 'Principle of Integrity' when handling ingested digital media from body-worn cameras and private surveillance systems?",
+    "options": [
+      "Ensure that every file in the repository can be freely renamed, shortened, or deleted by any department member to save cloud storage space.",
+      "Ensure the evidence recordkeeping process provides a reasonable guarantee of authenticity and reliability through write-once storage and immutable audit trails.",
+      "Share administrative login credentials with external media outlets to demonstrate open government and departmental transparency.",
+      "Alter metadata timestamps whenever an officer's handwritten notebook disagrees with the automated camera clock."
+    ],
+    "answer": 1,
+    "expl": "The GARP Principle of Integrity mandates that a recordkeeping program shall construct a reasonable guarantee of authenticity and reliability. In a police digital evidence repository, this is achieved through immutable write-once storage architectures, cryptographic checksum verification, strict permission controls, and automated, tamper-evident audit logs."
+  },
+  {
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Generally Accepted Recordkeeping Principles (GARP) – Principle of Protection",
+    "scenario": "A high-profile body camera recording involves an internal professional standards investigation of an active EPS member. In accordance with the GARP 'Principle of Protection,' what administrative action must the DEMU clerk immediately verify in Evidence.com?",
+    "options": [
+      "Apply a Restricted Access Security Group restriction to the file, limiting visibility to assigned investigators and logging all access attempts.",
+      "Make the video publicly downloadable on the City of Edmonton open data portal to prevent rumors within the police service.",
+      "Download the file to an unencrypted personal USB thumb drive and store it in an unlocked administrative desk drawer.",
+      "Delete the officer's badge number from the metadata so the system forgets which employee was wearing the camera."
     ],
     "answer": 0,
-    "expl": "Cruisers are equipped with Automated Vehicle Location (AVL) GPS modems that record breadcrumb coordinates and speeds every few seconds. Technicians cross-reference AVL data and camera GPS track logs against CAD timestamps to definitively verify vehicle routing, speed, and exact scene arrival times."
+    "expl": "The GARP Principle of Protection requires that an information governance program ensure an appropriate level of protection to records and information that are confidential, private, or privileged. For sensitive internal investigations, DEMU technicians apply Restricted Access classifications in Evidence.com, restricting viewing rights to designated internal affairs investigators and monitoring audit logs."
   },
   {
-    "cat": "CPIC System Operations & Security",
-    "title": "CPIC 10-28 (Registration) vs 10-29 (Warrant/Stolen) Queries",
-    "scenario": "A patrol constable stops a vehicle and requests a '10-28 and 10-29' from the CPIC operator. What is the fundamental operational distinction between these two standardized Canadian police queries?",
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Crown Disclosure Package Assembly & Redaction Indexation",
+    "scenario": "When compiling a complete digital evidence disclosure package for the Alberta Crown Prosecution Service (ACPS), what critical document must accompany all redacted video and audio files?",
     "options": [
-      "10-28 queries motor vehicle registered owner and licence plate status, while 10-29 queries whether the vehicle, plate, or occupants are wanted or stolen.",
-      "10-28 searches international Interpol criminal databases, while 10-29 searches local Edmonton municipal parking ticket archives.",
-      "10-28 is used exclusively for commercial semi-trucks, while 10-29 is used exclusively for private passenger sedans.",
-      "10-28 requests an immediate ambulance dispatch, while 10-29 requests a heavy-duty tow truck response."
+      "A written apology from the DEMU technician for obscuring portions of the footage.",
+      "A handwritten letter from the accused person confirming they enjoyed watching the video footage.",
+      "A formal Redaction Log / Disclosure Index detailing exact start/end timecodes, statutory redaction rationale (FOIP/YCJA), and technician sign-off.",
+      "A municipal parking ticket receipt proving the technician drove to the courthouse to deliver the files."
     ],
-    "answer": 0,
-    "expl": "In Canadian police operations, a 10-28 query accesses provincial motor vehicle databases to confirm registration validity and registered owner details. A 10-29 query searches CPIC (Canadian Police Information Centre) nationwide repositories to determine if the vehicle, plate, or occupants are wanted, stolen, or subject to court prohibitions."
+    "answer": 2,
+    "expl": "In criminal proceedings (pursuant to R. v. Stinchcombe), Crown and defense counsel are entitled to know precisely what was redacted and under what legal authority. DEMU technicians must generate and attach a comprehensive Redaction Log / Disclosure Index detailing every redaction's exact timecode range, the specific statutory basis (e.g., YCJA s. 110, FOIP s. 17(1), Informer Privilege), and technician certification."
   },
   {
-    "cat": "CPIC System Operations & Security",
-    "title": "CPIC 'Hit Confirmation' Mandatory Protocol",
-    "scenario": "An EPS constable runs an adult male during a pedestrian stop. The CPIC query returns an active Canada-Wide Warrant for arrest issued by the Calgary Police Service. What must the CPIC operator or clerk do BEFORE officers execute the arrest?",
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "EPROS / RMS Occurrence Number Validation & Metadata Cross-Referencing",
+    "scenario": "An officer tags an uploaded body camera file with occurrence number '26-104921'. When cross-referencing with the EPROS Records Management System, the clerk discovers that '26-104921' is a stolen bicycle report from three months ago, whereas CAD dispatch records show the arrest occurred under '26-104912' (a digit transposition). What is the clerk's procedure?",
     "options": [
-      "Immediately delete the CPIC entry to ensure other police agencies do not try to arrest the same individual simultaneously.",
-      "Perform a mandatory 'Hit Confirmation' with the originating agency (Calgary Police) to verify the warrant is still outstanding and they will return the subject.",
-      "Release the suspect immediately because EPS officers have zero jurisdiction to enforce Calgary Police warrants within Edmonton.",
-      "Instruct the officer to issue a municipal transit violation ticket instead of executing the outstanding criminal warrant."
-    ],
-    "answer": 1,
-    "expl": "A CPIC response is an investigative lead, not immediate legal authorization for detention without verification. Police policy strictly mandates 'Hit Confirmation': contacting the originating agency (CPS) to verify that the warrant remains active, the identity matches, and the agency will hold/extend the warrant for transportation."
-  },
-  {
-    "cat": "CPIC System Operations & Security",
-    "title": "CPIC Person Categories: Accused vs Wanted vs Prohibited",
-    "scenario": "A CPIC query displays a subject flagged under the 'PROHIBITED' category. What specific legal status does this category indicate to responding frontline officers?",
-    "options": [
-      "The individual is strictly banned from entering any retail shopping mall within the province of Alberta.",
-      "The individual is subject to an active court order prohibiting them from driving, possessing firearms, or other court-ordered conditions.",
-      "The individual is an undercover police operative who must never be questioned or detained under any circumstances.",
-      "The individual has had their Canadian passport temporarily revoked due to international tax evasion proceedings."
+      "Delete the video file immediately because entering an incorrect occurrence number voids the legal validity of police evidence.",
+      "Update the primary metadata tag in Evidence.com to the verified occurrence number '26-104912', link the EPROS case, and record an administrative audit note.",
+      "Ignore the error because occurrence numbers are only decorative and have no bearing on court proceedings.",
+      "Arrest the officer for filing a false police report and seize their patrol vehicle as evidence."
     ],
     "answer": 1,
-    "expl": "The CPIC 'Prohibited' category contains court-ordered prohibitions issued under the Criminal Code or provincial statutes, including Firearms Prohibition Orders (Section 109/110), Driving Prohibitions (Section 259/320.24), and recognizance non-communication or geographic restrictions."
+    "expl": "Digit transpositions and typographical errors in occurrence numbers are common during end-of-shift field tagging. DEMU technicians verify discrepancies by cross-referencing CAD unit dispatch logs, times, and officer badge numbers, correct the metadata tag in Evidence.com to link with the proper EPROS master case, and document the administrative correction in the audit notes."
   },
   {
-    "cat": "CPIC System Operations & Security",
-    "title": "CPIC Special Interest Police (SIP) Category",
-    "scenario": "When querying a suspect, the CPIC terminal returns a 'Special Interest Police (SIP)' entry indicating 'ELAPSED SUICIDAL TENDENCIES / ESCAPE RISK'. How does this information guide police actions?",
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Secondary Traumatic Stress & Vicarious Trauma Protocol for DEMU Clerks",
+    "scenario": "A DEMU technician is tasked with reviewing and redacting 12 hours of graphic body-worn video depicting a fatal mass-casualty traffic collision and severe physical trauma. What workplace wellness practice aligns with EPS digital evidence occupational health guidelines?",
     "options": [
-      "It provides vital officer-safety and mental health background indicating the subject requires heightened monitoring while in custody.",
-      "It requires officers to immediately release the suspect from handcuffs and apologize for initiating the investigative stop.",
-      "It permits officers to bypass all standard court processes and deliver the suspect directly to a federal penitentiary.",
-      "It alerts the media relations department to issue an amber alert to public radio stations across western Canada."
+      "Forbid technicians from taking any breaks until all graphic files are completely finished, regardless of psychological fatigue.",
+      "Require clerks to share traumatic video clips on their personal social media accounts to desensitize themselves to violence.",
+      "Reassign all graphic evidence review to unpaid high school summer interns to save department budget.",
+      "Implement structured micro-breaks, rotate tasks with non-graphic administrative duties, adjust technical display settings as needed, and utilize EPS Wellness resources."
     ],
-    "answer": 0,
-    "expl": "CPIC Special Interest Police (SIP) entries document critical safety factors regarding individuals who may pose a danger to themselves or others, have escaped lawful custody, or have threatened violence against police or public officials, ensuring officers take appropriate custody precautions."
+    "answer": 3,
+    "expl": "Civilian digital evidence technicians face significant risk of Secondary Traumatic Stress (STS) and vicarious trauma from repeatedly reviewing raw, graphic footage of violent crimes, fatal accidents, and distress. Departmental wellness protocols encourage structured breaks, task rotation (balancing graphic review with routine indexing), technical coping strategies (monitoring without audio when reviewing visual-only edits), and active engagement with EPS Psychological Services."
   },
   {
-    "cat": "CPIC System Operations & Security",
-    "title": "CPIC Misuse, Unauthorized Queries & Criminal Liability",
-    "scenario": "A civilian police clerk uses their official CPIC workstation access during evening downtime to run criminal record background checks on their sister's new boyfriend out of personal curiosity. What are the consequences of this conduct?",
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "High-Volume Processing Queue Triage (Bail Deadlines vs Future Trials)",
+    "scenario": "At the start of a shift, a DEMU technician has three competing disclosure requests: (1) Body camera video for an in-custody accused person whose 24-hour statutory bail hearing is scheduled at 14:00 today; (2) Video for a trial scheduled in six weeks; (3) A historical archive request for an internal training review. How should these requests be prioritized?",
     "options": [
-      "This is acceptable internal practice as long as the clerk does not share the findings on public social media channels.",
-      "This constitutes an unauthorized CPIC query resulting in immediate suspension, termination, permanent revocation of security clearance, and potential Criminal Code charges.",
-      "The clerk will receive a minor five-dollar administrative payroll deduction and a verbal reminder during their annual performance evaluation.",
-      "The RCMP automatically promotes the clerk to an intelligence analyst role in recognition of their proactive investigative curiosity."
-    ],
-    "answer": 1,
-    "expl": "CPIC access is strictly restricted to authorized, official police investigations. Running unauthorized queries on friends, family, acquaintances, or public figures violates the CPIC Policy Manual, municipal privacy policies, and constitutes Breach of Trust and Unauthorized Use of a Computer (Criminal Code S. 342.1 / 122), leading to termination and prosecution."
-  },
-  {
-    "cat": "CPIC System Operations & Security",
-    "title": "JOIN (Justice Online Information Network) vs CPIC Integration",
-    "scenario": "An EPS clerk is cross-referencing an arrestee's bail conditions. CPIC shows no active conditions, but Alberta's provincial court system (JOIN) shows an active 24-hour curfew order signed yesterday. How does the clerk resolve the discrepancy?",
-    "options": [
-      "Rely on CPIC exclusively because federal national databases automatically override provincial court software systems.",
-      "Recognize that JOIN reflects local provincial court actions in real-time, whereas CPIC requires manual data entry updates by police records staff.",
-      "Discard both records and ask the arrestee what curfew time they would prefer to follow while on release.",
-      "Delete the provincial court file from the provincial courthouse mainframe to eliminate record discordance."
+      "Process Request 3 first because internal department requests always supersede external court requirements.",
+      "Process Request 1 immediately to comply with statutory bail hearing disclosure deadlines and Charter rights, followed by Request 2, then Request 3.",
+      "Process Request 2 first because a six-week lead time allows the technician to complete the easiest task before worrying about today.",
+      "Reject all three requests and advise the Crown prosecutors to conduct their trials without video evidence."
     ],
     "answer": 1,
-    "expl": "JOIN (Justice Online Information Network) is the operational court management database for Alberta Justice, updated immediately by court clerks upon a judge or Justice of the Peace issuing an order. CPIC updates require manual transcription by police agency records staff; thus, a recent court order in JOIN takes precedence over an un-updated CPIC record."
+    "expl": "Workload triage in digital evidence management is strictly governed by statutory court timelines and the Charter of Rights and Freedoms. An accused held in custody is legally entitled to a bail hearing within 24 hours under Section 503 of the Criminal Code; failure to disclose critical video can result in unlawful detention or dropped charges. Urgent bail matters take highest priority, followed by upcoming trial dates, with administrative reviews handled last."
   },
   {
-    "cat": "CPIC System Operations & Security",
-    "title": "Criminal Name Index (CNI) vs Fingerprint Identification Verification",
-    "scenario": "A driver with no physical identification verbally provides the name and date of birth of their twin brother to avoid arrest on an outstanding warrant. A CPIC CNI query returns 'NO RECORD'. How do police establish the driver's true identity?",
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Inter-Agency Chain of Custody Electronic Transfer (RCMP / ASIRT)",
+    "scenario": "An officer-involved shooting occurs in Edmonton that is referred to the Alberta Serious Incident Response Team (ASIRT) for independent investigation. How must DEMU execute the electronic transfer of all related body camera files to ASIRT?",
     "options": [
-      "Release the driver immediately, as police are legally prohibited from questioning any citizen who provides a verbal name.",
-      "Transport the individual to police headquarters for biometric digital fingerprint scanning verified against Real Time Identification (RTID).",
-      "Guess the individual's middle name and re-run the CPIC search until an active criminal file appears on screen.",
-      "Ask the vehicle passenger to sign an unsworn napkin certifying the driver's personal identity."
+      "Burn the videos to an unencrypted CD-R and leave it in an unmonitored drop box outside police headquarters overnight.",
+      "Upload the videos to a public Google Drive folder and email the sharing link to an anonymous Gmail address.",
+      "Execute an authenticated, encrypted agency-to-agency transfer via Evidence.com partner sharing, generating an automated chain of custody transfer receipt.",
+      "Refuse to release the video to ASIRT because municipal police evidence can never be viewed by provincial oversight bodies."
+    ],
+    "answer": 2,
+    "expl": "Transfers of digital evidence to external oversight bodies like ASIRT or partner agencies like the RCMP must maintain an unbroken, legally defensible chain of custody. Utilizing authenticated, secure agency-to-agency transfer protocols within Evidence.com ensures end-to-end encryption, recipient identity verification, and generates an immutable transfer certificate with cryptographic hash validation."
+  },
+  {
+    "cat": "Records Management, Evidence Acts & GARP Principles",
+    "title": "Managing Physical Digital Media Exhibits alongside Cloud DEMS",
+    "scenario": "A citizen brings an old SD card containing crucial dashcam footage of a hit-and-run to a police station front desk. How does the DEMU technician properly ingest this evidence while adhering to evidence management standards?",
+    "options": [
+      "Plug the SD card into a workstation, drag the file into Evidence.com, and throw the physical SD card into the divisional garbage bin.",
+      "Create a bitstream forensic image/exact copy of the files with hash validation for DEMS ingest, and book the physical SD card into the Property/Exhibit room with an evidence barcode.",
+      "Format the SD card immediately to protect the citizen's personal privacy and inform investigators that the footage was deleted.",
+      "Hand the SD card back to the citizen and ask them to post the video to TikTok so the police can watch it on a smartphone."
     ],
     "answer": 1,
-    "expl": "Verbal names are subject to deception and aliases. The Canadian Police Information Centre (CPIC) Criminal Name Index (CNI) is linked to national fingerprint records maintained by the RCMP Canadian Criminal Real Time Identification Services (CCRTIS). Biometric fingerprinting conclusively establishes true identity regardless of false names provided."
-  },
-  {
-    "cat": "CPIC System Operations & Security",
-    "title": "CPIC Purge Criteria & Non-Conviction Disposition Records",
-    "scenario": "An individual was charged with assault five years ago, but the charges were formally dismissed (withdrawn) in Edmonton Provincial Court. The citizen requests their police record be cleared. What happens to the non-conviction record in CPIC?",
-    "options": [
-      "Non-conviction records are permanently sealed in concrete vaults beneath the Parliament buildings in Ottawa.",
-      "Pursuant to national CPIC policy and EPS Record Suspension guidelines, non-conviction records may be purged from CPIC following approved retention intervals.",
-      "Police services are mandated by federal law to retain all dismissed charges visible to the public forever.",
-      "The citizen's driver's licence is permanently cancelled to reflect their past interaction with criminal courts."
-    ],
-    "answer": 1,
-    "expl": "Non-conviction records (charges withdrawn, dismissed, stayed, or acquitted) are subject to purge guidelines. After specified retention waiting periods (typically 1 year for stays, immediately upon acquittal, or upon formal citizen application following disposition), police agencies purge non-conviction entries from national CPIC repositories."
-  },
-  {
-    "cat": "CPIC System Operations & Security",
-    "title": "Canadian Firearms Registry Online (CFRO) & Weapon Flags",
-    "scenario": "Officers are dispatched to an escalating domestic disturbance. The CPIC vehicle query confirms the address, while an integrated CFRO (Canadian Firearms Registry Online) query reveals three registered restricted handguns at the location. What is the immediate operational significance for dispatch?",
-    "options": [
-      "Broadcast the presence of registered restricted firearms to responding units to ensure appropriate tactical awareness and response staging.",
-      "Wait until officers arrive and enter the house before mentioning the firearms in the CAD narrative remarks.",
-      "Order the firearms automatically melted down by sending a signal through the provincial firearms registry mainframe.",
-      "Cancel the police dispatch call and refer the matter to the Canadian Wildlife Service for hunting tag inspections."
-    ],
-    "answer": 0,
-    "expl": "CFRO provides immediate operational awareness regarding licensed firearms owners and registered weapons at specific premise locations. Relaying confirmed firearms intelligence via CAD and radio broadcast is paramount to frontline officer safety and allows units to coordinate tactical approach strategies."
-  },
-  {
-    "cat": "CPIC System Operations & Security",
-    "title": "Security Clearance & Criminal Records Check for Civilian Clerks",
-    "scenario": "Prior to being granted security clearance to access CPIC, JOIN, and Evidence.com as an EPS civilian Word/Data Processing Clerk III, what level of background vetting is mandatory?",
-    "options": [
-      "A quick review of the candidate's personal LinkedIn profile and three character references from high school acquaintances.",
-      "Comprehensive EPS Enhanced Security Clearance, including 10-year background check, polygraph examination, credit check, and reference verification.",
-      "Zero security screening is required for civilian administrative staff because they do not carry sidearms or handcuffs.",
-      "A five-minute verbal conversation with an administrative receptionist at the front counter of police headquarters."
-    ],
-    "answer": 1,
-    "expl": "Civilian personnel in the Digital Evidence Management Unit (DEMU), CPIC, and Information Management Section have direct, unmonitored access to sensitive criminal intelligence, confidential informant logs, and court records. Consequently, all candidates must pass the EPS Enhanced Security Clearance (including comprehensive background, financial credit check, reference vetting, and security polygraph)."
+    "expl": "When physical digital media (SD cards, USB drives, optical discs) are seized or submitted, best evidence rules require that the physical item itself be logged into the secure Property/Exhibit locker with a chain-of-custody barcode. Technicians create a bit-level forensic image or verified direct digital copy with SHA-256 hash validation for ingestion into Evidence.com, ensuring the physical master exhibit remains preserved."
   }
 ];
 
