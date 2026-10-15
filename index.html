@@ -75,10 +75,14 @@
   </div>
 
     <!-- NAVIGATION TABS -->
+        <!-- NAVIGATION TABS -->
     <nav class="max-w-6xl mx-auto px-4 mt-6">
-    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
       <button onclick="setTab('exam')" id="tab-exam" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md">
         📝 Exam (50Q)
+      </button>
+      <button onclick="setTab('written')" id="tab-written" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-purple-300 hover:text-purple-200 hover:bg-slate-800 border border-purple-500/20">
+        ✍️ Written Mock
       </button>
       <button onclick="setTab('codec')" id="tab-codec" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
         🎬 Codecs (20Q)
@@ -198,6 +202,129 @@
     <!-- ========================================== -->
     <!-- 2. DEDICATED CODECS & TECHNICAL JARGON TAB -->
     <!-- ========================================== -->
+    
+    <!-- ========================================== -->
+    <!-- 1B. REALISTIC WRITTEN SHORT-ANSWER MOCK EXAM -->
+    <!-- ========================================== -->
+    <div id="view-written" class="tab-content hidden">
+      <div class="space-y-6">
+
+        <!-- Banner Header -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40">CSU 52 CLERK III TESTING</span>
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">KEYWORD RUBRIC GRADER</span>
+                <span class="text-xs text-slate-400 font-semibold">10 High-Yield Scenarios</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Realistic Short-Answer Written Exam &amp; Rubric Grader</h2>
+              <p class="text-xs text-slate-400 mt-1">Type your natural written answers (sentences or 3 simple bullet points). The live engine scans your text against official union grading keywords and scores your answer instantly!</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span id="written-score-badge" class="px-3 py-1.5 bg-slate-950 rounded-xl border border-slate-800 text-xs text-emerald-400 font-mono font-bold">
+                Scenario 1 of 10
+              </span>
+            </div>
+          </div>
+
+          <!-- Scenario Quick Navigation Selector Pills -->
+          <div class="mt-4 flex flex-wrap items-center gap-1.5" id="written-pill-container">
+            <!-- Dynamically populated 1-10 selector buttons -->
+          </div>
+        </div>
+
+        <!-- Active Scenario Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span id="written-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Category</span>
+              <span id="written-id-label" class="text-xs text-slate-400 font-mono font-semibold">Scenario 1</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="prevWrittenScenario()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700">&larr; Prev</button>
+              <button onclick="nextWrittenScenario()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700">Next &rarr;</button>
+            </div>
+          </div>
+
+          <div>
+            <h3 id="written-title" class="text-lg sm:text-xl font-bold text-white">Scenario Title Goes Here...</h3>
+            <div id="written-prompt" class="p-4 bg-slate-950/80 rounded-xl border border-slate-800 text-sm text-slate-300 leading-relaxed mt-2.5">
+              Scenario prompt text goes here...
+            </div>
+          </div>
+
+          <!-- Candidate Input Text Area -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <label for="written-input" class="font-bold text-slate-300">Your Written Response (Type bullet points or sentences):</label>
+              <span id="written-char-count" class="font-mono text-[11px] text-slate-500">0 characters</span>
+            </div>
+            <textarea id="written-input" oninput="updateWrittenCharCount()" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs sm:text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition leading-relaxed font-sans" placeholder="Type your answer in your own words. For example:&#10;1. Redact face, clothing, and voice&#10;2. Apply YCJA protection&#10;3. Log in disclosure certificate"></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div class="flex items-center space-x-2">
+              <button onclick="gradeWrittenAnswer()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg transition flex items-center space-x-1.5">
+                <span>🎯 Grade My Written Answer</span>
+              </button>
+              <button onclick="revealWrittenModel()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700 transition">
+                👁️ Reveal Model Answer
+              </button>
+            </div>
+            <button onclick="clearWrittenInput()" class="text-xs text-slate-500 hover:text-slate-300 transition">
+              Clear Text
+            </button>
+          </div>
+
+          <!-- Evaluation & Grading Results Card (Hidden until submitted) -->
+          <div id="written-result-card" class="hidden mt-6 p-5 rounded-xl border border-slate-800 bg-slate-950 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+              <div>
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Official Evaluation</div>
+                <div id="written-score-text" class="text-lg font-black text-emerald-400 mt-0.5">Score: 3 / 3 (100% - FULL PASS)</div>
+              </div>
+              <div id="written-verdict-pill" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                PASSED
+              </div>
+            </div>
+
+            <!-- Rubric Breakdown Checklist -->
+            <div>
+              <div class="text-xs font-bold text-slate-300 mb-2">CSU 52 Keyword Rubric Breakdown:</div>
+              <div id="written-rubric-list" class="space-y-2 text-xs">
+                <!-- Dynamically populated checklist -->
+              </div>
+            </div>
+
+            <!-- Model 3-Bullet Practical Answer -->
+            <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-purple-400">
+                📋 Concise 3-Bullet Model Answer (High-Scoring Template):
+              </div>
+              <div id="written-model-bullets" class="space-y-1 text-xs text-slate-200 font-mono leading-relaxed">
+                <!-- Dynamically populated model bullets -->
+              </div>
+            </div>
+
+            <!-- Why This Suffices Note -->
+            <div class="p-3 bg-indigo-950/30 rounded-xl border border-indigo-500/20 text-indigo-300 text-xs leading-relaxed">
+              <strong>💡 Why Your Phrasing Suffices:</strong> <span id="written-why-suffices">Explanation here...</span>
+            </div>
+
+            <div class="flex justify-end pt-2">
+              <button onclick="nextWrittenScenario()" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition">
+                Next Written Scenario &rarr;
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
     <div id="view-codec" class="tab-content hidden">
       <div class="space-y-6">
         
@@ -4264,6 +4391,7 @@ General & Screening:
         renderCard(currentCardIdx + 1);
       } else {
         renderCard(0);
+      renderWrittenScenario(0);
       }
     }
 
@@ -4287,6 +4415,7 @@ General & Screening:
       loadRedactionStage(0);
       initSpotter();
       renderCard(0);
+      renderWrittenScenario(0);
     };
 
     // ========================================================
@@ -4468,6 +4597,460 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
       }).catch(err => {
         window.open('eps_question_bank_70.txt', '_blank');
       });
+    }
+
+
+    // ========================================================
+    // WRITTEN SHORT-ANSWER MOCK DATA & RUBRIC GRADER (10 SCENARIOS)
+    // ========================================================
+    const writtenScenarios = [
+      {
+        id: 1,
+        cat: "Youth Protection & Redaction",
+        title: "Joint Adult & Minor Commercial Robbery Arrest (YCJA s. 110)",
+        prompt: "A body-worn camera captures the joint arrest of an 18-year-old adult and a 16-year-old youth inside a pharmacy robbery scene. The youth's face, his high school athletic jacket, and his full name are clearly identifiable. Defense counsel requests immediate disclosure of the unredacted video. What are your specific operational and technical steps before disclosing this recording?",
+        rubric: [
+          {
+            criterion: "Redact youth identifiers (face, school logo, name, voice)",
+            pattern: /(redact|blur|mask|hide|obscure|pixel).*?(face|cloth|logo|jacket|name|voice|audio)/i,
+            matchHint: "Identified need to redact youth face, clothing/school logos, name, and voice"
+          },
+          {
+            criterion: "Apply Youth Criminal Justice Act (YCJA s. 110) publication ban",
+            pattern: /(ycja|youth|minor|under 18|section 110|publication ban|protection)/i,
+            matchHint: "Recognized YCJA Section 110 statutory disclosure ban"
+          },
+          {
+            criterion: "Preserve master exhibit & document in technical disclosure certificate",
+            pattern: /(log|certificate|memo|record|audit|master|untouched|original|document)/i,
+            matchHint: "Documented redaction timestamps in disclosure log and kept master intact"
+          }
+        ],
+        modelBullets: [
+          "1. Redact youth's face, high school varsity logo, name, and voice; leave adult unmasked.",
+          "2. Apply mandatory Youth Criminal Justice Act (YCJA s. 110) publication and disclosure ban.",
+          "3. Document all redaction timestamps, tools, and legal rationale in the technical disclosure certificate."
+        ],
+        whySuffices: "CSU 52 markers grade using a 3-point checklist: (1) what you redacted, (2) the governing law (YCJA/youth), and (3) logging it on paper. Even informal phrasing like 'Blur kid's face and jacket under youth act and write it in the log' earns 100% of the points."
+      },
+      {
+        id: 2,
+        cat: "CCTV Transcoding & Media Vetting",
+        title: "Proprietary Surveillance Video Conversion (.dav / .sec)",
+        prompt: "An investigator brings DEMU a USB flash drive containing proprietary Dahua CCTV footage with a '.dav' extension seized from a convenience store robbery. The file will not play in standard Windows Media Player. Describe your technical workflow to convert this file for Crown disclosure.",
+        rubric: [
+          {
+            criterion: "Ingest and preserve original raw CCTV file in DEMS as master exhibit",
+            pattern: /(master|raw|original|ingest|dems|preserve|evidence\.com|hash)/i,
+            matchHint: "Preserved original raw file in DEMS with cryptographic hash"
+          },
+          {
+            criterion: "Transcode container to court-standard MP4 (H.264) using conversion software",
+            pattern: /(avs|convert|transcode|mp4|h\.264|codec)/i,
+            matchHint: "Transcoded proprietary container to court-playable MP4 / H.264"
+          },
+          {
+            criterion: "Maintain original frame rate (FPS) and resolution to prevent evidence distortion",
+            pattern: /(frame rate|fps|original|resolution|aspect|timing|speed)/i,
+            matchHint: "Preserved original frame rate and aspect ratio"
+          }
+        ],
+        modelBullets: [
+          "1. Ingest raw .dav file into DEMS as original master exhibit with verified SHA-256 hash.",
+          "2. Use conversion software (e.g. AVS Video Converter) to transcode into standard MP4 (H.264).",
+          "3. Keep frame rate on 'Original' so evidence playback speed and timing are not distorted."
+        ],
+        whySuffices: "Clerical graders want to verify: Did you keep the raw file safe? Did you pick a universal court format (MP4)? And did you avoid messing up playback speed? Short bullets answer all three."
+      },
+      {
+        id: 3,
+        cat: "CAD / RMS Discrepancy Auditing",
+        title: "1-Hour Time Drift Between CAD Dispatch and Camera Metadata",
+        prompt: "CAD dispatch records indicate an officer was dispatched to an assault at 08:30 MDT and arrived at 08:38 MDT. However, the body-worn video timestamp burnt into the video displays an activation time of 09:38 MDT. The defense alleges the video was recorded an hour after the incident. What is the technical explanation and how do you resolve it?",
+        rubric: [
+          {
+            criterion: "Identify UTC (Zulu time) vs MDT/MST timezone or daylight saving offset",
+            pattern: /(utc|zulu|mdt|mst|timezone|time zone|daylight|1 hour|hour drift|clock)/i,
+            matchHint: "Identified UTC hardware time or daylight saving timezone offset"
+          },
+          {
+            criterion: "Verify dock NTP network time synchronization",
+            pattern: /(ntp|network|sync|dock|server|firmware)/i,
+            matchHint: "Referenced network time sync / dock NTP check"
+          },
+          {
+            criterion: "Document the technical time offset in the disclosure notes",
+            pattern: /(document|note|memo|audit|explain|disclose|log)/i,
+            matchHint: "Documented offset explanation in court disclosure memo"
+          }
+        ],
+        modelBullets: [
+          "1. Explain that body cameras record internal hardware timestamps in UTC, causing a 1-hour daylight saving / timezone drift.",
+          "2. Re-dock the camera to verify network time protocol (NTP) synchronization.",
+          "3. Document the 1-hour offset in the disclosure notes to confirm the video matches the 08:38 CAD incident."
+        ],
+        whySuffices: "Markers check for understanding of camera hardware clocks (UTC) and creating an audit record for Crown and defense."
+      },
+      {
+        id: 4,
+        cat: "Audio Redaction Standards",
+        title: "911 Audio Call Civilian Redaction in WavePad",
+        prompt: "You are tasked with preparing a 911 audio call for public release and court disclosure. During the call, a frantic civilian caller states their full name, home address, and personal cell phone number while reporting a shooting. Explain your redaction procedure in WavePad Sound Editor.",
+        rubric: [
+          {
+            criterion: "Open working copy in WavePad and highlight personal identifiers",
+            pattern: /(wavepad|audition|highlight|select|open|timeline|waveform)/i,
+            matchHint: "Opened working copy in WavePad and highlighted private speech"
+          },
+          {
+            criterion: "Insert 1,000 Hz tone bleep or silence over identifying details (FOIP s. 17)",
+            pattern: /(1000|1\s*khz|tone|bleep|silence|mute|ctrl\+l|foip|privacy)/i,
+            matchHint: "Applied 1,000 Hz tone bleep or silence under FOIP s. 17"
+          },
+          {
+            criterion: "Export working copy as uncompressed WAV/MP3 while keeping master untouched",
+            pattern: /(export|save|wav|mp3|pcm|master|untouched|original)/i,
+            matchHint: "Exported working copy and kept master file intact"
+          }
+        ],
+        modelBullets: [
+          "1. Open working audio copy in WavePad; highlight the caller's name, phone, and address.",
+          "2. Insert a 1,000 Hz tone bleep (or silence) over personal identifiers under FOIP s. 17.",
+          "3. Export working copy as WAV or MP3; keep raw master 911 audio untouched."
+        ],
+        whySuffices: "Concise, operational instructions that demonstrate immediate command of WavePad Sound Editor."
+      },
+      {
+        id: 5,
+        cat: "Informant Privilege & Tactical Protection",
+        title: "Confidential Informant & Cruiser MDT Screen (R. v. Leipert)",
+        prompt: "A dashcam video captures an arrest, but in the background of the frame, an officer's cruiser MDT screen is clearly legible showing CPIC criminal histories, and a registered confidential informant is visible and speaking. What is your mandatory redaction procedure?",
+        rubric: [
+          {
+            criterion: "Apply 100% solid non-transparent black box over informant face and pitch-shift voice",
+            pattern: /(solid|black box|100%|mask|hide|pitch|warp|leipert|informant)/i,
+            matchHint: "Shielded informant face with solid box and pitch-shifted voice"
+          },
+          {
+            criterion: "Recognize Informer Privilege as absolute with zero exceptions (R. v. Leipert)",
+            pattern: /(leipert|privilege|absolute|mandatory|no exception|zero exception)/i,
+            matchHint: "Cited absolute informer privilege under R. v. Leipert"
+          },
+          {
+            criterion: "Redact cruiser MDT screen / CPIC records under FOIP Section 20",
+            pattern: /(mdt|screen|cpic|tactical|foip|section 20|police)/i,
+            matchHint: "Shielded MDT screen and police data under FOIP s. 20"
+          }
+        ],
+        modelBullets: [
+          "1. Apply 100% solid non-transparent black box over informant's face and pitch-shift their voice.",
+          "2. Informer privilege (R. v. Leipert) is absolute—zero exceptions, cannot be waived.",
+          "3. Redact cruiser MDT monitor screen and CPIC records under FOIP Section 20 (law enforcement tactics)."
+        ],
+        whySuffices: "Proves you understand the most severe legal rule in Canadian policing (informant privilege) and tactical screen confidentiality."
+      },
+      {
+        id: 6,
+        cat: "Court Disclosure Prioritization",
+        title: "24-Hour In-Custody Bail Hearing Priority (Criminal Code s. 503)",
+        prompt: "You start your shift with three disclosure requests in your queue: Request 1 is a routine traffic violation appeal for next month; Request 2 is a civil lawsuit records request from 2024; Request 3 is an arrest from last night where the accused is held in custody with a bail hearing at 13:00 today. How do you prioritize your queue and why?",
+        rubric: [
+          {
+            criterion: "Place Request 3 (bail hearing) at top priority",
+            pattern: /(request 3|bail|in-custody|custody|top|first|priorit)/i,
+            matchHint: "Prioritized in-custody bail hearing at top of queue"
+          },
+          {
+            criterion: "Cite statutory 24-hour court appearance deadline (Criminal Code s. 503)",
+            pattern: /(24|hour|503|statutory|deadline|today|immediate)/i,
+            matchHint: "Cited 24-hour statutory bail cutoff under s. 503"
+          },
+          {
+            criterion: "Deliver disclosure to Crown electronically before the hearing cutoff",
+            pattern: /(crown|prosecut|disclose|package|deliver|before 13|cutoff)/i,
+            matchHint: "Delivered electronic package to Crown before court deadline"
+          }
+        ],
+        modelBullets: [
+          "1. Prioritize Request 3 (in-custody bail hearing) to the top of the queue immediately.",
+          "2. Must satisfy statutory 24-hour court appearance mandate under Criminal Code Section 503.",
+          "3. Expedite ingestion and third-party redaction; transfer package to Crown before 13:00."
+        ],
+        whySuffices: "Evaluates your operational triage: in-custody Charter rights always beat routine administrative requests."
+      },
+      {
+        id: 7,
+        cat: "Evidence Ingestion & Integrity",
+        title: "SHA-256 Hash Mismatch During Dock Ingest",
+        prompt: "An Axon Body 3 is placed on a dock and the automated ingestion pipeline flags 'Checksum Mismatch: Ingest SHA-256 does not match Camera Source Hash'. What are your immediate mandatory steps?",
+        rubric: [
+          {
+            criterion: "Quarantine file immediately; do not release for court disclosure",
+            pattern: /(quarantine|lock|hold|do not release|stop|prevent)/i,
+            matchHint: "Quarantined unverified file from release"
+          },
+          {
+            criterion: "Keep physical camera on dock to prevent memory overwrite",
+            pattern: /(camera|dock|hardware|prevent|overwrite|retain|keep)/i,
+            matchHint: "Retained physical camera to preserve raw flash storage"
+          },
+          {
+            criterion: "Re-verify checksum against raw flash and notify supervisor/FVAD",
+            pattern: /(hash|checksum|sha-256|verify|check|fvad|supervisor|admin)/i,
+            matchHint: "Re-verified hash and notified supervisor / FVAD"
+          }
+        ],
+        modelBullets: [
+          "1. Quarantine the file immediately; do not release for Crown or defense disclosure.",
+          "2. Keep the physical camera docked and unassigned to prevent memory overwrite.",
+          "3. Re-verify the SHA-256 hash against camera storage; escalate to supervisor/FVAD if corrupted."
+        ],
+        whySuffices: "Demonstrates zero tolerance for evidence corruption under Canada Evidence Act s. 31.1."
+      },
+      {
+        id: 8,
+        cat: "CAD / RMS Discrepancy Auditing",
+        title: "Transposed Case Occurrence Number & Retention Downgrade",
+        prompt: "An officer docked video under occurrence 'OCC-2026-094122' categorized as 'Traffic Stop (2-Year Retention)'. Your CAD cross-reference reveals the actual serious robbery call was 'OCC-2026-091422' (Indictable Offence). What specific actions do you take?",
+        rubric: [
+          {
+            criterion: "Correct occurrence number to OCC-2026-091422",
+            pattern: /(091422|correct|change|update|occurrence)/i,
+            matchHint: "Corrected occurrence number to OCC-2026-091422"
+          },
+          {
+            criterion: "Upgrade retention schedule to 10-Year Indictable",
+            pattern: /(10\s*year|indictable|retention|upgrade|extend)/i,
+            matchHint: "Upgraded retention to 10-Year Indictable schedule"
+          },
+          {
+            criterion: "Log administrative audit note documenting digit transposition",
+            pattern: /(audit|note|log|memo|document|transpos)/i,
+            matchHint: "Documented digit transposition in administrative audit note"
+          }
+        ],
+        modelBullets: [
+          "1. Cross-reference CAD notes to confirm the correct number is OCC-2026-091422.",
+          "2. Correct the occurrence tag in Evidence.com and upgrade retention to 10-Year Indictable.",
+          "3. Record an administrative audit note explaining the officer's digit transposition."
+        ],
+        whySuffices: "Proves you can catch human error and protect evidence from being auto-purged prematurely."
+      },
+      {
+        id: 9,
+        cat: "Axon Hardware & Technical Standards",
+        title: "Defense Allegation of Video Tampering (30s Pre-Event Buffer)",
+        prompt: "A defense attorney alleges an officer tampered with a recording because the first 30 seconds of an arrest recording shows clear video but has no sound. You are asked to write a 2-sentence technical response for the Crown. What do you write?",
+        rubric: [
+          {
+            criterion: "Identify 30-second rolling pre-event video buffer",
+            pattern: /(buffer|pre-event|30\s*sec|cache|rolling)/i,
+            matchHint: "Explained 30-second rolling pre-event video buffer"
+          },
+          {
+            criterion: "Explain audio is disabled by policy in buffer to protect privacy",
+            pattern: /(audio|sound|mute|disabled|privacy|policy|standby)/i,
+            matchHint: "Explained pre-event audio is disabled by policy to protect privacy"
+          },
+          {
+            criterion: "State audio activates upon button press / event activation",
+            pattern: /(activat|button|press|event|starts)/i,
+            matchHint: "Confirmed audio starts automatically on event button press"
+          }
+        ],
+        modelBullets: [
+          "1. Explain that EPS Axon cameras maintain a rolling 30-second pre-event video buffer in temporary memory.",
+          "2. Pre-event audio is intentionally disabled by departmental policy to safeguard officer and citizen privacy.",
+          "3. Full audio recording automatically begins the instant the officer double-presses the event activation button."
+        ],
+        whySuffices: "Direct, factual technical explanation that refutes tampering allegations."
+      },
+      {
+        id: 10,
+        cat: "Public Venue Bystander Redaction",
+        title: "25 Innocent Commuter Faces in LRT Station Assault",
+        prompt: "An altercation occurs on an Edmonton LRT platform. The video captures the assault, but also clearly shows the faces of 25 innocent commuters standing nearby. Defense counsel demands the raw, unredacted video. What do you do before disclosing?",
+        rubric: [
+          {
+            criterion: "Refuse unredacted bystander disclosure under FOIP Section 17",
+            pattern: /(bystander|commuter|foip|section 17|privacy|refuse|protect)/i,
+            matchHint: "Protected bystander privacy under FOIP Section 17"
+          },
+          {
+            criterion: "Apply dynamic keyframe tracking blur masks over all bystander faces",
+            pattern: /(blur|mask|pixel|track|redact)/i,
+            matchHint: "Applied dynamic keyframe tracking blur masks over commuter faces"
+          },
+          {
+            criterion: "Keep accused, victim, and police unredacted under Stinchcombe disclosure",
+            pattern: /(accused|victim|police|officer|stinchcombe|unmask|disclose)/i,
+            matchHint: "Maintained full disclosure for accused, victim, and police"
+          }
+        ],
+        modelBullets: [
+          "1. Refuse unredacted release of bystanders under FOIP Section 17 (personal privacy protection).",
+          "2. Apply dynamic tracking blur masks over all 25 innocent commuter faces.",
+          "3. Keep the accused, victim, and responding police officers unmasked for court disclosure (Stinchcombe)."
+        ],
+        whySuffices: "Shows balanced compliance: protecting bystander privacy while respecting constitutional disclosure rights."
+      }
+    ];
+
+    let currentWrittenIdx = 0;
+    let userWrittenAnswers = {};
+
+    function renderWrittenPills() {
+      const container = document.getElementById('written-pill-container');
+      if (!container) return;
+      container.innerHTML = '';
+      writtenScenarios.forEach((s, idx) => {
+        const btn = document.createElement('button');
+        const isActive = idx === currentWrittenIdx;
+        btn.className = isActive 
+          ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white shadow-md transition'
+          : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800 transition';
+        btn.innerText = `Case ${idx + 1}`;
+        btn.onclick = () => renderWrittenScenario(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function renderWrittenScenario(idx) {
+      currentWrittenIdx = idx;
+      const s = writtenScenarios[idx];
+      
+      document.getElementById('written-score-badge').innerText = `Scenario ${idx + 1} of ${writtenScenarios.length}`;
+      document.getElementById('written-id-label').innerText = `Scenario ${idx + 1}`;
+      document.getElementById('written-cat-badge').innerText = s.cat;
+      document.getElementById('written-title').innerText = s.title;
+      document.getElementById('written-prompt').innerText = s.prompt;
+
+      const input = document.getElementById('written-input');
+      input.value = userWrittenAnswers[idx] || '';
+      updateWrittenCharCount();
+
+      document.getElementById('written-result-card').classList.add('hidden');
+      renderWrittenPills();
+    }
+
+    function updateWrittenCharCount() {
+      const input = document.getElementById('written-input');
+      const count = input ? input.value.length : 0;
+      document.getElementById('written-char-count').innerText = `${count} characters`;
+      userWrittenAnswers[currentWrittenIdx] = input.value;
+    }
+
+    function gradeWrittenAnswer() {
+      const s = writtenScenarios[currentWrittenIdx];
+      const text = (document.getElementById('written-input').value || '').trim();
+      
+      let earned = 0;
+      let rubricHtml = '';
+
+      s.rubric.forEach(r => {
+        const matched = r.pattern.test(text);
+        if (matched) {
+          earned += 1;
+          rubricHtml += `
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 flex items-start space-x-2">
+              <span class="text-emerald-400 font-bold text-sm">✓</span>
+              <div>
+                <strong class="text-emerald-300">[+1 Pt] ${r.criterion}</strong>
+                <div class="text-[11px] text-slate-400 mt-0.5">Matched: ${r.matchHint}</div>
+              </div>
+            </div>`;
+        } else {
+          rubricHtml += `
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-start space-x-2">
+              <span class="text-rose-400 font-bold text-sm">✗</span>
+              <div>
+                <strong class="text-slate-300">[0 Pts] Missing: ${r.criterion}</strong>
+                <div class="text-[11px] text-slate-500 mt-0.5">Keyword expectation: ${r.matchHint}</div>
+              </div>
+            </div>`;
+        }
+      });
+
+      document.getElementById('written-rubric-list').innerHTML = rubricHtml;
+
+      const scoreText = document.getElementById('written-score-text');
+      const verdictPill = document.getElementById('written-verdict-pill');
+      const total = s.rubric.length;
+
+      if (earned === total) {
+        scoreText.innerText = `Score: ${earned} / ${total} (100% - FULL PASS!)`;
+        scoreText.className = 'text-lg font-black text-emerald-400 mt-0.5';
+        verdictPill.innerText = 'FULL PASS (READY)';
+        verdictPill.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        playCorrect();
+      } else if (earned > 0) {
+        scoreText.innerText = `Score: ${earned} / ${total} (Partial Pass - Good Keywords)`;
+        scoreText.className = 'text-lg font-black text-amber-400 mt-0.5';
+        verdictPill.innerText = 'PARTIAL PASS';
+        verdictPill.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        playBeep(440, 'triangle', 0.15);
+      } else {
+        scoreText.innerText = `Score: 0 / ${total} (Incomplete / Needs Keywords)`;
+        scoreText.className = 'text-lg font-black text-rose-400 mt-0.5';
+        verdictPill.innerText = 'INCOMPLETE';
+        verdictPill.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30';
+        playWrong();
+      }
+
+      // Populate model bullets
+      let bulletsHtml = '';
+      s.modelBullets.forEach(b => {
+        bulletsHtml += `<div>${b}</div>`;
+      });
+      document.getElementById('written-model-bullets').innerHTML = bulletsHtml;
+      document.getElementById('written-why-suffices').innerText = s.whySuffices;
+
+      document.getElementById('written-result-card').classList.remove('hidden');
+    }
+
+    function revealWrittenModel() {
+      const s = writtenScenarios[currentWrittenIdx];
+      let rubricHtml = '';
+      s.rubric.forEach(r => {
+        rubricHtml += `
+          <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 flex items-start space-x-2">
+            <span class="text-purple-400 font-bold text-sm">ℹ️</span>
+            <div>
+              <strong class="text-slate-200">${r.criterion}</strong>
+              <div class="text-[11px] text-slate-400 mt-0.5">${r.matchHint}</div>
+            </div>
+          </div>`;
+      });
+      document.getElementById('written-rubric-list').innerHTML = rubricHtml;
+      document.getElementById('written-score-text').innerText = 'Model Answer & Rubric Preview';
+      document.getElementById('written-score-text').className = 'text-lg font-black text-purple-400 mt-0.5';
+      document.getElementById('written-verdict-pill').innerText = 'STUDY MODE';
+      document.getElementById('written-verdict-pill').className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30';
+
+      let bulletsHtml = '';
+      s.modelBullets.forEach(b => {
+        bulletsHtml += `<div>${b}</div>`;
+      });
+      document.getElementById('written-model-bullets').innerHTML = bulletsHtml;
+      document.getElementById('written-why-suffices').innerText = s.whySuffices;
+
+      document.getElementById('written-result-card').classList.remove('hidden');
+    }
+
+    function prevWrittenScenario() {
+      if (currentWrittenIdx > 0) renderWrittenScenario(currentWrittenIdx - 1);
+      else renderWrittenScenario(writtenScenarios.length - 1);
+    }
+
+    function nextWrittenScenario() {
+      if (currentWrittenIdx < writtenScenarios.length - 1) renderWrittenScenario(currentWrittenIdx + 1);
+      else renderWrittenScenario(0);
+    }
+
+    function clearWrittenInput() {
+      document.getElementById('written-input').value = '';
+      updateWrittenCharCount();
+      document.getElementById('written-result-card').classList.add('hidden');
     }
 
   </script>
