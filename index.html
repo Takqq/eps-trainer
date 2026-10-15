@@ -82,7 +82,7 @@
         📝 Exam (50Q)
       </button>
       <button onclick="setTab('written')" id="tab-written" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-purple-300 hover:text-purple-200 hover:bg-slate-800 border border-purple-500/20">
-        ✍️ Written Mock
+        🎯 3-Part Mock Exam
       </button>
       <button onclick="setTab('codec')" id="tab-codec" class="nav-tab py-2.5 px-2 rounded-lg text-center transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
         🎬 Codecs (20Q)
@@ -203,8 +203,9 @@
     <!-- 2. DEDICATED CODECS & TECHNICAL JARGON TAB -->
     <!-- ========================================== -->
     
+    
     <!-- ========================================== -->
-    <!-- 1B. REALISTIC WRITTEN SHORT-ANSWER MOCK EXAM -->
+    <!-- 1B. REALISTIC 3-PART MOCK EXAM SIMULATION -->
     <!-- ========================================== -->
     <div id="view-written" class="tab-content hidden">
       <div class="space-y-6">
@@ -214,112 +215,315 @@
           <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
             <div>
               <div class="flex flex-wrap items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40">CSU 52 CLERK III TESTING</span>
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">KEYWORD RUBRIC GRADER</span>
-                <span class="text-xs text-slate-400 font-semibold">10 High-Yield Scenarios</span>
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40">OFFICIAL EXAM SIMULATION</span>
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">CSU 52 CLERK III STANDARD</span>
+                <span class="text-xs text-slate-400 font-semibold">Total: 100 Points &bull; Pass: 75%</span>
               </div>
-              <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Realistic Short-Answer Written Exam &amp; Rubric Grader</h2>
-              <p class="text-xs text-slate-400 mt-1">Type your natural written answers (sentences or 3 simple bullet points). The live engine scans your text against official union grading keywords and scores your answer instantly!</p>
+              <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Word/Data Processing Clerk III Realistic 3-Part Mock Assessment</h2>
+              <p class="text-xs text-slate-400 mt-1">Divided into the 3 authentic testing areas: Multiple Choice Knowledge (50%), Practical CAD Discrepancy Spotting (25%), and Short-Answer Written Scenarios with Live Rubric Grader (25%).</p>
             </div>
             <div class="flex items-center space-x-2">
-              <span id="written-score-badge" class="px-3 py-1.5 bg-slate-950 rounded-xl border border-slate-800 text-xs text-emerald-400 font-mono font-bold">
-                Scenario 1 of 10
+              <span id="mock-total-badge" class="px-3.5 py-1.5 bg-slate-950 rounded-xl border border-slate-800 text-xs text-emerald-400 font-mono font-bold">
+                Mock Score: 0 / 100 Pts
               </span>
             </div>
           </div>
 
-          <!-- Scenario Quick Navigation Selector Pills -->
-          <div class="mt-4 flex flex-wrap items-center gap-1.5" id="written-pill-container">
-            <!-- Dynamically populated 1-10 selector buttons -->
+          <!-- 3-Part Navigation Controller Pills -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-5 text-xs font-semibold">
+            <button onclick="setMockPart('mc')" id="mock-part-mc-btn" class="mock-part-btn py-2.5 px-3 rounded-xl transition-all bg-purple-600 text-white shadow-md text-center">
+              1️⃣ Part 1: Multiple Choice (25Q - 50 Pts)
+            </button>
+            <button onclick="setMockPart('cad')" id="mock-part-cad-btn" class="mock-part-btn py-2.5 px-3 rounded-xl transition-all text-slate-400 hover:text-slate-200 bg-slate-950 border border-slate-800 text-center">
+              2️⃣ Part 2: CAD Discrepancy (2 Cases - 25 Pts)
+            </button>
+            <button onclick="setMockPart('written')" id="mock-part-written-btn" class="mock-part-btn py-2.5 px-3 rounded-xl transition-all text-slate-400 hover:text-slate-200 bg-slate-950 border border-slate-800 text-center">
+              3️⃣ Part 3: Written Scenarios (10 Cases - 25 Pts)
+            </button>
+            <button onclick="setMockPart('scorecard')" id="mock-part-scorecard-btn" class="mock-part-btn py-2.5 px-3 rounded-xl transition-all text-emerald-300 hover:text-emerald-200 bg-slate-950 border border-emerald-500/30 text-center">
+              📊 Combined Scorecard (100 Pts)
+            </button>
           </div>
         </div>
 
-        <!-- Active Scenario Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <div class="flex items-center space-x-2">
-              <span id="written-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Category</span>
-              <span id="written-id-label" class="text-xs text-slate-400 font-mono font-semibold">Scenario 1</span>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button onclick="prevWrittenScenario()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700">&larr; Prev</button>
-              <button onclick="nextWrittenScenario()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700">Next &rarr;</button>
-            </div>
-          </div>
-
-          <div>
-            <h3 id="written-title" class="text-lg sm:text-xl font-bold text-white">Scenario Title Goes Here...</h3>
-            <div id="written-prompt" class="p-4 bg-slate-950/80 rounded-xl border border-slate-800 text-sm text-slate-300 leading-relaxed mt-2.5">
-              Scenario prompt text goes here...
-            </div>
-          </div>
-
-          <!-- Candidate Input Text Area -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-xs text-slate-400">
-              <label for="written-input" class="font-bold text-slate-300">Your Written Response (Type bullet points or sentences):</label>
-              <span id="written-char-count" class="font-mono text-[11px] text-slate-500">0 characters</span>
-            </div>
-            <textarea id="written-input" oninput="updateWrittenCharCount()" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs sm:text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition leading-relaxed font-sans" placeholder="Type your answer in your own words. For example:&#10;1. Redact face, clothing, and voice&#10;2. Apply YCJA protection&#10;3. Log in disclosure certificate"></textarea>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-            <div class="flex items-center space-x-2">
-              <button onclick="gradeWrittenAnswer()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg transition flex items-center space-x-1.5">
-                <span>🎯 Grade My Written Answer</span>
-              </button>
-              <button onclick="revealWrittenModel()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700 transition">
-                👁️ Reveal Model Answer
-              </button>
-            </div>
-            <button onclick="clearWrittenInput()" class="text-xs text-slate-500 hover:text-slate-300 transition">
-              Clear Text
-            </button>
-          </div>
-
-          <!-- Evaluation & Grading Results Card (Hidden until submitted) -->
-          <div id="written-result-card" class="hidden mt-6 p-5 rounded-xl border border-slate-800 bg-slate-950 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+        <!-- ========================================== -->
+        <!-- PART 1: MULTIPLE CHOICE KNOWLEDGE (50 PTS) -->
+        <!-- ========================================== -->
+        <div id="mock-view-mc" class="mock-part-content space-y-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
               <div>
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Official Evaluation</div>
-                <div id="written-score-text" class="text-lg font-black text-emerald-400 mt-0.5">Score: 3 / 3 (100% - FULL PASS)</div>
+                <div class="flex items-center space-x-2">
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">PART 1: OBJECTIVE KNOWLEDGE (WEIGHT: 50%)</span>
+                  <span id="mock-mc-qnum" class="text-xs text-slate-400 font-mono font-semibold">Question 1 of 25</span>
+                </div>
+                <h3 id="mock-mc-title" class="text-lg sm:text-xl font-bold text-white mt-1">Axon Hardware &amp; Ingestion Architecture</h3>
               </div>
-              <div id="written-verdict-pill" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                PASSED
-              </div>
-            </div>
-
-            <!-- Rubric Breakdown Checklist -->
-            <div>
-              <div class="text-xs font-bold text-slate-300 mb-2">CSU 52 Keyword Rubric Breakdown:</div>
-              <div id="written-rubric-list" class="space-y-2 text-xs">
-                <!-- Dynamically populated checklist -->
+              <div class="text-right">
+                <span class="text-xs text-slate-400 font-mono">Part 1 Score: </span>
+                <span id="mock-mc-score" class="text-base font-black text-emerald-400 font-mono">0 / 50 Pts</span>
               </div>
             </div>
 
-            <!-- Model 3-Bullet Practical Answer -->
-            <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5">
-              <div class="text-[11px] font-bold uppercase tracking-wider text-purple-400">
-                📋 Concise 3-Bullet Model Answer (High-Scoring Template):
+            <!-- Progress bar -->
+            <div class="w-full bg-slate-950 rounded-full h-1.5 my-4 overflow-hidden border border-slate-800">
+              <div id="mock-mc-progress" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-1.5 rounded-full transition-all duration-300" style="width: 4%"></div>
+            </div>
+
+            <!-- Scenario Box -->
+            <div id="mock-mc-scenario" class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 text-sm text-slate-300 leading-relaxed mb-6">
+              Scenario text goes here...
+            </div>
+
+            <!-- Options Grid -->
+            <div id="mock-mc-options" class="grid grid-cols-1 gap-3">
+              <!-- Dynamically populated options -->
+            </div>
+
+            <!-- Feedback & Explanation (Hidden until answered) -->
+            <div id="mock-mc-expl-box" class="hidden mt-6 p-4 rounded-xl border">
+              <div class="flex items-center space-x-2 mb-2 font-bold text-sm" id="mock-mc-expl-title">
+                <!-- Correct / Incorrect badge -->
               </div>
-              <div id="written-model-bullets" class="space-y-1 text-xs text-slate-200 font-mono leading-relaxed">
-                <!-- Dynamically populated model bullets -->
+              <p id="mock-mc-expl-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-slate-500 font-mono">Worth 2.0 Pts per question</span>
+                <button onclick="nextMockMcQuestion()" class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition">
+                  Next Question &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PART 2: CAD DISCREPANCY SPOTTING (25 PTS)  -->
+        <!-- ========================================== -->
+        <div id="mock-view-cad" class="mock-part-content hidden space-y-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">PART 2: DATA VERIFICATION WORKSHEET (WEIGHT: 25%)</span>
+                  <span id="mock-cad-case-label" class="text-xs text-slate-400 font-mono font-semibold">Worksheet 1 of 2</span>
+                </div>
+                <h3 id="mock-cad-title" class="text-lg sm:text-xl font-bold text-white mt-1">Cross-Reference CAD Call Sheet vs. DEMS Ingestion Record</h3>
+                <p class="text-xs text-slate-400 mt-1">Simulates the paper-based clerk exam: Cross-reference Paper A and Paper B. Click any field in the Ingest Record that contains an error!</p>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-slate-400 font-mono">Part 2 Score: </span>
+                <span id="mock-cad-score" class="text-base font-black text-amber-400 font-mono">0 / 25 Pts</span>
               </div>
             </div>
 
-            <!-- Why This Suffices Note -->
-            <div class="p-3 bg-indigo-950/30 rounded-xl border border-indigo-500/20 text-indigo-300 text-xs leading-relaxed">
-              <strong>💡 Why Your Phrasing Suffices:</strong> <span id="written-why-suffices">Explanation here...</span>
+            <!-- Case Selector Buttons -->
+            <div class="flex items-center space-x-2 my-4">
+              <button onclick="loadMockCadCase(0)" id="mock-cad-btn-0" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white transition">Worksheet 1: Downtown Assault</button>
+              <button onclick="loadMockCadCase(1)" id="mock-cad-btn-1" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-950 text-slate-400 border border-slate-800 hover:text-slate-200 transition">Worksheet 2: LRT Robbery</button>
             </div>
 
-            <div class="flex justify-end pt-2">
-              <button onclick="nextWrittenScenario()" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition">
-                Next Written Scenario &rarr;
+            <!-- Side-by-Side Comparison Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              
+              <!-- Paper A: CAD Dispatch Call Sheet -->
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <span class="font-bold text-blue-400 flex items-center space-x-1.5 text-sm">
+                    <span>📄</span><span>PAPER A: CAD Dispatch Call Slip (Source of Truth)</span>
+                  </span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/10 text-blue-300 font-mono">E-CAD System</span>
+                </div>
+                <div class="space-y-2 text-slate-300 font-mono text-[11px]" id="mock-cad-sheet">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              <!-- Paper B: DEMS Ingestion Record -->
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <span class="font-bold text-amber-400 flex items-center space-x-1.5 text-sm">
+                    <span>📑</span><span>PAPER B: Ingested Evidence Record (Click to Flag Errors)</span>
+                  </span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-300 font-mono">Evidence.com</span>
+                </div>
+                <div class="space-y-2" id="mock-ingest-fields">
+                  <!-- Populated dynamically with interactive click-to-flag buttons -->
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Action Buttons & Feedback -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800 mt-5">
+              <button onclick="checkMockCadDiscrepancies()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold transition shadow-lg flex items-center space-x-1.5">
+                <span>🔍 Verify Worksheet Discrepancies</span>
               </button>
+              <div id="mock-cad-feedback" class="text-xs text-slate-400 font-mono">Click on suspicious fields above, then click Verify.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PART 3: SHORT-ANSWER WRITTEN (25 PTS)      -->
+        <!-- ========================================== -->
+        <div id="mock-view-written" class="mock-part-content hidden space-y-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">PART 3: SHORT-ANSWER WRITTEN (WEIGHT: 25%)</span>
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">KEYWORD RUBRIC GRADER</span>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-white mt-1">Realistic Short-Answer Written Scenarios (All 10 Cases)</h3>
+                <p class="text-xs text-slate-400 mt-1">Type your natural written answers (sentences or 3 simple bullet points). The live engine scans your text against official union grading keywords and scores your answer instantly!</p>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-slate-400 font-mono">Part 3 Score: </span>
+                <span id="mock-written-score" class="text-base font-black text-purple-400 font-mono">0 / 25 Pts</span>
+              </div>
+            </div>
+
+            <!-- Scenario Quick Navigation Selector Pills -->
+            <div class="mt-4 flex flex-wrap items-center gap-1.5" id="written-pill-container">
+              <!-- Dynamically populated 1-10 selector buttons -->
             </div>
           </div>
 
+          <!-- Active Scenario Card -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <span id="written-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Category</span>
+                <span id="written-id-label" class="text-xs text-slate-400 font-mono font-semibold">Scenario 1</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="prevWrittenScenario()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700">&larr; Prev</button>
+                <button onclick="nextWrittenScenario()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700">Next &rarr;</button>
+              </div>
+            </div>
+
+            <div>
+              <h3 id="written-title" class="text-lg sm:text-xl font-bold text-white">Scenario Title Goes Here...</h3>
+              <div id="written-prompt" class="p-4 bg-slate-950/80 rounded-xl border border-slate-800 text-sm text-slate-300 leading-relaxed mt-2.5">
+                Scenario prompt text goes here...
+              </div>
+            </div>
+
+            <!-- Candidate Input Text Area -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs text-slate-400">
+                <label for="written-input" class="font-bold text-slate-300">Your Written Response (Type bullet points or sentences):</label>
+                <span id="written-char-count" class="font-mono text-[11px] text-slate-500">0 characters</span>
+              </div>
+              <textarea id="written-input" oninput="updateWrittenCharCount()" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs sm:text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition leading-relaxed font-sans" placeholder="Type your answer in your own words. For example:&#10;1. Redact face, clothing, and voice&#10;2. Apply YCJA protection&#10;3. Log in disclosure certificate"></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <div class="flex items-center space-x-2">
+                <button onclick="gradeWrittenAnswer()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg transition flex items-center space-x-1.5">
+                  <span>🎯 Grade My Written Answer</span>
+                </button>
+                <button onclick="revealWrittenModel()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700 transition">
+                  👁️ Reveal 3-Bullet Model Preview
+                </button>
+              </div>
+              <button onclick="clearWrittenInput()" class="text-xs text-slate-500 hover:text-slate-300 transition">
+                Clear Text
+              </button>
+            </div>
+
+            <!-- Evaluation & Grading Results Card (Hidden until submitted) -->
+            <div id="written-result-card" class="hidden mt-6 p-5 rounded-xl border border-slate-800 bg-slate-950 space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                <div>
+                  <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Official Evaluation</div>
+                  <div id="written-score-text" class="text-lg font-black text-emerald-400 mt-0.5">Score: 3 / 3 (100% - FULL PASS)</div>
+                </div>
+                <div id="written-verdict-pill" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  PASSED
+                </div>
+              </div>
+
+              <!-- Rubric Breakdown Checklist -->
+              <div>
+                <div class="text-xs font-bold text-slate-300 mb-2">CSU 52 Keyword Rubric Breakdown:</div>
+                <div id="written-rubric-list" class="space-y-2 text-xs">
+                  <!-- Dynamically populated checklist -->
+                </div>
+              </div>
+
+              <!-- Model 3-Bullet Practical Answer -->
+              <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-purple-400">
+                  📋 Concise 3-Bullet Model Answer (High-Scoring Template):
+                </div>
+                <div id="written-model-bullets" class="space-y-1 text-xs text-slate-200 font-mono leading-relaxed">
+                  <!-- Dynamically populated model bullets -->
+                </div>
+              </div>
+
+              <!-- Why This Suffices Note -->
+              <div class="p-3 bg-indigo-950/30 rounded-xl border border-indigo-500/20 text-indigo-300 text-xs leading-relaxed">
+                <strong>💡 Why Your Phrasing Suffices:</strong> <span id="written-why-suffices">Explanation here...</span>
+              </div>
+
+              <div class="flex justify-end pt-2">
+                <button onclick="nextWrittenScenario()" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition">
+                  Next Written Scenario &rarr;
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PART 4: COMBINED EVALUATION SCORECARD      -->
+        <!-- ========================================== -->
+        <div id="mock-view-scorecard" class="mock-part-content hidden space-y-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl text-center">
+            <div class="w-20 h-20 mx-auto rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/40 flex items-center justify-center text-4xl mb-4">
+              🏆
+            </div>
+            <h3 class="text-2xl font-black text-white">Full Realistic Assessment Evaluation</h3>
+            <p class="text-slate-400 text-xs mt-1">CSU 52 Word/Data Processing Clerk III – Digital Evidence Management Unit</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 max-w-2xl mx-auto my-6 text-left text-xs">
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase">Part 1: Multiple Choice</div>
+                <div id="scorecard-part1" class="text-xl font-black text-blue-400 mt-1">0 / 50 Pts</div>
+                <div class="text-[10px] text-slate-500">Weight: 50%</div>
+              </div>
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase">Part 2: CAD Spotter</div>
+                <div id="scorecard-part2" class="text-xl font-black text-amber-400 mt-1">0 / 25 Pts</div>
+                <div class="text-[10px] text-slate-500">Weight: 25%</div>
+              </div>
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase">Part 3: Written Scenarios</div>
+                <div id="scorecard-part3" class="text-xl font-black text-purple-400 mt-1">0 / 25 Pts</div>
+                <div class="text-[10px] text-slate-500">Weight: 25%</div>
+              </div>
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-bold uppercase">Total Score</div>
+                <div id="scorecard-total" class="text-xl font-black text-emerald-400 mt-1">0 / 100 Pts</div>
+                <div id="scorecard-verdict" class="text-[10px] text-emerald-400 font-bold">READY TO PASS</div>
+              </div>
+            </div>
+
+            <div class="space-x-3">
+              <button onclick="setMockPart('mc')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition">
+                Review Part 1 (MC)
+              </button>
+              <button onclick="setMockPart('cad')" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold transition">
+                Review Part 2 (CAD)
+              </button>
+              <button onclick="setMockPart('written')" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition">
+                Review Part 3 (Written)
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -4391,7 +4595,6 @@ General & Screening:
         renderCard(currentCardIdx + 1);
       } else {
         renderCard(0);
-      renderWrittenScenario(0);
       }
     }
 
@@ -4416,6 +4619,8 @@ General & Screening:
       initSpotter();
       renderCard(0);
       renderWrittenScenario(0);
+      renderMockMcQuestion(0);
+      loadMockCadCase(0);
     };
 
     // ========================================================
@@ -4601,6 +4806,244 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
 
 
     // ========================================================
+    
+    // ========================================================
+    // 3-PART REALISTIC MOCK EXAM ENGINE (100 POINTS TOTAL)
+    // Part 1: Multiple Choice (25Q - 50 Pts)
+    // Part 2: CAD Discrepancy Spotting (2 Worksheets - 25 Pts)
+    // Part 3: Short-Answer Written Scenarios (10 Cases - 25 Pts)
+    // ========================================================
+
+    let mockPart = 'mc';
+    let mockMcCurrentIdx = 0;
+    let mockMcScore = 0;
+    let mockMcAnswered = {};
+    const mockMcTotalQ = 25;
+
+    let mockCadCurrentCase = 0;
+    let mockCadScore = 0;
+    let mockCadFlagged = new Set();
+    let mockCadCaseDone = { 0: false, 1: false };
+
+    let mockWrittenEarnedTotal = 0;
+    let mockWrittenGradedCases = {};
+
+    function setMockPart(partId) {
+      mockPart = partId;
+      document.querySelectorAll('.mock-part-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.mock-part-btn').forEach(el => {
+        el.className = 'mock-part-btn py-2.5 px-3 rounded-xl transition-all text-slate-400 hover:text-slate-200 bg-slate-950 border border-slate-800 text-center';
+      });
+      const targetView = document.getElementById(`mock-view-${partId}`);
+      const targetBtn = document.getElementById(`mock-part-${partId}-btn`);
+      if (targetView) targetView.classList.remove('hidden');
+      if (targetBtn) targetBtn.className = 'mock-part-btn py-2.5 px-3 rounded-xl transition-all bg-purple-600 text-white shadow-md text-center';
+      updateCombinedMockScore();
+    }
+
+    // ----------------------------------------------------
+    // PART 1: MULTIPLE CHOICE (25Q - 50 PTS)
+    // ----------------------------------------------------
+    function renderMockMcQuestion(idx) {
+      mockMcCurrentIdx = idx;
+      const q = examQuestions[idx];
+      
+      document.getElementById('mock-mc-qnum').innerText = `Question ${idx + 1} of ${mockMcTotalQ}`;
+      document.getElementById('mock-mc-title').innerText = q.title;
+      document.getElementById('mock-mc-scenario').innerText = q.scenario;
+      
+      const pct = Math.round(((idx + 1) / mockMcTotalQ) * 100);
+      document.getElementById('mock-mc-progress').style.width = `${pct}%`;
+
+      const optContainer = document.getElementById('mock-mc-options');
+      optContainer.innerHTML = '';
+
+      const isAnswered = mockMcAnswered.hasOwnProperty(idx);
+
+      q.options.forEach((optText, oIdx) => {
+        const btn = document.createElement('button');
+        let btnClass = 'w-full text-left p-3.5 rounded-xl border transition-all text-xs sm:text-sm leading-relaxed ';
+        
+        if (!isAnswered) {
+          btnClass += 'bg-slate-950/60 hover:bg-slate-800/80 border-slate-800 text-slate-200';
+          btn.onclick = () => selectMockMcAnswer(oIdx);
+        } else {
+          const userChoice = mockMcAnswered[idx];
+          if (oIdx === q.answer) {
+            btnClass += 'bg-emerald-950/40 border-emerald-500/80 text-emerald-200 font-semibold';
+          } else if (oIdx === userChoice) {
+            btnClass += 'bg-rose-950/40 border-rose-500/80 text-rose-200';
+          } else {
+            btnClass += 'bg-slate-950/30 border-slate-800/50 text-slate-500 opacity-60';
+          }
+          btn.disabled = true;
+        }
+
+        btn.className = btnClass;
+        btn.innerHTML = `<span class="inline-block w-6 font-bold text-slate-400 font-mono">${String.fromCharCode(65 + oIdx)}.</span> ${optText}`;
+        optContainer.appendChild(btn);
+      });
+
+      const explBox = document.getElementById('mock-mc-expl-box');
+      if (isAnswered) {
+        const userChoice = mockMcAnswered[idx];
+        const isCorrect = userChoice === q.answer;
+        explBox.classList.remove('hidden');
+        explBox.className = isCorrect ? 'mt-6 p-4 rounded-xl border bg-emerald-950/20 border-emerald-500/40' : 'mt-6 p-4 rounded-xl border bg-rose-950/20 border-rose-500/40';
+        document.getElementById('mock-mc-expl-title').innerHTML = isCorrect 
+          ? '<span class="text-emerald-400 font-bold">✓ Correct! (+2.0 Pts)</span>' 
+          : '<span class="text-rose-400 font-bold">✗ Incorrect (0 Pts)</span>';
+        document.getElementById('mock-mc-expl-text').innerText = q.expl;
+      } else {
+        explBox.classList.add('hidden');
+      }
+
+      document.getElementById('mock-mc-score').innerText = `${mockMcScore} / 50 Pts`;
+      updateCombinedMockScore();
+    }
+
+    function selectMockMcAnswer(oIdx) {
+      if (mockMcAnswered.hasOwnProperty(mockMcCurrentIdx)) return;
+      mockMcAnswered[mockMcCurrentIdx] = oIdx;
+      const q = examQuestions[mockMcCurrentIdx];
+      if (oIdx === q.answer) {
+        mockMcScore += 2;
+        playCorrect();
+      } else {
+        playWrong();
+      }
+      renderMockMcQuestion(mockMcCurrentIdx);
+    }
+
+    function nextMockMcQuestion() {
+      if (mockMcCurrentIdx < mockMcTotalQ - 1) {
+        renderMockMcQuestion(mockMcCurrentIdx + 1);
+      } else {
+        alert("Part 1 Complete! Transitioning to Part 2: CAD Discrepancy Spotting.");
+        setMockPart('cad');
+      }
+    }
+
+    // ----------------------------------------------------
+    // PART 2: CAD DISCREPANCY WORKSHEETS (25 PTS)
+    // ----------------------------------------------------
+    function loadMockCadCase(cIdx) {
+      mockCadCurrentCase = cIdx;
+      document.getElementById('mock-cad-case-label').innerText = `Worksheet ${cIdx + 1} of 2`;
+      document.getElementById('mock-cad-btn-0').className = cIdx === 0 ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white transition' : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-950 text-slate-400 border border-slate-800 hover:text-slate-200 transition';
+      document.getElementById('mock-cad-btn-1').className = cIdx === 1 ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white transition' : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-950 text-slate-400 border border-slate-800 hover:text-slate-200 transition';
+
+      const c = cadCases[cIdx];
+      document.getElementById('mock-cad-title').innerText = c.title;
+
+      // Populate CAD sheet
+      const cadContainer = document.getElementById('mock-cad-sheet');
+      cadContainer.innerHTML = `
+        <div class="flex justify-between border-b border-slate-800/80 pb-1.5"><span>Occurrence #:</span><strong class="text-white">${c.cad.occ}</strong></div>
+        <div class="flex justify-between border-b border-slate-800/80 pb-1.5"><span>Assigned Officer:</span><strong class="text-white">${c.cad.badge}</strong></div>
+        <div class="flex justify-between border-b border-slate-800/80 pb-1.5"><span>Hardware Serial:</span><strong class="text-white">${c.cad.camSerial}</strong></div>
+        <div class="flex justify-between border-b border-slate-800/80 pb-1.5"><span>Dispatch Time:</span><strong class="text-white">${c.cad.incidentTime}</strong></div>
+        <div class="flex justify-between border-b border-slate-800/80 pb-1.5"><span>Incident Location:</span><strong class="text-white">${c.cad.location}</strong></div>
+        <div class="flex justify-between border-b border-slate-800/80 pb-1.5"><span>CAD Call Type:</span><strong class="text-amber-300 font-bold">${c.cad.callType}</strong></div>
+        <div class="flex justify-between"><span>Mandatory Retention:</span><strong class="text-emerald-400 font-bold">${c.cad.retention}</strong></div>
+      `;
+
+      // Populate Ingest interactive fields
+      const ingestContainer = document.getElementById('mock-ingest-fields');
+      ingestContainer.innerHTML = '';
+
+      c.ingest.forEach(f => {
+        const isFlagged = mockCadFlagged.has(f.id);
+        const btn = document.createElement('div');
+        btn.className = `p-2.5 rounded-lg border cursor-pointer transition flex items-center justify-between text-[11px] font-mono ${
+          isFlagged ? 'bg-amber-950/40 border-amber-500 text-amber-200 font-bold' : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+        }`;
+        btn.onclick = () => toggleMockCadField(f.id);
+        btn.innerHTML = `
+          <div><span class="text-slate-500">${f.label}:</span> <span class="text-white">${f.value}</span></div>
+          <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${isFlagged ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">${isFlagged ? 'FLAGGED' : 'AUDIT'}</span>
+        `;
+        ingestContainer.appendChild(btn);
+      });
+
+      document.getElementById('mock-cad-feedback').innerText = "Click to flag suspicious fields above, then click 'Verify Worksheet Discrepancies'.";
+    }
+
+    function toggleMockCadField(fId) {
+      if (mockCadFlagged.has(fId)) mockCadFlagged.delete(fId);
+      else mockCadFlagged.add(fId);
+      loadMockCadCase(mockCadCurrentCase);
+    }
+
+    function checkMockCadDiscrepancies() {
+      const c = cadCases[mockCadCurrentCase];
+      let correctFlags = 0;
+      let totalErrorsInCase = 0;
+
+      c.ingest.forEach(f => {
+        if (f.isError) {
+          totalErrorsInCase++;
+          if (mockCadFlagged.has(f.id)) correctFlags++;
+        }
+      });
+
+      if (!mockCadCaseDone[mockCadCurrentCase]) {
+        if (correctFlags === totalErrorsInCase) {
+          mockCadScore += 12.5; // 2 cases * 12.5 = 25 pts total
+          mockCadCaseDone[mockCadCurrentCase] = true;
+          playCorrect();
+        } else {
+          playWrong();
+        }
+      }
+
+      document.getElementById('mock-cad-score').innerText = `${Math.round(mockCadScore)} / 25 Pts`;
+      document.getElementById('mock-cad-feedback').innerText = `Worksheet ${mockCadCurrentCase + 1} Audit: Flagged ${correctFlags} of ${totalErrorsInCase} real discrepancies. Total Score: ${Math.round(mockCadScore)}/25 Pts.`;
+      updateCombinedMockScore();
+    }
+
+    // ----------------------------------------------------
+    // PART 3: SHORT-ANSWER WRITTEN SCENARIOS (25 PTS)
+    // ----------------------------------------------------
+    function updateCombinedMockScore() {
+      // Calculate part 3 score normalized to 25 pts
+      let writtenEarned = 0;
+      let writtenPossible = 0;
+      Object.keys(mockWrittenGradedCases).forEach(k => {
+        writtenEarned += mockWrittenGradedCases[k].earned;
+        writtenPossible += mockWrittenGradedCases[k].total;
+      });
+      const part3Pts = writtenPossible > 0 ? Math.round((writtenEarned / writtenPossible) * 25) : 0;
+      
+      const elWrittenScore = document.getElementById('mock-written-score');
+      if (elWrittenScore) elWrittenScore.innerText = `${part3Pts} / 25 Pts`;
+
+      const totalPts = Math.min(100, Math.round(mockMcScore + mockCadScore + part3Pts));
+      const badge = document.getElementById('mock-total-badge');
+      if (badge) badge.innerText = `Mock Score: ${totalPts} / 100 Pts`;
+
+      const elP1 = document.getElementById('scorecard-part1');
+      const elP2 = document.getElementById('scorecard-part2');
+      const elP3 = document.getElementById('scorecard-part3');
+      const elTot = document.getElementById('scorecard-total');
+      const elVer = document.getElementById('scorecard-verdict');
+
+      if (elP1) elP1.innerText = `${mockMcScore} / 50 Pts`;
+      if (elP2) elP2.innerText = `${Math.round(mockCadScore)} / 25 Pts`;
+      if (elP3) elP3.innerText = `${part3Pts} / 25 Pts`;
+      if (elTot) elTot.innerText = `${totalPts} / 100 Pts`;
+
+      if (elVer) {
+        if (totalPts >= 75) {
+          elVer.innerText = "HIGH PASS (READY FOR TOMORROW!)";
+          elVer.className = "text-[10px] text-emerald-400 font-bold";
+        } else {
+          elVer.innerText = "IN PROGRESS (TARGET: 75+)";
+          elVer.className = "text-[10px] text-amber-400 font-bold";
+        }
+      }
+    }
+
     // WRITTEN SHORT-ANSWER MOCK DATA & RUBRIC GRADER (10 SCENARIOS)
     // ========================================================
     const writtenScenarios = [
@@ -5005,6 +5448,8 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
       document.getElementById('written-model-bullets').innerHTML = bulletsHtml;
       document.getElementById('written-why-suffices').innerText = s.whySuffices;
 
+      mockWrittenGradedCases[currentWrittenIdx] = { earned: earned, total: total };
+      updateCombinedMockScore();
       document.getElementById('written-result-card').classList.remove('hidden');
     }
 
