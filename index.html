@@ -2271,6 +2271,11 @@ General & Screening:
       });
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
       document.getElementById(`tab-${tabId}`).className = 'nav-tab py-2.5 px-3 rounded-lg text-center transition-all bg-blue-600 text-white shadow-md';
+      if (tabId === 'written' && typeof renderMockMcQuestion === 'function') {
+        renderMockMcQuestion(mockMcCurrentIdx || 0);
+        if (typeof loadMockCadCase === 'function') loadMockCadCase(mockCadCurrentCase || 0);
+        if (typeof renderWrittenScenario === 'function') renderWrittenScenario(currentWrittenIdx || 0);
+      }
     }
 
     // ========================================================
@@ -4847,58 +4852,71 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
     function renderMockMcQuestion(idx) {
       mockMcCurrentIdx = idx;
       const q = examQuestions[idx];
+      if (!q) return;
       
-      document.getElementById('mock-mc-qnum').innerText = `Question ${idx + 1} of ${mockMcTotalQ}`;
-      document.getElementById('mock-mc-title').innerText = q.title;
-      document.getElementById('mock-mc-scenario').innerText = q.scenario;
+      const elQnum = document.getElementById('mock-mc-qnum');
+      if (elQnum) elQnum.innerText = `Question ${idx + 1} of ${mockMcTotalQ}`;
+      const elTitle = document.getElementById('mock-mc-title');
+      if (elTitle) elTitle.innerText = q.title;
+      const elScenario = document.getElementById('mock-mc-scenario');
+      if (elScenario) elScenario.innerText = q.scenario;
       
       const pct = Math.round(((idx + 1) / mockMcTotalQ) * 100);
-      document.getElementById('mock-mc-progress').style.width = `${pct}%`;
+      const elProg = document.getElementById('mock-mc-progress');
+      if (elProg) elProg.style.width = `${pct}%`;
 
       const optContainer = document.getElementById('mock-mc-options');
-      optContainer.innerHTML = '';
+      if (optContainer) {
+        optContainer.innerHTML = '';
+        const isAnswered = mockMcAnswered.hasOwnProperty(idx);
 
-      const isAnswered = mockMcAnswered.hasOwnProperty(idx);
-
-      q.options.forEach((optText, oIdx) => {
-        const btn = document.createElement('button');
-        let btnClass = 'w-full text-left p-3.5 rounded-xl border transition-all text-xs sm:text-sm leading-relaxed ';
-        
-        if (!isAnswered) {
-          btnClass += 'bg-slate-950/60 hover:bg-slate-800/80 border-slate-800 text-slate-200';
-          btn.onclick = () => selectMockMcAnswer(oIdx);
-        } else {
-          const userChoice = mockMcAnswered[idx];
-          if (oIdx === q.answer) {
-            btnClass += 'bg-emerald-950/40 border-emerald-500/80 text-emerald-200 font-semibold';
-          } else if (oIdx === userChoice) {
-            btnClass += 'bg-rose-950/40 border-rose-500/80 text-rose-200';
+        q.options.forEach((optText, oIdx) => {
+          const btn = document.createElement('button');
+          let btnClass = 'w-full text-left p-3.5 rounded-xl border transition-all text-xs sm:text-sm leading-relaxed ';
+          
+          if (!isAnswered) {
+            btnClass += 'bg-slate-950/60 hover:bg-slate-800/80 border-slate-800 text-slate-200';
+            btn.onclick = () => selectMockMcAnswer(oIdx);
           } else {
-            btnClass += 'bg-slate-950/30 border-slate-800/50 text-slate-500 opacity-60';
+            const userChoice = mockMcAnswered[idx];
+            if (oIdx === q.answer) {
+              btnClass += 'bg-emerald-950/40 border-emerald-500/80 text-emerald-200 font-semibold';
+            } else if (oIdx === userChoice) {
+              btnClass += 'bg-rose-950/40 border-rose-500/80 text-rose-200';
+            } else {
+              btnClass += 'bg-slate-950/30 border-slate-800/50 text-slate-500 opacity-60';
+            }
+            btn.disabled = true;
           }
-          btn.disabled = true;
-        }
 
-        btn.className = btnClass;
-        btn.innerHTML = `<span class="inline-block w-6 font-bold text-slate-400 font-mono">${String.fromCharCode(65 + oIdx)}.</span> ${optText}`;
-        optContainer.appendChild(btn);
-      });
-
-      const explBox = document.getElementById('mock-mc-expl-box');
-      if (isAnswered) {
-        const userChoice = mockMcAnswered[idx];
-        const isCorrect = userChoice === q.answer;
-        explBox.classList.remove('hidden');
-        explBox.className = isCorrect ? 'mt-6 p-4 rounded-xl border bg-emerald-950/20 border-emerald-500/40' : 'mt-6 p-4 rounded-xl border bg-rose-950/20 border-rose-500/40';
-        document.getElementById('mock-mc-expl-title').innerHTML = isCorrect 
-          ? '<span class="text-emerald-400 font-bold">✓ Correct! (+2.0 Pts)</span>' 
-          : '<span class="text-rose-400 font-bold">✗ Incorrect (0 Pts)</span>';
-        document.getElementById('mock-mc-expl-text').innerText = q.expl;
-      } else {
-        explBox.classList.add('hidden');
+          btn.className = btnClass;
+          btn.innerHTML = `<span class="inline-block w-6 font-bold text-slate-400 font-mono">${String.fromCharCode(65 + oIdx)}.</span> ${optText}`;
+          optContainer.appendChild(btn);
+        });
       }
 
-      document.getElementById('mock-mc-score').innerText = `${mockMcScore} / 50 Pts`;
+      const explBox = document.getElementById('mock-mc-expl-box');
+      if (explBox) {
+        if (mockMcAnswered.hasOwnProperty(idx)) {
+          const userChoice = mockMcAnswered[idx];
+          const isCorrect = userChoice === q.answer;
+          explBox.classList.remove('hidden');
+          explBox.className = isCorrect ? 'mt-6 p-4 rounded-xl border bg-emerald-950/20 border-emerald-500/40' : 'mt-6 p-4 rounded-xl border bg-rose-950/20 border-rose-500/40';
+          const elExplTitle = document.getElementById('mock-mc-expl-title');
+          if (elExplTitle) {
+            elExplTitle.innerHTML = isCorrect 
+              ? '<span class="text-emerald-400 font-bold">✓ Correct! (+2.0 Pts)</span>' 
+              : '<span class="text-rose-400 font-bold">✗ Incorrect (0 Pts)</span>';
+          }
+          const elExplText = document.getElementById('mock-mc-expl-text');
+          if (elExplText) elExplText.innerText = q.expl;
+        } else {
+          explBox.classList.add('hidden');
+        }
+      }
+
+      const elScore = document.getElementById('mock-mc-score');
+      if (elScore) elScore.innerText = `${mockMcScore} / 50 Pts`;
       updateCombinedMockScore();
     }
 
@@ -5361,18 +5379,25 @@ Licensing & Safety: Alberta Class 5 Driver’s Licence (Driving since 2010, Clea
     function renderWrittenScenario(idx) {
       currentWrittenIdx = idx;
       const s = writtenScenarios[idx];
+      if (!s) return;
       
-      document.getElementById('written-score-badge').innerText = `Scenario ${idx + 1} of ${writtenScenarios.length}`;
-      document.getElementById('written-id-label').innerText = `Scenario ${idx + 1}`;
-      document.getElementById('written-cat-badge').innerText = s.cat;
-      document.getElementById('written-title').innerText = s.title;
-      document.getElementById('written-prompt').innerText = s.prompt;
+      const idLabel = document.getElementById('written-id-label');
+      if (idLabel) idLabel.innerText = `Scenario ${idx + 1} of ${writtenScenarios.length}`;
+      const catBadge = document.getElementById('written-cat-badge');
+      if (catBadge) catBadge.innerText = s.cat;
+      const title = document.getElementById('written-title');
+      if (title) title.innerText = s.title;
+      const prompt = document.getElementById('written-prompt');
+      if (prompt) prompt.innerText = s.prompt;
 
       const input = document.getElementById('written-input');
-      input.value = userWrittenAnswers[idx] || '';
-      updateWrittenCharCount();
+      if (input) {
+        input.value = userWrittenAnswers[idx] || '';
+        updateWrittenCharCount();
+      }
 
-      document.getElementById('written-result-card').classList.add('hidden');
+      const resCard = document.getElementById('written-result-card');
+      if (resCard) resCard.classList.add('hidden');
       renderWrittenPills();
     }
 
