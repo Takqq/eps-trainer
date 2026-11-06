@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EPS Psychological Evaluation Simulator — Mindspring (MMPI-3, MPQ & Clinical Interview)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.72; }
+    }
+    .badge-pulse { animation: pulse-slow 2.5s infinite; }
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    .meter-bar { transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-emerald-600 selection:text-white custom-scroll">
+
+  <!-- TOP HUD -->
+  <header class="border-b border-slate-800 bg-slate-900/95 backdrop-blur sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center font-extrabold text-lg shadow-lg shadow-emerald-500/20 text-white border border-emerald-400/30">
+          Ψ
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="font-extrabold text-slate-100 tracking-tight text-base sm:text-lg">EPS PSYCHOLOGICAL SUITABILITY SIMULATOR</h1>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider">Final Gate • #56123</span>
+          </div>
+          <p class="text-xs text-slate-400">Candidate: <strong class="text-slate-200">Kyle Jensen</strong> &bull; Assessing Clinician: <strong class="text-emerald-300">Dr. Jake Tremblay, Ph.D.</strong> (Mindspring) &bull; <strong class="text-amber-300">Fri, Nov 20 @ 9:00 AM</strong></p>
+        </div>
+      </div>
+
+      <!-- Quick Links & Live Stats -->
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="https://takqq.github.io/eps-trainer/" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 border border-slate-700 text-xs font-semibold transition flex items-center gap-1.5">
+          <span>🔙</span><span>Main EPS Trainer</span>
+        </a>
+        <button onclick="copyPsychVoicePrompt()" id="btn-copy-voice" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow transition flex items-center gap-1.5">
+          <span>🎧</span><span>Copy Dr. Tremblay Voice Walk Prompt</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CLINICAL VALIDITY TELEMETRY BAR -->
+  <section class="bg-slate-900/70 border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Live Psychometric Telemetry:</span>
+          <span id="telemetry-status" class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            ✅ Grounded &amp; Authentic Profile
+          </span>
+        </div>
+        <div class="flex items-center gap-4 text-xs">
+          <span>Answered: <strong id="stat-answered" class="text-white">0</strong></span>
+          <span>Calibration Accuracy: <strong id="stat-accuracy" class="text-emerald-400">100%</strong></span>
+          <button onclick="resetAllProgress()" class="text-slate-400 hover:text-rose-400 underline text-[11px]">Reset Telemetry</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+        <!-- L-r Meter -->
+        <div class="bg-slate-950/90 p-2.5 rounded-lg border border-slate-800">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-slate-300" title="Uncommon Virtues Scale: Spikes if you claim impossible saintly perfection">🤖 L-r ("Robot/Saint" Risk)</span>
+            <span id="meter-lr-label" class="font-bold text-emerald-400">T=48 (Optimal)</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="meter-lr-bar" class="meter-bar h-full bg-emerald-500" style="width: 35%"></div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Target: T 45–58 (Danger &gt; 65 = Flagged)</p>
+        </div>
+
+        <!-- K-r Meter -->
+        <div class="bg-slate-950/90 p-2.5 rounded-lg border border-slate-800">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-slate-300" title="Adjustment Validity: Spikes if you deny all normal human emotion or stress">🛡️ K-r (Stoic Over-Defensiveness)</span>
+            <span id="meter-kr-label" class="font-bold text-emerald-400">T=52 (Balanced)</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="meter-kr-bar" class="meter-bar h-full bg-emerald-500" style="width: 45%"></div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Target: Healthy self-awareness, not cold stone</p>
+        </div>
+
+        <!-- Warmth / Social Closeness Meter -->
+        <div class="bg-slate-950/90 p-2.5 rounded-lg border border-slate-800">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-slate-300">🤝 Warmth &amp; Team Connection</span>
+            <span id="meter-warmth-label" class="font-bold text-blue-400">High (Connected)</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="meter-warmth-bar" class="meter-bar h-full bg-blue-500" style="width: 85%"></div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">MPQ Social Closeness + Empathy Balance</p>
+        </div>
+
+        <!-- Consistency & Rule Integrity -->
+        <div class="bg-slate-950/90 p-2.5 rounded-lg border border-slate-800">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-slate-300">⚖️ VRIN-r Consistency &amp; SOPs</span>
+            <span id="meter-con-label" class="font-bold text-amber-400">100% Solid</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="meter-con-bar" class="meter-bar h-full bg-amber-500" style="width: 92%"></div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Non-contradictory, rule-abiding baseline</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="max-w-6xl mx-auto px-4 mt-5">
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold">
+      <button onclick="switchTab('antirobot')" id="tab-antirobot" class="nav-btn py-2.5 px-3 rounded-lg text-center transition-all bg-emerald-600 text-white shadow-md">
+        🤖➡️🧑 Anti-Robot Guide
+      </button>
+      <button onclick="switchTab('mmpi')" id="tab-mmpi" class="nav-btn py-2.5 px-3 rounded-lg text-center transition-all text-slate-300 hover:bg-slate-800">
+        🧠 MMPI-3 Sim (50Q)
+      </button>
+      <button onclick="switchTab('mpq')" id="tab-mpq" class="nav-btn py-2.5 px-3 rounded-lg text-center transition-all text-slate-300 hover:bg-slate-800">
+        📊 MPQ Sim (30Q)
+      </button>
+      <button onclick="switchTab('interview')" id="tab-interview" class="nav-btn py-2.5 px-3 rounded-lg text-center transition-all text-amber-300 hover:bg-slate-800 border border-amber-500/20">
+        🗣️ Dr. Tremblay 1-on-1 (12)
+      </button>
+      <button onclick="switchTab('agreement')" id="tab-agreement" class="nav-btn py-2.5 px-3 rounded-lg text-center transition-all text-blue-300 hover:bg-slate-800 border border-blue-500/20">
+        📄 Nov 20 Brief &amp; Rules
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: ANTI-ROBOT CALIBRATION GUIDE        -->
+    <!-- ========================================== -->
+    <div id="view-antirobot" class="tab-view block space-y-6">
+      <div class="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-900 p-6 rounded-2xl border border-emerald-500/30 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">Core Strategy for Analytical Minds</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white mt-2">How to Avoid the "Robot Trap" With Dr. Jake Tremblay</h2>
+            <p class="text-sm text-slate-300 mt-1 max-w-3xl">
+              Because you are naturally disciplined, analytical, and objective (tracking macros/workouts, writing 1,500-word tech logs, compartmentalizing stress), there is one specific trap in psychological testing: <strong>sounding like an emotionless machine or claiming impossible perfection.</strong>
+            </p>
+          </div>
+          <div class="bg-slate-950/90 p-4 rounded-xl border border-slate-800 shrink-0 text-xs space-y-1.5">
+            <div class="font-bold text-amber-300 uppercase tracking-wider">The Golden Formula:</div>
+            <div class="text-slate-200">✅ <strong>85%</strong> Grounded Discipline &amp; Routine</div>
+            <div class="text-slate-200">✅ <strong>15%</strong> Human Warmth, Empathy &amp; Humility</div>
+            <div class="text-rose-400">❌ <strong>0%</strong> "I have zero emotions / I never make mistakes"</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHY ROBOTIC ANSWERS FLAG -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-900 p-5 rounded-xl border border-rose-500/30">
+          <div class="text-rose-400 font-bold text-sm uppercase tracking-wider mb-1">🚩 Red Flag #1: The "Saint" Spike (L-r Scale)</div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            In the <strong>MMPI-3</strong>, there are ~14 questions called <em>Uncommon Virtues (L-r)</em>. They ask things like: <em>"I never get annoyed," "I have never told a lie," "I like everyone I meet."</em> If you click FALSE to normal human flaws because you want to look disciplined, the computer flags your test as <strong>Invalid / Defensive Faking Good</strong>.
+          </p>
+        </div>
+        <div class="bg-slate-900 p-5 rounded-xl border border-amber-500/30">
+          <div class="text-amber-400 font-bold text-sm uppercase tracking-wider mb-1">🚩 Red Flag #2: Emotional Numbness</div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            When discussing graphic Body Worn Video with Dr. Tremblay, saying <em>"I have zero emotions, it's just pixels on a screen to me"</em> sounds like <strong>dissociation or lack of human empathy</strong>. Instead, say: <em>"I naturally feel human empathy when I see someone hurt, and I channel that into doing a meticulous technical job so justice is served."</em>
+          </p>
+        </div>
+        <div class="bg-slate-900 p-5 rounded-xl border border-blue-500/30">
+          <div class="text-blue-400 font-bold text-sm uppercase tracking-wider mb-1">🚩 Red Flag #3: The "Lone Wolf" Trap (MPQ)</div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            On the <strong>MPQ</strong>, high self-reliance is great, but if you answer every social question with <em>"I prefer to be completely alone and never rely on others,"</em> it flags low <em>Social Closeness</em>. Balance your independent focus with your <strong>5 close NAIT DMIT friends, Discord collab projects, and team handoffs</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- SIDE BY SIDE TRANSLATOR TABLE -->
+      <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-lg">
+        <div class="px-6 py-4 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="font-bold text-white text-base">10-Point "Robotic vs. Grounded Human" Calibration Matrix</h3>
+            <p class="text-xs text-slate-400">Read these side-by-side comparisons to tune your instinct before November 20th.</p>
+          </div>
+          <button onclick="switchTab('mmpi')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition">
+            Test Your Calibration in MMPI-3 Sim &rarr;
+          </button>
+        </div>
+
+        <div class="divide-y divide-slate-800 text-xs sm:text-sm">
+          <!-- Row 1 -->
+          <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start hover:bg-slate-800/30 transition">
+            <div class="lg:col-span-3 font-bold text-emerald-300">1. Viewing Graphic Trauma Footage</div>
+            <div class="lg:col-span-4 bg-rose-950/30 border border-rose-500/20 p-3 rounded-lg text-slate-300">
+              <span class="text-rose-400 font-bold block mb-1">❌ Robotic / Stoic Trap:</span>
+              "I have zero emotional bias. When I watch graphic violence, I feel nothing at all. I just look at waveforms and pixels like a machine."
+            </div>
+            <div class="lg:col-span-5 bg-emerald-950/30 border border-emerald-500/20 p-3 rounded-lg text-slate-200">
+              <span class="text-emerald-400 font-bold block mb-1">✅ Grounded, Healthy Human:</span>
+              "I'm human—if I see a child or victim in distress, I recognize it's tragic and feel empathy. What helps me succeed is shifting into a purposeful, task-focused mindset at work so their evidence is protected, and then using my running and gym routine after shift to decompress."
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start hover:bg-slate-800/30 transition">
+            <div class="lg:col-span-3 font-bold text-emerald-300">2. Everyday Irritability &amp; Patience</div>
+            <div class="lg:col-span-4 bg-rose-950/30 border border-rose-500/20 p-3 rounded-lg text-slate-300">
+              <span class="text-rose-400 font-bold block mb-1">❌ Robotic / Saint Trap:</span>
+              "I never get annoyed, frustrated, or impatient with anyone under any circumstances." <em>(Spikes L-r Lie Scale)</em>
+            </div>
+            <div class="lg:col-span-5 bg-emerald-950/30 border border-emerald-500/20 p-3 rounded-lg text-slate-200">
+              <span class="text-emerald-400 font-bold block mb-1">✅ Grounded, Healthy Human:</span>
+              "Like anyone, I can feel a brief flash of frustration if someone is being unreasonable or traffic is backed up, but I don't take it personally or snap at people. I take a breath, listen actively, and focus on solving the problem."
+            </div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start hover:bg-slate-800/30 transition">
+            <div class="lg:col-span-3 font-bold text-emerald-300">3. Pre-Event Nerves &amp; Sleep</div>
+            <div class="lg:col-span-4 bg-rose-950/30 border border-rose-500/20 p-3 rounded-lg text-slate-300">
+              <span class="text-rose-400 font-bold block mb-1">❌ Robotic / Stoic Trap:</span>
+              "I never feel nervous before big tests or interviews, and I never have a night of light sleep."
+            </div>
+            <div class="lg:col-span-5 bg-emerald-950/30 border border-emerald-500/20 p-3 rounded-lg text-slate-200">
+              <span class="text-emerald-400 font-bold block mb-1">✅ Grounded, Healthy Human:</span>
+              "Most nights I sleep great. Before a huge milestone that I really care about—like my EPS panel interview—it's normal for me to have some excited anticipation and sleep a bit lighter, which I channel into sharp preparation."
+            </div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start hover:bg-slate-800/30 transition">
+            <div class="lg:col-span-3 font-bold text-emerald-300">4. Leaving TELUS (Employment History)</div>
+            <div class="lg:col-span-4 bg-rose-950/30 border border-rose-500/20 p-3 rounded-lg text-slate-300">
+              <span class="text-rose-400 font-bold block mb-1">❌ Defensive / Bitter Trap:</span>
+              "Management was unfair and toxic, or nothing ever went wrong."
+            </div>
+            <div class="lg:col-span-5 bg-emerald-950/30 border border-emerald-500/20 p-3 rounded-lg text-slate-200">
+              <span class="text-emerald-400 font-bold block mb-1">✅ Grounded, Healthy Human:</span>
+              "I'm really proud of my years in the field at TELUS—12,000+ incident-free hours and solving complex customer issues. Over time, the role evolved heavily toward aggressive doorstep sales quotas rather than technical quality. That clashed with my strengths as a thorough technician, so parting ways allowed me to pursue a structured public-service role where quality and accuracy come first."
+            </div>
+          </div>
+
+          <!-- Row 5 -->
+          <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start hover:bg-slate-800/30 transition">
+            <div class="lg:col-span-3 font-bold text-emerald-300">5. White Lies &amp; Minor Faults</div>
+            <div class="lg:col-span-4 bg-rose-950/30 border border-rose-500/20 p-3 rounded-lg text-slate-300">
+              <span class="text-rose-400 font-bold block mb-1">❌ Robotic / Saint Trap:</span>
+              Answering TRUE to: <em>"I have never told a lie"</em> or FALSE to: <em>"I sometimes put off until tomorrow what I ought to do today."</em>
+            </div>
+            <div class="lg:col-span-5 bg-emerald-950/30 border border-emerald-500/20 p-3 rounded-lg text-slate-200">
+              <span class="text-emerald-400 font-bold block mb-1">✅ Grounded, Healthy Human:</span>
+              Admitting everyday human realities: yes, I've told a polite white lie before; yes, on a lazy Sunday I might put off a household chore until Monday. In serious work and ethical matters, my integrity is 100% solid.
+            </div>
+          </div>
+
+          <!-- Row 6 -->
+          <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start hover:bg-slate-800/30 transition">
+            <div class="lg:col-span-3 font-bold text-emerald-300">6. Social Connection vs. Independence</div>
+            <div class="lg:col-span-4 bg-rose-950/30 border border-rose-500/20 p-3 rounded-lg text-slate-300">
+              <span class="text-rose-400 font-bold block mb-1">❌ Isolated Robot Trap:</span>
+              "I just stick to myself, track my personal metrics, and don't need social connection."
+            </div>
+            <div class="lg:col-span-5 bg-emerald-950/30 border border-emerald-500/20 p-3 rounded-lg text-slate-200">
+              <span class="text-emerald-400 font-bold block mb-1">✅ Grounded, Healthy Human:</span>
+              "I'm comfortable working independently at a workstation for hours, AND I really value my close circle—five of my closest friends are still from my NAIT DMIT cohort, we collaborate on creative game-dev projects on Discord every week, and I love building friendly rapport with coworkers."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: MMPI-3 SIMULATOR (50 QUESTIONS)     -->
+    <!-- ========================================== -->
+    <div id="view-mmpi" class="tab-view hidden space-y-5">
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Appointment Part 1A</span>
+            <h2 class="text-lg sm:text-xl font-extrabold text-white">MMPI-3 Clinical Inventory Simulator (50 Calibration Items)</h2>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            Practice answering True/False without triggering the <strong>L-r (Saint/Robot)</strong> or <strong>K-r (Over-Stoic)</strong> traps, while keeping clinical scales clean.
+          </p>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="flex flex-wrap gap-1.5 text-xs">
+          <button onclick="filterMMPI('ALL')" id="mmpi-filter-ALL" class="px-3 py-1.5 rounded-lg font-bold bg-emerald-600 text-white">All (50)</button>
+          <button onclick="filterMMPI('LR')" id="mmpi-filter-LR" class="px-3 py-1.5 rounded-lg font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">🤖 L-r / K-r Robot Traps</button>
+          <button onclick="filterMMPI('VRIN')" id="mmpi-filter-VRIN" class="px-3 py-1.5 rounded-lg font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">🔄 Consistency Pairs</button>
+          <button onclick="filterMMPI('CLIN')" id="mmpi-filter-CLIN" class="px-3 py-1.5 rounded-lg font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">🛡️ Resilience &amp; Rules</button>
+        </div>
+      </div>
+
+      <div id="mmpi-questions-container" class="space-y-4"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: MPQ SIMULATOR (30 QUESTIONS)        -->
+    <!-- ========================================== -->
+    <div id="view-mpq" class="tab-view hidden space-y-5">
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">Appointment Part 1B</span>
+          <h2 class="text-lg sm:text-xl font-extrabold text-white">MPQ (Multidimensional Personality Questionnaire) Simulator — 30 Items</h2>
+        </div>
+        <p class="text-xs text-slate-400 mt-1 max-w-4xl">
+          The MPQ is the second test listed on your Mindspring form. It measures normal-range personality across 3 broad dimensions: <strong>Positive Emotionality</strong> (Wellbeing, Achievement, Social Closeness), <strong>Negative Emotionality</strong> (Stress Reaction, Alienation, Aggression), and <strong>Constraint</strong> (Self-Control, Harm Avoidance, Traditionalism).
+        </p>
+      </div>
+
+      <div id="mpq-questions-container" class="space-y-4"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: DR. JAKE TREMBLAY 1-ON-1 INTERVIEW  -->
+    <!-- ========================================== -->
+    <div id="view-interview" class="tab-view hidden space-y-6">
+      <div class="bg-gradient-to-r from-amber-950/50 via-slate-900 to-slate-900 p-6 rounded-2xl border border-amber-500/30">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">Appointment Part 2 • Semi-Structured Clinical Interview</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white mt-2">1-on-1 Interview Prep with Dr. Jake Tremblay, Ph.D.</h2>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl">
+              Unlike the EPS panel interview (which tested FOIP, codecs, and STAR technical tasks), Dr. Tremblay is evaluating <strong>psychological suitability, emotional self-awareness, honesty about past life/work events, and healthy coping mechanisms</strong>.
+            </p>
+          </div>
+          <div class="bg-slate-950/90 p-3.5 rounded-xl border border-slate-800 text-xs space-y-1">
+            <div class="font-bold text-amber-300">Dr. Tremblay's 4 Core Checkboxes:</div>
+            <div class="text-slate-300">1. Emotional self-awareness (not robotic/denying)</div>
+            <div class="text-slate-300">2. Accountable &amp; non-bitter about past jobs</div>
+            <div class="text-slate-300">3. Active, healthy decompression &amp; social ties</div>
+            <div class="text-slate-300">4. Willing to use Peer Support / Wellness early</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice Controls -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 p-4 rounded-xl border border-slate-800">
+        <div class="flex items-center gap-2 text-xs sm:text-sm">
+          <span class="font-bold text-slate-300">Mode:</span>
+          <button onclick="toggleBlindMode()" id="btn-blind-mode" class="px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-amber-300 border border-amber-500/30 hover:bg-slate-700 transition">
+            👁️ Blind Drill Mode: OFF (Showing Coaching)
+          </button>
+        </div>
+        <div class="text-xs text-slate-400">
+          💡 <em>Tip: Turn ON Blind Drill Mode to practice answering Dr. Tremblay out loud before revealing the calibrated script!</em>
+        </div>
+      </div>
+
+      <div id="interview-cards-container" class="space-y-5"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: MINDSPRING AGREEMENT & LOGISTICS    -->
+    <!-- ========================================== -->
+    <div id="view-agreement" class="tab-view hidden space-y-6">
+      <div class="bg-slate-900 p-6 rounded-2xl border border-blue-500/30 shadow-lg space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-4">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 uppercase">Official Logistics &amp; Consent Summary</span>
+            <h2 class="text-xl font-extrabold text-white mt-1">Friday, November 20, 2026 @ 9:00 AM MST</h2>
+          </div>
+          <div class="text-right text-xs text-slate-400">
+            <div>Mindspring Psychology Associates Inc.</div>
+            <div class="text-slate-200 font-semibold">Mayfield Business Centre, Suite #306</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <h3 class="font-bold text-emerald-400 uppercase tracking-wider text-xs">📍 Location &amp; Arrival Protocol</h3>
+            <p><strong class="text-slate-200">Building:</strong> Mayfield Business Centre</p>
+            <p><strong class="text-slate-200">Address:</strong> Suite #306, 10525 – 170 St. N.W., Edmonton, AB T5P 4Y7</p>
+            <p><strong class="text-slate-200">Psychologist:</strong> Dr. Jake Tremblay, Ph.D.</p>
+            <p><strong class="text-slate-200">Phone / Email:</strong> <code class="text-amber-300">780-907-4487</code> &bull; <code class="text-blue-300">jake@mindspringpsych.com</code></p>
+            <p><strong class="text-slate-200">Commute Plan:</strong> Depart Fort Saskatchewan by <strong>8:00 AM</strong> to arrive at Mayfield Business Centre by <strong>8:45 AM</strong>.</p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <h3 class="font-bold text-blue-400 uppercase tracking-wider text-xs">📋 Key Points from the Participation Agreement</h3>
+            <ul class="list-disc list-inside space-y-1.5 text-slate-300 text-xs leading-relaxed">
+              <li><strong>Sign in Person:</strong> Do <em>not</em> pre-sign the PDF at home—Jon confirmed you will sign it in front of Dr. Tremblay at your appointment.</li>
+              <li><strong>Two-Part Structure:</strong>
+                <ol class="list-decimal list-inside ml-4 mt-1 space-y-1 text-slate-400">
+                  <li>Standardized inventories: <strong>MMPI-3</strong> &amp; <strong>MPQ</strong>.</li>
+                  <li>Semi-structured psychological interview with Dr. Tremblay (reviewing test results &amp; EPS recruitment file).</li>
+                </ol>
+              </li>
+              <li><strong>Cost:</strong> 100% paid by Edmonton Police Service.</li>
+              <li><strong>Bring:</strong> Government Photo ID (Alberta Class 5 Driver's Licence), eyeglasses if used for reading, and your calm, well-rested baseline!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. MMPI-3 CALIBRATION BANK (50 REALISTIC ITEMS)
+    // =========================================================================
+    const mmpiQuestions = [
+      // --- L-r (Uncommon Virtues / The "Robot/Saint" Trap) ---
+      {
+        id: 1,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I sometimes put off until tomorrow what I ought to do today.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is the healthy, honest human response. Every human being occasionally postpones a minor chore on a weekend. Answering FALSE adds +1 to your L-r (Faking Good) scale.',
+        whyFail: 'Clicking FALSE claims you have never procrastinated once in your life—a classic "Robot/Saint" response that spikes the L-r validity scale.'
+      },
+      {
+        id: 2,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I do not always tell the truth.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE proves honesty! Everyone has told a polite white lie ("Looks great!", "I\'m doing fine"). Psychologists expect TRUE here.',
+        whyFail: 'Clicking FALSE claims you have never uttered a single white lie in your entire life, flagging your test for defensiveness.'
+      },
+      {
+        id: 3,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I get angry sometimes.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is 100% normal. Anger/frustration is a natural human emotion; what makes you suitable for EPS is that you *manage* it calmly without lashing out.',
+        whyFail: 'Clicking FALSE claims you are a robot incapable of feeling anger, which immediately triggers the L-r validity warning.'
+      },
+      {
+        id: 4,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I like every single person I have ever met.',
+        best: 'F',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering FALSE is realistic and mature. You worked 12,000+ hours with the public at TELUS—nobody personally likes every single individual they meet, even though you treat everyone professionally.',
+        whyFail: 'Clicking TRUE is a textbook "Faking Good" response on the MMPI-3.'
+      },
+      {
+        id: 5,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'Once in a while I laugh at a dirty joke.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE shows normal, relaxed human candor and keeps your L-r scale in the optimal green zone.',
+        whyFail: 'Clicking FALSE is one of the oldest MMPI Lie-scale items designed to catch overly rigid, saintly test-taking.'
+      },
+      {
+        id: 6,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I gossip a little at times.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE acknowledges normal casual human conversation in everyday life while still respecting strict professional confidentiality at work.',
+        whyFail: 'Clicking FALSE adds to the L-r "Uncommon Virtues" score. Remember: admitting tiny everyday flaws protects your profile validity!'
+      },
+      {
+        id: 7,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'Sometimes when I am not feeling well, I am irritable.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is completely human. When people have the flu or a bad cold, they feel a bit grumpy.',
+        whyFail: 'Clicking FALSE makes the scoring algorithm suspect you are hiding normal human feelings.'
+      },
+      {
+        id: 8,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'My table manners are not quite as good at home by myself as when I am out in company.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is a classic MMPI honesty check—everyone is more casual eating on their couch alone than at a formal dinner.',
+        whyFail: 'Clicking FALSE is a known L-scale trigger.'
+      },
+      {
+        id: 9,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'If I could get into a movie without paying and be sure I was not seen, I would probably do it.',
+        best: 'F',
+        trapType: 'INTEGRITY',
+        whyPass: 'Answering FALSE here is right! Unlike harmless flaws (like procrastinating or laughing at a joke), sneaking in without paying is theft/rule-breaking. For law enforcement, always uphold honesty with rules and laws.',
+        whyFail: 'Clicking TRUE flags rule-breaking/antisocial tendencies.'
+      },
+      {
+        id: 10,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I would rather win than lose in a game.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE shows normal human competitiveness and honesty.',
+        whyFail: 'Clicking FALSE ("I don\'t care at all if I win or lose") is scored as fake humility on the L-r scale.'
+      },
+      {
+        id: 11,
+        cat: 'LR',
+        scale: 'K-r (Defensiveness / Stoic Trap)',
+        stmt: 'I have never felt nervous or anxious before an important event.',
+        best: 'F',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering FALSE is healthy and realistic—just like having lighter sleep the night before your EPS interview because the opportunity mattered to you!',
+        whyFail: 'Clicking TRUE projects robotic detachment and spikes the K-r defensiveness scale.'
+      },
+      {
+        id: 12,
+        cat: 'LR',
+        scale: 'K-r (Defensiveness / Stoic Trap)',
+        stmt: 'Criticism or scolding hurts me terribly and ruins my whole week.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE shows healthy emotional resilience. You take constructive feedback objectively without crumbling.',
+        whyFail: 'Clicking TRUE indicates fragile emotional regulation.'
+      },
+      {
+        id: 13,
+        cat: 'LR',
+        scale: 'K-r (Defensiveness / Stoic Trap)',
+        stmt: 'There are some people whose actions annoy me.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is honest. In 10 years of customer service and life, of course some people\'s rude actions are annoying—even though you stay professional.',
+        whyFail: 'Clicking FALSE spikes defensiveness.'
+      },
+      {
+        id: 14,
+        cat: 'LR',
+        scale: 'K-r (Defensiveness / Stoic Trap)',
+        stmt: 'Once in a while I think of things too bad to talk about.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE keeps your profile clean and grounded.',
+        whyFail: 'Clicking TRUE can trigger clinical follow-up questions about intrusive thoughts.'
+      },
+      {
+        id: 15,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues / Saint Trap)',
+        stmt: 'I have कभी/never had a disagreement with a friend or family member.',
+        best: 'F',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering FALSE is normal—every healthy relationship has occasional minor disagreements that get resolved respectfully.',
+        whyFail: 'Clicking TRUE is impossible and flags defensiveness.'
+      },
+      {
+        id: 16,
+        cat: 'LR',
+        scale: 'K-r (Defensiveness / Balanced Self-View)',
+        stmt: 'At times I feel like swearing when I stub my toe or drop a tool.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is a classic MMPI-3 normal-human check! Every field tech who has dropped a wrench in -25°C has felt like swearing.',
+        whyFail: 'Clicking FALSE makes you look overly guarded and saintly.'
+      },
+      {
+        id: 17,
+        cat: 'LR',
+        scale: 'K-r (Defensiveness / Balanced Self-View)',
+        stmt: 'I do not read every editorial in the newspaper every day.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE (meaning: correct, I do NOT read every editorial every day) is another classic MMPI honesty item.',
+        whyFail: 'Clicking FALSE claims you read every single newspaper editorial daily.'
+      },
+      {
+        id: 18,
+        cat: 'LR',
+        scale: 'K-r (Balanced Empathy)',
+        stmt: 'Seeing a person or animal suffering genuinely bothers me inside.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is CRITICAL to avoid the Robot Trap! Having natural human compassion for suffering—while still performing your job duties calmly—proves you are an empathetic human, not cold or callous.',
+        whyFail: 'Clicking FALSE ("Suffering doesn\'t bother me at all") can flag callousness/emotional detachment.'
+      },
+      {
+        id: 19,
+        cat: 'LR',
+        scale: 'K-r (Balanced Stress Awareness)',
+        stmt: 'After a very long, demanding week, I need time to recharge and unwind.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE aligns directly with your healthy decompression habits (5K dog runs, gym, bouldering). It shows realistic self-awareness.',
+        whyFail: 'Clicking FALSE pretends you have infinite battery like a machine.'
+      },
+      {
+        id: 20,
+        cat: 'LR',
+        scale: 'L-r (Uncommon Virtues)',
+        stmt: 'I have sometimes felt slightly jealous when someone else got a lucky break.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE admits a normal, fleeting human feeling without acting maliciously.',
+        whyFail: 'Clicking FALSE adds to the saintly/defensive score.'
+      },
+
+      // --- VRIN-r (Consistency Pairs — Watch how pairs mirror each other!) ---
+      {
+        id: 21,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #1A (Sleep Baseline)',
+        stmt: 'Most nights I go to sleep without thoughts or ideas bothering me.',
+        best: 'T',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering TRUE reflects your 95% everyday baseline: on normal nights, you sleep well. (Remember this for Pair #1B!)',
+        whyFail: 'Don\'t judge your whole life by the single night before a major job interview.'
+      },
+      {
+        id: 22,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #1B (Sleep Baseline)',
+        stmt: 'I have a great deal of trouble falling asleep almost every night.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE matches Pair #1A! Because you answered TRUE to sleeping well most nights, you must answer FALSE to having chronic nightly insomnia.',
+        whyFail: 'Clicking TRUE here would contradict #21 and spike VRIN-r (Inconsistency).'
+      },
+      {
+        id: 23,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #2A (Social Comfort)',
+        stmt: 'I find it easy to talk with new people at work or social gatherings.',
+        best: 'T',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering TRUE reflects your 3–5 daily customer homes at TELUS and building rapport easily.',
+        whyFail: 'Clicking FALSE portrays social withdrawal.'
+      },
+      {
+        id: 24,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #2B (Social Comfort)',
+        stmt: 'Whenever possible, I avoid speaking to people I do not know well.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE stays 100% consistent with #23 (you are approachable and communicative).',
+        whyFail: 'Clicking TRUE contradicts #23 and flags social avoidance.'
+      },
+      {
+        id: 25,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #3A (Optimism & Energy)',
+        stmt: 'I wake up fresh and rested most mornings.',
+        best: 'T',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering TRUE reflects your active, healthy physical baseline.',
+        whyFail: 'Clicking FALSE suggests chronic fatigue or low mood.'
+      },
+      {
+        id: 26,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #3B (Optimism & Energy)',
+        stmt: 'I feel tired, worn out, and lacking energy most of the time.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE is consistent with #25.',
+        whyFail: 'Clicking TRUE contradicts #25 and flags depressive/somatic fatigue.'
+      },
+      {
+        id: 27,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #4A (Trust vs. Cynicism)',
+        stmt: 'Most people will use somewhat unfair means to gain profit or an advantage rather than lose it.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE keeps your CYN (Cynicism) scale low. In law enforcement screening, believing most people are decent and trustworthy is preferred over bitter cynicism.',
+        whyFail: 'Clicking TRUE elevates the Cynicism (RC3/CYN) scale.'
+      },
+      {
+        id: 28,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #4B (Trust vs. Cynicism)',
+        stmt: 'I think most people would lie to get ahead if they knew they wouldn\'t be caught.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE matches #27—you maintain a fair, non-cynical outlook on people.',
+        whyFail: 'Clicking TRUE contradicts #27 or spikes high cynicism.'
+      },
+      {
+        id: 29,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #5A (Temper Control)',
+        stmt: 'I rarely lose my temper, even when things go wrong.',
+        best: 'T',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering TRUE reflects your calm de-escalation skills—while you can feel mild annoyance (#3), you rarely *lose your temper*.',
+        whyFail: 'Clicking FALSE suggests volatility.'
+      },
+      {
+        id: 30,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #5B (Temper Control)',
+        stmt: 'I get so angry that I feel like throwing or breaking things.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE matches #29 and shows strong behavioral impulse control.',
+        whyFail: 'Clicking TRUE flags explosive anger (ANG/AGG).'
+      },
+      {
+        id: 31,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #6A (Methodical Order)',
+        stmt: 'I like to have a clear plan and organize my work before I start.',
+        best: 'T',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering TRUE is pure Kyle Jensen (DIT media folders, Notepad job logs).',
+        whyFail: 'Clicking FALSE contradicts your organized nature.'
+      },
+      {
+        id: 32,
+        cat: 'VRIN',
+        scale: 'VRIN-r Consistency Pair #6B (Methodical Order)',
+        stmt: 'I usually jump into tasks impulsively without worrying about the details.',
+        best: 'F',
+        trapType: 'CONSISTENCY',
+        whyPass: 'Answering FALSE ("Measure twice, cut once") is 100% consistent with #31.',
+        whyFail: 'Clicking TRUE contradicts #31 and flags impulsivity.'
+      },
+
+      // --- CLINICAL / RESILIENCE / AUTHORITY / HEALTH SCALES ---
+      {
+        id: 33,
+        cat: 'CLIN',
+        scale: 'RCd (Emotional Morale & Satisfaction)',
+        stmt: 'I am happy and satisfied with my life most of the time.',
+        best: 'T',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering TRUE shows strong baseline morale and emotional stability.',
+        whyFail: 'Clicking FALSE elevates the Demoralization scale.'
+      },
+      {
+        id: 34,
+        cat: 'CLIN',
+        scale: 'RC1 (Somatic / Physical Health)',
+        stmt: 'I suffer from frequent severe headaches, nausea, or dizzy spells.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE reflects your strong physical health. Never answer TRUE to medical symptoms unless you have a chronic, diagnosed medical condition.',
+        whyFail: 'Clicking TRUE flags somatic/physical distress.'
+      },
+      {
+        id: 35,
+        cat: 'CLIN',
+        scale: 'RC4 (Rule Adherence & Authority)',
+        stmt: 'When I was young, I was suspended from school one or more times for fighting or misbehavior.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE (assuming accurate to your history) keeps antisocial/conduct scales low.',
+        whyFail: 'Triggers conduct history probing.'
+      },
+      {
+        id: 36,
+        cat: 'CLIN',
+        scale: 'RC6 (Interpersonal Trust vs. Persecution)',
+        stmt: 'I feel that certain people are plotting against me or trying to ruin my career.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE is critical! Even if you felt a past workplace situation at TELUS was frustrating, you never view yourself as the target of a conspiracy or plot.',
+        whyFail: 'Clicking TRUE immediately spikes the RC6 (Ideas of Persecution) clinical red flag!'
+      },
+      {
+        id: 37,
+        cat: 'CLIN',
+        scale: 'RC6 (Fairness & Accountability)',
+        stmt: 'I have often had to take orders from someone who did not know as much as I did.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE (or keeping authority resentment low) is important in paramilitary/police organizations. Respecting chain of command without arrogance is key.',
+        whyFail: 'Clicking TRUE adds to the authority-resentment / cynicism score.'
+      },
+      {
+        id: 38,
+        cat: 'CLIN',
+        scale: 'RC8 (Clarity of Thought)',
+        stmt: 'I have had strange or peculiar experiences that cannot be explained.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE keeps aberrant experience scales at zero.',
+        whyFail: 'Clicking TRUE triggers clinical inquiry on the F-r / RC8 scale.'
+      },
+      {
+        id: 39,
+        cat: 'CLIN',
+        scale: 'STW (Stress & Worry Regulation)',
+        stmt: 'When a stressful workday is over, I am able to leave work at work and relax at home.',
+        best: 'T',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering TRUE directly reflects your compartmentalization and decompression routine.',
+        whyFail: 'Clicking FALSE suggests high rumination and burnout vulnerability.'
+      },
+      {
+        id: 40,
+        cat: 'CLIN',
+        scale: 'SUB (Substance Use Baseline)',
+        stmt: 'I have used alcohol or drugs to help me forget my problems or cope with stress.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE confirms that your stress outlets are healthy (running, strength training, bouldering), not substances.',
+        whyFail: 'Clicking TRUE is a major red flag in police psychological screening.'
+      },
+      {
+        id: 41,
+        cat: 'CLIN',
+        scale: 'SAV (Social Engagement & Teamwork)',
+        stmt: 'I enjoy working as part of a team toward a shared goal.',
+        best: 'T',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering TRUE highlights your collaborative spirit (Alfie Zappacosta 10-cam crew, DEMU shift handovers).',
+        whyFail: 'Clicking FALSE makes you look socially isolated.'
+      },
+      {
+        id: 42,
+        cat: 'CLIN',
+        scale: 'SHY (Interpersonal Poise)',
+        stmt: 'I feel terribly embarrassed and flustered if I have to speak in front of a small group.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE reflects your confidence speaking up in team meetings (like advocating for the 1,000-character note limit at TELUS).',
+        whyFail: 'Clicking TRUE flags social anxiety.'
+      },
+      {
+        id: 43,
+        cat: 'CLIN',
+        scale: 'COG (Cognitive Focus & Attention)',
+        stmt: 'I can easily keep my mind on a detailed task for a long period of time.',
+        best: 'T',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering TRUE reflects your ability to scrub frame-by-frame video and audit 4-digit sensor MAC addresses.',
+        whyFail: 'Clicking FALSE flags attention/concentration difficulties.'
+      },
+      {
+        id: 44,
+        cat: 'CLIN',
+        scale: 'SOP & Rule Integrity',
+        stmt: 'Sometimes it is necessary to bend or ignore standard rules to get a job done fast.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE is your diamond fiber cleaver principle: SOPs and privacy laws (FOIP/YCJA) exist for a reason; shortcuts ruin evidence.',
+        whyFail: 'Clicking TRUE flags rule-noncompliance in a forensic role.'
+      },
+      {
+        id: 45,
+        cat: 'CLIN',
+        scale: 'NFC (Decision Making & Confidence)',
+        stmt: 'I usually have a hard time making up my mind about everyday decisions.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE shows healthy decisiveness and self-assurance.',
+        whyFail: 'Clicking TRUE scores on the Indecisiveness / Inefficacy scale.'
+      },
+      {
+        id: 46,
+        cat: 'CLIN',
+        scale: 'ANP (Anger Proneness)',
+        stmt: 'If someone cuts me off in traffic, I feel an urge to chase them down or teach them a lesson.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE reflects your clean Class 5 abstract since 2010 and 12,000+ incident-free fleet hours.',
+        whyFail: 'Clicking TRUE is a severe impulse-control red flag.'
+      },
+      {
+        id: 47,
+        cat: 'CLIN',
+        scale: 'HLP (Help-Seeking & Wellness Openness)',
+        stmt: 'If I were going through a very difficult personal crisis, I would be willing to talk to a professional or support resource.',
+        best: 'T',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering TRUE is huge for EPS! It proves you are not too proud or stoic to use EPS Peer Support or Employee Wellness if ever needed.',
+        whyFail: 'Clicking FALSE ("I never need help from anyone") looks overly stoic and brittle.'
+      },
+      {
+        id: 48,
+        cat: 'CLIN',
+        scale: 'DSF (Disaffiliativeness / Warmth Check)',
+        stmt: 'I feel genuinely glad when a coworker or friend achieves a big success.',
+        best: 'T',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering TRUE shows warmth, team spirit, and low envy.',
+        whyFail: 'Clicking FALSE suggests coldness or resentment.'
+      },
+      {
+        id: 49,
+        cat: 'CLIN',
+        scale: 'BRF (Fear / Phobias)',
+        stmt: 'I am afraid of many things such as dark places, heights, or spiders to the point it limits my work.',
+        best: 'F',
+        trapType: 'CLINICAL',
+        whyPass: 'Answering FALSE reflects your history climbing ladders/poles at TELUS and bouldering weekly.',
+        whyFail: 'Clicking TRUE flags phobic avoidance.'
+      },
+      {
+        id: 50,
+        cat: 'CLIN',
+        scale: 'Emotional Balance Summary Item',
+        stmt: 'Even though I stay calm and objective under pressure, I still care deeply about the people around me.',
+        best: 'T',
+        trapType: 'ROBOT_SAINT',
+        whyPass: 'Answering TRUE is the ultimate summary of your profile: cool-headed under pressure, yet warm and empathetic toward people.',
+        whyFail: 'Never separate your objectivity from your humanity!'
+      }
+    ];
+
+    // =========================================================================
+    // 2. MPQ SIMULATOR BANK (30 ITEMS — NORMAL PERSONALITY CALIBRATION)
+    // =========================================================================
+    const mpqQuestions = [
+      {
+        id: 101,
+        trait: 'Achievement (Positive Emotionality)',
+        stmt: 'I enjoy tackling complex technical problems that other people have given up on.',
+        best: 'T',
+        coaching: 'TRUE highlights your high Achievement drive (like being the 4th tech on-site who solved the security takeover).'
+      },
+      {
+        id: 102,
+        trait: 'Control vs. Impulsiveness (Constraint)',
+        stmt: 'Before starting a detailed project, I like to organize all my files and notes systematically.',
+        best: 'T',
+        coaching: 'TRUE scores high on the MPQ Control scale—ideal for a Digital Evidence Technician.'
+      },
+      {
+        id: 103,
+        trait: 'Social Closeness (Warmth vs. Robot Trap)',
+        stmt: 'When I have free time, I always prefer to be completely alone rather than spending time with close friends or family.',
+        best: 'F',
+        coaching: 'FALSE is important here! Even if you enjoy solo hobbies, answering TRUE to *always* wanting isolation makes you look socially detached/robotic on the MPQ Social Closeness scale.'
+      },
+      {
+        id: 104,
+        trait: 'Social Closeness (Warmth vs. Robot Trap)',
+        stmt: 'I value having a small, trusted group of friends whom I can count on and collaborate with.',
+        best: 'T',
+        coaching: 'TRUE shows healthy social attachment (your NAIT DMIT friends and Discord group) without needing to be a loud party animal.'
+      },
+      {
+        id: 105,
+        trait: 'Stress Reaction (Negative Emotionality)',
+        stmt: 'Minor unexpected changes in my schedule usually throw me into a panic.',
+        best: 'F',
+        coaching: 'FALSE shows low Stress Reactivity—while you like organization, you adapt smoothly when an urgent priority comes in.'
+      },
+      {
+        id: 106,
+        trait: 'Harm Avoidance (Constraint)',
+        stmt: 'Would you rather: (A) Ride in a high-speed race car with no brakes for a thrill, OR (B) Master a challenging technical skill in a safe environment?',
+        best: 'F',
+        customLabels: ['Choice A (Reckless Thrill)', 'Choice B (Safe Mastery)'],
+        coaching: 'Choice B (scored here as the second button) shows high Harm Avoidance. Note: You enjoy bouldering in a controlled gym with mats and safety rules, not reckless life-threatening stunts.'
+      },
+      {
+        id: 107,
+        trait: 'Alienation (Negative Emotionality)',
+        stmt: 'I often feel that people take credit for my hard work and treat me unfairly.',
+        best: 'F',
+        coaching: 'FALSE keeps your MPQ Alienation score at floor level. High Alienation is one of the biggest red flags in police hiring.'
+      },
+      {
+        id: 108,
+        trait: 'Aggression (Negative Emotionality)',
+        stmt: 'When someone insults me or is rude to me, I make sure to get even with them.',
+        best: 'F',
+        coaching: 'FALSE confirms low Aggression and high professional de-escalation.'
+      },
+      {
+        id: 109,
+        trait: 'Wellbeing (Positive Emotionality)',
+        stmt: 'Most days I find my daily activities interesting, rewarding, and enjoyable.',
+        best: 'T',
+        coaching: 'TRUE scores high on the MPQ Wellbeing scale—showing an upbeat, engaged approach to life.'
+      },
+      {
+        id: 110,
+        trait: 'Traditionalism / Rule Respect (Constraint)',
+        stmt: 'High ethical standards and clear rules are essential for a fair society.',
+        best: 'T',
+        coaching: 'TRUE aligns with your respect for the justice system, FOIP, YCJA, and evidence integrity.'
+      },
+      {
+        id: 111,
+        trait: 'Social Potency (Balanced Leadership)',
+        stmt: 'When a group project needs structure, I am comfortable stepping up to organize the workflow.',
+        best: 'T',
+        coaching: 'TRUE reflects your Lead Editor / DIT role on the Alfie Zappacosta concert and proposing the 1,000-char note improvement.'
+      },
+      {
+        id: 112,
+        trait: 'Absorption / Focus Balance',
+        stmt: 'I sometimes get so daydreamy and lost in fantasy that I forget what I am supposed to be doing at work.',
+        best: 'F',
+        coaching: 'FALSE confirms practical, grounded work focus.'
+      },
+      {
+        id: 113,
+        trait: 'Social Closeness (Warmth Calibration)',
+        stmt: 'If a teammate is having a rough day, I try to be supportive and helpful.',
+        best: 'T',
+        coaching: 'TRUE prevents the "cold technician" stereotype and shows high interpersonal warmth.'
+      },
+      {
+        id: 114,
+        trait: 'Achievement (Persistence)',
+        stmt: 'I set high personal standards for myself and work steadily to improve.',
+        best: 'T',
+        coaching: 'TRUE reflects your fitness tracking, Dean\'s Honor Roll, and thorough job logs.'
+      },
+      {
+        id: 115,
+        trait: 'Stress Reaction (Realistic Human Calibration)',
+        stmt: 'Before a major career milestone, I can feel some natural butterflies, though I still perform well.',
+        best: 'T',
+        coaching: 'TRUE shows honest, non-defensive self-awareness without clinical anxiety.'
+      },
+      {
+        id: 116,
+        trait: 'Control (Methodical Decision-Making)',
+        stmt: 'Before buying something expensive, I carefully research and compare my options.',
+        best: 'T',
+        coaching: 'TRUE is a classic MPQ Control scale item showing planfulness.'
+      },
+      {
+        id: 117,
+        trait: 'Aggression (Non-Sadistic Empathy)',
+        stmt: 'I enjoy watching people get into real-life fistfights or get humiliated.',
+        best: 'F',
+        coaching: 'FALSE is essential—you view criminal BWC footage strictly as a professional duty to support justice, never for entertainment.'
+      },
+      {
+        id: 118,
+        trait: 'Wellbeing (Future Outlook)',
+        stmt: 'I feel optimistic and excited about what the next few years hold for me.',
+        best: 'T',
+        coaching: 'TRUE signals healthy forward momentum and enthusiasm for your EPS career.'
+      },
+      {
+        id: 119,
+        trait: 'Alienation (Workplace Trust)',
+        stmt: 'Most of the supervisors and coworkers I have worked with have been reasonable people.',
+        best: 'T',
+        coaching: 'TRUE demonstrates that you view colleagues positively and don\'t carry workplace grudges.'
+      },
+      {
+        id: 120,
+        trait: 'Social Closeness (Approachability)',
+        stmt: 'People who know me well would describe me as loyal, dependable, and easy to get along with.',
+        best: 'T',
+        coaching: 'TRUE reinforces your warm, steady interpersonal baseline.'
+      },
+      {
+        id: 121,
+        trait: 'Harm Avoidance (Safety Discipline)',
+        stmt: 'I always follow safety procedures, even when no one is watching.',
+        best: 'T',
+        coaching: 'TRUE reflects your 12,000+ incident-free hours and ladder/PPE discipline.'
+      },
+      {
+        id: 122,
+        trait: 'Achievement (Craftsmanship)',
+        stmt: 'Doing a job thoroughly and accurately the first time is much more important to me than rushing through it.',
+        best: 'T',
+        coaching: 'TRUE is your "measure twice, cut once" philosophy.'
+      },
+      {
+        id: 123,
+        trait: 'Stress Reaction (Recovery)',
+        stmt: 'If I make a minor mistake, I correct it, learn from it, and move forward without dwelling on it for weeks.',
+        best: 'T',
+        coaching: 'TRUE shows healthy cognitive resilience rather than obsessive self-punishment.'
+      },
+      {
+        id: 124,
+        trait: 'Social Potency vs. Domineering',
+        stmt: 'I insist on always getting my own way in a group, even if others disagree.',
+        best: 'F',
+        coaching: 'FALSE shows you are collaborative and respectful of team consensus and supervisors.'
+      },
+      {
+        id: 125,
+        trait: 'Control (Financial & Personal Order)',
+        stmt: 'I keep my personal environment, schedule, and responsibilities well organized.',
+        best: 'T',
+        coaching: 'TRUE matches your weekend house organization and disciplined habits.'
+      },
+      {
+        id: 126,
+        trait: 'Social Closeness (Empathy Balance)',
+        stmt: 'I find it easy to understand how another person is feeling when they explain their situation to me.',
+        best: 'T',
+        coaching: 'TRUE highlights active listening and empathy (like listening to frustrated customers or stressed investigators).'
+      },
+      {
+        id: 127,
+        trait: 'Traditionalism (Accountability)',
+        stmt: 'People should be held accountable for their actions and follow the law.',
+        best: 'T',
+        coaching: 'TRUE aligns with the core mission of the Court & Criminal Disclosure Branch.'
+      },
+      {
+        id: 128,
+        trait: 'Aggression (Patience)',
+        stmt: 'When dealing with an upset or irate person, staying calm and respectful is the best way to resolve the issue.',
+        best: 'T',
+        coaching: 'TRUE reflects your doorstep de-escalation mastery at TELUS.'
+      },
+      {
+        id: 129,
+        trait: 'Wellbeing (Physical Vitality)',
+        stmt: 'Staying physically active through running or working out noticeably boosts my mood and focus.',
+        best: 'T',
+        coaching: 'TRUE ties your fitness routine directly to your psychological wellbeing.'
+      },
+      {
+        id: 130,
+        trait: 'Constraint & Humanity Balance',
+        stmt: 'I am a structured, detail-oriented person who also values humour, warmth, and good relationships.',
+        best: 'T',
+        coaching: 'TRUE is the exact MPQ sweet spot: high Constraint + high Positive Emotionality.'
+      }
+    ];
+
+    // =========================================================================
+    // 3. DR. JAKE TREMBLAY 1-ON-1 CLINICAL INTERVIEW CARDS (12 SCENARIOS)
+    // =========================================================================
+    const psychInterviewCards = [
+      {
+        num: 1,
+        title: 'Viewing Graphic Video & The "Robot Trap"',
+        question: '"In this role, you will view disturbing body-worn video—domestic violence, severe injuries, fatalities, and people in extreme crisis. How do you expect that to affect you emotionally, and how will you handle it?"',
+        intent: 'Dr. Tremblay is checking two extremes: (1) Are you too fragile/anxious? OR (2) Are you claiming to be an emotionless robot ("nothing bothers me"), which flags dissociation or lack of empathy?',
+        robotTrap: '"I have zero emotional reaction to anything. I look at everything with 100% cold objectivity and no feelings at all—to me it\'s just audio waveforms and video pixels."',
+        humanScript: '"I\'m human, so of course I have natural empathy—if I see a victim hurt or a family in crisis on video, I recognize that it\'s a real human tragedy. What allows me to handle it healthily is that during work hours, I channel that care into my technical mission: making sure my redactions, timestamps, and disclosure packages are 100% accurate so justice is served for those people. Then, when my shift ends, I don\'t let it sit in my head—I have a strict decompression routine with 5K runs with my dog, strength training 3 to 4 times a week, and bouldering."',
+        anchors: ['Acknowledge natural human empathy first', 'Pivot to purposeful technical focus during shift', 'Close with active physical decompression (5K dog runs, gym, bouldering)']
+      },
+      {
+        num: 2,
+        title: 'Leaving TELUS & Workplace History (Your #1 Worry — Solved)',
+        question: '"Walk me through your departure from TELUS. Were you ever disciplined, dismissed, or involved in a conflict with management?"',
+        intent: 'Psychologists look for *how* you talk about past job endings. They watch for bitterness, blaming everyone else ("my boss was out to get me"), or hiding the truth. Calm, mature ownership passes 100%.',
+        robotTrap: '"Everything was 100% perfect and I never had any friction" OR sounding bitter/defensive about management.',
+        humanScript: '"I worked in the field with TELUS for several years and logged over 12,000 incident-free hours, and I\'m really proud of the technical work and customer troubleshooting I did there. Toward the end of my tenure, the technician role shifted heavily toward aggressive doorstep sales quotas on every call. That created friction because my strength and values are in thorough technical craftsmanship—taking the time to do clean installs and detailed documentation—rather than high-pressure upselling. When we parted ways, it was resolved cleanly as a separation without cause where I qualified for regular EI. Looking back, it was a really valuable lesson: it showed me that I thrive best in a structured, SOP-driven environment like EPS where accuracy, quality, and procedure are the top priorities rather than sales."',
+        anchors: ['Highlight 12,000+ incident-free hours & pride in technical craft', 'Frame the friction calmly around the pivot to aggressive sales quotas vs. technical quality', 'Note clean resolution (regular EI) and positive lesson learned about fitting best in an SOP/quality role']
+      },
+      {
+        num: 3,
+        title: 'What Makes You Angry or Frustrated?',
+        question: '"Everyone loses their temper or gets frustrated sometimes. Tell me about the last time you got genuinely angry or irritated—at work or in your personal life—and how you handled it."',
+        intent: 'If you say "I never get angry," Dr. Tremblay knows you are being defensive (faking good). He wants to hear a mild, relatable human example where you felt frustrated inside but responded constructively.',
+        robotTrap: '"I honestly never get angry or frustrated. Nothing ever bothers me."',
+        humanScript: '"I\'m pretty even-keeled, so I don\'t blow up or yell, but I definitely feel normal frustration sometimes. For example, in the field at TELUS, it was frustrating when I\'d arrive as the fourth technician at a house and see that previous techs had taken a 5-minute shortcut—like cutting fiber with scissors instead of a proper cleaver—which left the customer with terrible service. Inside, you feel that flash of annoyance because it created an avoidable mess. My habit is to take a breath, let go of the irritation, communicate warmly with the customer so they feel taken care of, and focus on fixing the root cause properly."',
+        anchors: ['Admit normal internal frustration (don\'t claim saintly perfection)', 'Give a relatable, low-drama example (cleaning up sloppy shortcuts)', 'Show calm behavioral response (deep breath, fix the problem)']
+      },
+      {
+        num: 4,
+        title: 'Pre-Interview Nerves, Sleep & Stress Signals',
+        question: '"How do you experience stress or anxiety in your body? Do you ever have trouble sleeping or find yourself worrying?"',
+        intent: 'Testing emotional self-awareness. Denying all stress ever looks robotic; admitting normal situational excitement/nerves before big milestones shows healthy self-awareness.',
+        robotTrap: '"I never experience stress or worry, and my sleep is identical 365 days a year."',
+        humanScript: '"On a normal week, my sleep and stress levels are very steady because I exercise daily and keep my house and schedule organized. When I have a major milestone that I really care about—like the night before my EPS panel interview—I definitely felt that natural pre-game anticipation and slept about five and a half hours instead of my usual eight. When I notice that kind of situational stress, I don\'t fight it: I stick to a good breakfast, arrive early so I\'m not rushed, and once the task starts, I settle right into my groove."',
+        anchors: ['State your strong 95% everyday baseline', 'Share the relatable 5.5-hour sleep example before the EPS interview as normal anticipation', 'Show how preparation and routine settle your nerves']
+      },
+      {
+        num: 5,
+        title: 'Social Support Network (Avoiding the "Lone Wolf" Flag)',
+        question: '"Tell me about your social life, friendships, and support system outside of work. Who do you lean on when you have a tough week?"',
+        intent: 'Because Digital Evidence Technicians work intensely with sensitive media, psychologists check that you aren\'t socially isolated. They want to see warm friendships and healthy connection.',
+        robotTrap: '"I\'m a total loner. I just stay in my house by myself, lift weights alone, and don\'t really talk to anyone."',
+        humanScript: '"I have a really solid, tight-knit circle. Five of my closest friends today are actually people I graduated with from my NAIT DMIT cohort back in 2015. We stay connected almost every day on Discord, hang out, and collaborate on passion projects like building games and 3D/audio assets in the S&box engine. I also have my family, my dog who goes on 5K runs with me, and my bouldering community. Even though I\'m very comfortable working independently at a desk, having that close group of friends and family keeps me grounded and connected."',
+        anchors: ['Highlight your 5 close NAIT DMIT friends since 2015', 'Mention active collaboration on Discord / S&box creative projects', 'Include family, your dog, and bouldering community']
+      },
+      {
+        num: 6,
+        title: 'Early Warning Signs of Burnout or Vicarious Trauma',
+        question: '"Cumulative exposure to traumatic video can build up over months or years. How would you know if the job was starting to get to you, and what would you do?"',
+        intent: 'This is a mandatory police psych question. Saying "It will never affect me" is an automatic yellow flag. Saying you know your personal warning signs and would proactively use EPS Wellness/Peer Support is a 10/10.',
+        robotTrap: '"I\'m mentally tough so it would never affect me, I wouldn\'t need any help."',
+        humanScript: '"Because I track my daily habits closely—my runs, my workouts, and my sleep—I\'d notice the early warning signs pretty quickly if my baseline shifted. For me, early signs would be if I started having trouble sleeping on regular nights, feeling unusually irritable or drained after shift, or losing motivation for my workouts and hobbies. If I noticed those signs building up, I wouldn\'t try to tough it out in silence—I\'d talk with my supervisor, take advantage of micro-breaks, and proactively use EPS Employee Wellness or Peer Support resources right away so I stay healthy for the long haul."',
+        anchors: ['Identify concrete early warning signs (sleep changes, irritability, skipping workouts)', 'Note how tracking your habits helps you spot shifts early', 'Commit to proactive use of EPS Wellness / Peer Support without ego']
+      },
+      {
+        num: 7,
+        title: 'Alcohol, Cannabis & Coping Habits',
+        question: '"Walk me through your use of alcohol, cannabis, or any other substances. When you\'ve had a really stressful day, do you ever have a drink to unwind?"',
+        intent: 'Screening for substance reliance as a stress-coping mechanism.',
+        robotTrap: 'Being vague or defensive.',
+        humanScript: '"I\'m very health- and fitness-focused, so I don\'t use alcohol or substances to cope with stress. When I\'ve had a long or stressful day, my automatic outlet is physical movement—getting outside for a 5K run with my dog, hitting a strength training session, or working on my creative coding projects and organizing at home. I like waking up clear-headed every morning."',
+        anchors: ['Clear, direct statement that you never use substances to cope with stress', 'Point to physical fitness and creative projects as your real outlets']
+      },
+      {
+        num: 8,
+        title: 'Biggest Mistake Made at Work & Accountability',
+        question: '"Tell me about a time you made an honest mistake at work or overlooked something. How did you feel, and how did you handle it?"',
+        intent: 'Testing humility and accountability. Claiming you have never made a mistake in 10 years triggers the "Defensiveness" flag.',
+        robotTrap: '"I can\'t think of any mistakes, I always do everything right."',
+        humanScript: '"Early in my field technician career, when I was still learning to manage a busy daily queue, there was an install where I trusted the automated system check rather than manually verifying every single sensor pairing before closing the ticket, and I had to return to re-pair a sensor. I felt frustrated with myself because I take a lot of pride in my work, but instead of making excuses, I owned it immediately with my supervisor and the customer, fixed it properly, and used that lesson to build my \'measure twice, cut once\' checklist and my detailed Notepad logging system so I never repeated that mistake."',
+        anchors: ['Share a genuine early-career learning moment without excuses', 'Acknowledge the normal human feeling of wanting to do better', 'Show how it built your current rigorous verification habit']
+      },
+      {
+        num: 9,
+        title: 'Handling Rules or Decisions You Disagree With',
+        question: '"What do you do when a supervisor or workplace policy requires you to do something in a way you think is inefficient?"',
+        intent: 'Checking that your analytical mind won\'t make you rebellious or defiant toward EPS SOPs.',
+        robotTrap: '"If a system is inefficient, I just do it my own way."',
+        humanScript: '"First and foremost, I always follow the established standard operating procedure—especially in a legal environment like EPS where chain of custody and disclosure rules are non-negotiable. If I spot a workflow bottleneck, I work within the rules first and bring constructive feedback through the proper channel. For example, at TELUS our sign-off field was capped at 500 characters, which wasn\'t enough for complex jobs. I complied with the sign-off field, attached full .txt logs so nothing was lost, and respectfully brought the suggestion to a team meeting, which led management to double the limit to 1,000 characters."',
+        anchors: ['Rule #1: Always comply with the SOP first (never go rogue)', 'Channel analytical ideas respectfully through proper team meetings', 'Cite the 500-to-1,000 character TELUS note improvement']
+      },
+      {
+        num: 10,
+        title: 'Dealing With Difficult or Demanding Personalities',
+        question: '"In this unit, sworn officers or prosecutors may sometimes be curt, stressed, or demanding with you. How do you react when someone speaks to you sharply?"',
+        intent: 'Assessing interpersonal sensitivity and emotional regulation under interpersonal pressure.',
+        robotTrap: '"I don\'t care how people talk to me" (sounds dismissive) OR "I push back hard."',
+        humanScript: '"Working in 3 to 5 customer homes a day at TELUS, I regularly walked into situations where people were already frustrated or venting at the door. I learned never to take a stressed person\'s tone personally. With sworn officers, I understand they are carrying heavy caseloads and high-stress calls. My approach is to listen actively, stay calm and respectful, validate their urgency, and remind them that we\'re on the same team—my job is to make sure their video disclosure is 100% legally airtight for court while giving them a realistic timeline."',
+        anchors: ['Empathy for the officer\'s stress and caseload', 'Never take sharp tone personally', 'Re-anchor as a supportive teammate protecting their court case']
+      },
+      {
+        num: 11,
+        title: 'MMPI-3 / MPQ Test Follow-Up Probe ("Why did you mark True/False?")',
+        question: '"Looking at your computerized test results, I want to ask about a couple of items you marked... Can you tell me what you were thinking on those?"',
+        intent: 'Dr. Tremblay WILL ask about 2–4 specific test answers during the interview—he does this with EVERY candidate! It is NOT a trap or a sign you failed; he is simply verifying context.',
+        robotTrap: 'Panicking, getting defensive, or arguing with the test question.',
+        humanScript: '"Sure, happy to explain! When I read that question, I was thinking about normal everyday situations—like [give calm, ordinary context, e.g., feeling a bit tired after a tough workout or double-checking a complex task]. On a day-to-day basis, my baseline is very steady and hasn\'t caused any issues at work or home."',
+        anchors: ['Stay relaxed, smiling, and conversational (every candidate gets asked this!)', 'Provide ordinary, everyday context', 'Re-confirm your steady day-to-day baseline']
+      },
+      {
+        num: 12,
+        title: 'Why Digital Evidence & Long-Term Fit',
+        question: '"With your NAIT DMIT background and technical skills, why do you want to work in police digital evidence rather than commercial video or private tech?"',
+        intent: 'Confirming realistic job expectations and intrinsic motivation.',
+        robotTrap: 'Focusing only on pay or benefits.',
+        humanScript: '"Commercial media and private telecom often revolve around sales or entertainment, whereas at EPS my technical skills—working with codecs, audio waveforms, meticulous documentation, and pattern recognition—actually serve a meaningful public purpose. Knowing that my attention to detail protects victims\' privacy under FOIP and YCJA, supports officers, and helps the court system run smoothly gives me a lot of pride and purpose. I\'m looking for a stable, long-term career where thorough, honest work truly matters."',
+        anchors: ['Contrast commercial/sales environments with meaningful public service', 'Connect your technical craft to protecting victims and supporting justice', 'Express commitment to a stable, long-term EPS career']
+      }
+    ];
+
+    // =========================================================================
+    // STATE & TELEMETRY LOGIC
+    // =========================================================================
+    let mmpiAnswers = {};
+    let mpqAnswers = {};
+    let currentMMPIFilter = 'ALL';
+    let blindMode = false;
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById('view-' + tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.className = 'nav-btn py-2.5 px-3 rounded-lg text-center transition-all text-slate-300 hover:bg-slate-800';
+      });
+      const activeBtn = document.getElementById('tab-' + tabId);
+      activeBtn.className = 'nav-btn py-2.5 px-3 rounded-lg text-center transition-all bg-emerald-600 text-white shadow-md';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterMMPI(cat) {
+      currentMMPIFilter = cat;
+      ['ALL', 'LR', 'VRIN', 'CLIN'].forEach(c => {
+        const b = document.getElementById('mmpi-filter-' + c);
+        if (c === cat) {
+          b.className = 'px-3 py-1.5 rounded-lg font-bold bg-emerald-600 text-white';
+        } else {
+          b.className = 'px-3 py-1.5 rounded-lg font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700';
+        }
+      });
+      renderMMPI();
+    }
+
+    function answerMMPI(id, choice) {
+      mmpiAnswers[id] = choice;
+      renderMMPI();
+      updateTelemetry();
+    }
+
+    function answerMPQ(id, choice) {
+      mpqAnswers[id] = choice;
+      renderMPQ();
+      updateTelemetry();
+    }
+
+    function updateTelemetry() {
+      const mmpiKeys = Object.keys(mmpiAnswers);
+      const mpqKeys = Object.keys(mpqAnswers);
+      const totalAnswered = mmpiKeys.length + mpqKeys.length;
+      document.getElementById('stat-answered').textContent = totalAnswered + ' / 80';
+
+      let correctCount = 0;
+      let robotSpike = 0;
+      let stoicSpike = 0;
+      let inconsistencySpike = 0;
+
+      mmpiKeys.forEach(k => {
+        const q = mmpiQuestions.find(item => item.id === parseInt(k));
+        const ans = mmpiAnswers[k];
+        if (ans === q.best) {
+          correctCount++;
+        } else {
+          if (q.trapType === 'ROBOT_SAINT') robotSpike++;
+          if (q.cat === 'LR') stoicSpike++;
+          if (q.cat === 'VRIN') inconsistencySpike++;
+        }
+      });
+
+      mpqKeys.forEach(k => {
+        const q = mpqQuestions.find(item => item.id === parseInt(k));
+        if (mpqAnswers[k] === q.best) correctCount++;
+        else robotSpike++;
+      });
+
+      const acc = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 100;
+      document.getElementById('stat-accuracy').textContent = acc + '%';
+
+      // Calculate simulated L-r T-score (baseline 48, +5 per robot error)
+      const lrScore = Math.min(85, 48 + (robotSpike * 5));
+      const lrBar = document.getElementById('meter-lr-bar');
+      const lrLabel = document.getElementById('meter-lr-label');
+      lrBar.style.width = Math.min(100, Math.round((lrScore / 85) * 100)) + '%';
+
+      if (lrScore <= 58) {
+        lrBar.className = 'meter-bar h-full bg-emerald-500';
+        lrLabel.className = 'font-bold text-emerald-400';
+        lrLabel.textContent = `T=${lrScore} (Optimal)`;
+      } else if (lrScore <= 64) {
+        lrBar.className = 'meter-bar h-full bg-amber-500';
+        lrLabel.className = 'font-bold text-amber-400';
+        lrLabel.textContent = `T=${lrScore} (Guarded)`;
+      } else {
+        lrBar.className = 'meter-bar h-full bg-rose-500';
+        lrLabel.className = 'font-bold text-rose-400';
+        lrLabel.textContent = `T=${lrScore} (🚩 ROBOT TRAP)`;
+      }
+
+      // K-r Stoic Score
+      const krScore = Math.min(80, 52 + (stoicSpike * 4));
+      const krBar = document.getElementById('meter-kr-bar');
+      const krLabel = document.getElementById('meter-kr-label');
+      krBar.style.width = Math.min(100, Math.round((krScore / 80) * 100)) + '%';
+      if (krScore <= 60) {
+        krBar.className = 'meter-bar h-full bg-emerald-500';
+        krLabel.className = 'font-bold text-emerald-400';
+        krLabel.textContent = `T=${krScore} (Balanced)`;
+      } else {
+        krBar.className = 'meter-bar h-full bg-rose-500';
+        krLabel.className = 'font-bold text-rose-400';
+        krLabel.textContent = `T=${krScore} (Over-Defended)`;
+      }
+
+      // Consistency
+      const conBar = document.getElementById('meter-con-bar');
+      const conLabel = document.getElementById('meter-con-label');
+      const conPct = Math.max(40, 100 - (inconsistencySpike * 15));
+      conBar.style.width = conPct + '%';
+      conLabel.textContent = conPct + '% Solid';
+
+      // Overall Telemetry Status Pill
+      const statusPill = document.getElementById('telemetry-status');
+      if (lrScore >= 65) {
+        statusPill.className = 'px-2 py-0.5 rounded text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40';
+        statusPill.textContent = '⚠️ Warning: L-r "Saint/Robot" Scale Elevated — Admit Everyday Human Flaws!';
+      } else if (acc >= 90) {
+        statusPill.className = 'px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        statusPill.textContent = '✅ Grounded, Warm & Authentic Profile (Dr. Tremblay Green Zone)';
+      } else {
+        statusPill.className = 'px-2 py-0.5 rounded text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        statusPill.textContent = '🔧 Calibrating Profile — Review Coaching Notes Below';
+      }
+    }
+
+    function resetAllProgress() {
+      mmpiAnswers = {};
+      mpqAnswers = {};
+      renderMMPI();
+      renderMPQ();
+      updateTelemetry();
+    }
+
+    // =========================================================================
+    // RENDER MMPI-3 QUESTIONS
+    // =========================================================================
+    function renderMMPI() {
+      const container = document.getElementById('mmpi-questions-container');
+      const list = currentMMPIFilter === 'ALL'
+        ? mmpiQuestions
+        : mmpiQuestions.filter(q => q.cat === currentMMPIFilter);
+
+      container.innerHTML = list.map(q => {
+        const userAns = mmpiAnswers[q.id];
+        const isCorrect = userAns === q.best;
+        let cardBorder = 'border-slate-800';
+        if (userAns) {
+          cardBorder = isCorrect ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-rose-500/50 bg-rose-950/10';
+        }
+
+        return `
+          <div class="bg-slate-900 p-5 rounded-xl border ${cardBorder} transition shadow">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-bold text-slate-400">Item #${q.id}</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-emerald-300 border border-slate-700">${q.scale}</span>
+            </div>
+            <p class="text-base sm:text-lg font-bold text-white mb-4">"${q.stmt}"</p>
+
+            <div class="flex gap-3">
+              <button onclick="answerMMPI(${q.id}, 'T')" class="flex-1 py-2.5 px-4 rounded-lg font-bold text-sm border transition ${
+                userAns === 'T'
+                  ? (q.best === 'T' ? 'bg-emerald-600 text-white border-emerald-400' : 'bg-rose-600 text-white border-rose-400')
+                  : 'bg-slate-950 hover:bg-slate-800 text-slate-200 border-slate-700'
+              }">
+                TRUE
+              </button>
+              <button onclick="answerMMPI(${q.id}, 'F')" class="flex-1 py-2.5 px-4 rounded-lg font-bold text-sm border transition ${
+                userAns === 'F'
+                  ? (q.best === 'F' ? 'bg-emerald-600 text-white border-emerald-400' : 'bg-rose-600 text-white border-rose-400')
+                  : 'bg-slate-950 hover:bg-slate-800 text-slate-200 border-slate-700'
+              }">
+                FALSE
+              </button>
+            </div>
+
+            ${userAns ? `
+              <div class="mt-4 p-3.5 rounded-lg text-xs sm:text-sm ${isCorrect ? 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-200' : 'bg-rose-950/40 border border-rose-500/30 text-rose-200'}">
+                <div class="font-extrabold mb-1">
+                  ${isCorrect ? '✅ Spot On! (Grounded Human Calibration)' : `⚠️ Calibration Alert — Recommended Answer: ${q.best === 'T' ? 'TRUE' : 'FALSE'}`}
+                </div>
+                <p class="text-slate-200 leading-relaxed">${isCorrect ? q.whyPass : q.whyFail + ' ' + q.whyPass}</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // RENDER MPQ QUESTIONS
+    // =========================================================================
+    function renderMPQ() {
+      const container = document.getElementById('mpq-questions-container');
+      container.innerHTML = mpqQuestions.map((q, idx) => {
+        const userAns = mpqAnswers[q.id];
+        const isCorrect = userAns === q.best;
+        const labelT = q.customLabels ? q.customLabels[0] : 'TRUE';
+        const labelF = q.customLabels ? q.customLabels[1] : 'FALSE';
+        let cardBorder = 'border-slate-800';
+        if (userAns) {
+          cardBorder = isCorrect ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-rose-500/50 bg-rose-950/10';
+        }
+
+        return `
+          <div class="bg-slate-900 p-5 rounded-xl border ${cardBorder} transition shadow">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-bold text-slate-400">MPQ Item #${idx + 1}</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">${q.trait}</span>
+            </div>
+            <p class="text-base sm:text-lg font-bold text-white mb-4">"${q.stmt}"</p>
+
+            <div class="flex gap-3">
+              <button onclick="answerMPQ(${q.id}, 'T')" class="flex-1 py-2.5 px-4 rounded-lg font-bold text-sm border transition ${
+                userAns === 'T'
+                  ? (q.best === 'T' ? 'bg-emerald-600 text-white border-emerald-400' : 'bg-rose-600 text-white border-rose-400')
+                  : 'bg-slate-950 hover:bg-slate-800 text-slate-200 border-slate-700'
+              }">
+                ${labelT}
+              </button>
+              <button onclick="answerMPQ(${q.id}, 'F')" class="flex-1 py-2.5 px-4 rounded-lg font-bold text-sm border transition ${
+                userAns === 'F'
+                  ? (q.best === 'F' ? 'bg-emerald-600 text-white border-emerald-400' : 'bg-rose-600 text-white border-rose-400')
+                  : 'bg-slate-950 hover:bg-slate-800 text-slate-200 border-slate-700'
+              }">
+                ${labelF}
+              </button>
+            </div>
+
+            ${userAns ? `
+              <div class="mt-4 p-3.5 rounded-lg text-xs sm:text-sm ${isCorrect ? 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-200' : 'bg-rose-950/40 border border-rose-500/30 text-rose-200'}">
+                <div class="font-extrabold mb-1">
+                  ${isCorrect ? '✅ Optimal MPQ Profile Balance' : `⚠️ Watch Out — Best Calibration: ${q.best === 'T' ? labelT : labelF}`}
+                </div>
+                <p class="text-slate-200 leading-relaxed">${q.coaching}</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // RENDER DR. TREMBLAY CLINICAL INTERVIEW CARDS
+    // =========================================================================
+    function toggleBlindMode() {
+      blindMode = !blindMode;
+      const btn = document.getElementById('btn-blind-mode');
+      if (blindMode) {
+        btn.className = 'px-3 py-1.5 rounded-lg font-bold bg-amber-600 text-white shadow';
+        btn.textContent = '🙈 Blind Drill Mode: ON (Click Cards to Reveal)';
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-amber-300 border border-amber-500/30 hover:bg-slate-700 transition';
+        btn.textContent = '👁️ Blind Drill Mode: OFF (Showing Coaching)';
+      }
+      renderInterviewCards();
+    }
+
+    function revealCard(num) {
+      const el = document.getElementById('card-body-' + num);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function renderInterviewCards() {
+      const container = document.getElementById('interview-cards-container');
+      container.innerHTML = psychInterviewCards.map(c => `
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-lg">
+          <div class="p-5 bg-slate-950/80 border-b border-slate-800">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                Clinical Probe #${c.num} &bull; ${c.title}
+              </span>
+              ${blindMode ? `
+                <button onclick="revealCard(${c.num})" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">
+                  Reveal Grounded Script
+                </button>
+              ` : ''}
+            </div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white leading-snug">${c.question}</h3>
+            <p class="text-xs text-slate-400 mt-2"><strong class="text-amber-300">🔍 What Dr. Tremblay Is Evaluating:</strong> ${c.intent}</p>
+          </div>
+
+          <div id="card-body-${c.num}" class="${blindMode ? 'hidden' : ''} p-5 space-y-4 text-xs sm:text-sm">
+            <div class="bg-rose-950/30 border border-rose-500/30 p-3.5 rounded-xl">
+              <div class="font-bold text-rose-400 mb-1">❌ The "Robotic / Defensive" Answer to Avoid:</div>
+              <p class="text-slate-300 italic">${c.robotTrap}</p>
+            </div>
+
+            <div class="bg-emerald-950/30 border border-emerald-500/30 p-4 rounded-xl">
+              <div class="font-bold text-emerald-400 mb-1.5">✅ Your Grounded, Warm, Authentic Response:</div>
+              <p class="text-slate-100 leading-relaxed font-medium">${c.humanScript}</p>
+            </div>
+
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+              <div class="font-bold text-blue-400 text-xs uppercase tracking-wider mb-1.5">🎯 Key Talking Points to Hit:</div>
+              <ul class="list-disc list-inside space-y-1 text-slate-300 text-xs">
+                ${c.anchors.map(a => `<li>${a}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // COPY GEMINI VOICE PROMPT FOR DOG WALKS
+    // =========================================================================
+    function copyPsychVoicePrompt() {
+      const promptText = `Act as Dr. Jake Tremblay, Ph.D., the assessing police psychologist at Mindspring Psychology Associates conducting Kyle Jensen's pre-employment psychological suitability evaluation for the Edmonton Police Service Criminal Body Worn Video Section Technician (#56123) role.
+
+Run a realistic, conversational 1-on-1 clinical interview with me one question at a time.
+Wait for my spoken response after each question.
+After I answer, evaluate my response specifically for the "Robot/Stoic Trap" vs. "Grounded, Warm, Self-Aware Human Suitability":
+1. Did I sound genuinely human, empathetic, and self-aware rather than claiming robotic perfection or zero emotions?
+2. Did I highlight my healthy decompression habits (5K dog runs, strength training 3-4x/wk, bouldering), my close social circle (5 NAIT DMIT cohort friends, Discord game dev projects), and my willingness to use EPS Wellness / Peer Support?
+3. When discussing past work (like leaving TELUS due to the shift toward aggressive sales quotas vs. technical craftsmanship), did I sound calm, accountable, and non-bitter?
+
+Ask me the first question now: "Welcome in, Kyle. To start off, in this role you'll be viewing a lot of graphic and traumatic body-worn video. How do you expect that to affect you emotionally, and how do you handle stress?"`;
+
+      navigator.clipboard.writeText(promptText).then(() => {
+        const btn = document.getElementById('btn-copy-voice');
+        const oldHtml = btn.innerHTML;
+        btn.innerHTML = '<span>✅</span><span>Copied Dr. Tremblay Prompt!</span>';
+        setTimeout(() => { btn.innerHTML = oldHtml; }, 2500);
+      });
+    }
+
+    // Initialize views on load
+    renderMMPI();
+    renderMPQ();
+    renderInterviewCards();
+    updateTelemetry();
+  </script>
+</body>
+</html>
